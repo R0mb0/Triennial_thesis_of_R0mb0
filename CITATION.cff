@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use these materials, please cite them as below."
+authors:
+-- family-names: "Rombaldoni"
+  given-names: "Francesco"
+title: "Triennial_thesis_of_R0mb0"
+version: 1.0.0
+doi: 10.5281/zenodo.1234
+date-released: 2023-10-18
+url: "https://github.com/R0mb0/Triennial_thesis_of_R0mb0"
