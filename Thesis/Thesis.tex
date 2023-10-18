@@ -1,0 +1,51 @@
+\documentclass[a4paper,twoside,11pt]{report}
+
+\usepackage{../Includes/ia_urb_thesis}
+\usepackage[italian]{babel}
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,
+	amsfonts,
+	amstext,
+	amssymb,
+	mathrsfs,
+	stmaryrd,
+	latexsym,
+	%enumitem,
+	proof,
+	graphicx,
+	epsfig,
+	color,
+	hyperref,
+	comment}
+	
+% Images
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\graphicspath{ {../Images} }
+	
+	\begin{document}
+		
+		\titolo{Parte1}
+		\candidato{candidato}
+		\relatore{relatore}
+		\correlatori{corelatore}
+		\annoaccademico{anno}
+		
+		\copertinatesi 
+		\dedica{dedica}
+		%\indice
+		%\indicefigure
+		%\indicetabelle
+		\iniziatesto
+		
+		% Include chapters here
+		\include{Chapters/cap_1}
+		
+		\ringraziamenti
+		Vorrei ringraziare ...
+		
+	\end{document}
