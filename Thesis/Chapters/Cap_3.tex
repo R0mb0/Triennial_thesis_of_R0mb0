@@ -1,4 +1,4 @@
-\chapter{Programmazione del servizio online}\label{cap:Programmazione del servizio online}
+\chapter{Programmazione del servizio online parte 1}\label{cap:Programmazione del servizio online parte1}
 
 \section{Configurazione database}\label{sez:Configurazione database}
 
@@ -22,7 +22,7 @@ Le tabelle dei quiz sono state istanziate seguendo un ordine di complessità, ov
 	Andando più in dettaglio, la prima tabella si compone delle seguenti colonne: "id", "img",  "question\_text", "answer\_text\_1", "answer\_1", "answer\_text\_2", "answer\_2", "answer\_text\_3", "answer\_3" e "topic", con in breve queste funzioni; l'"Id" rappresenta il numero della domanda, in "img" viene salvata l'immagine correlata alla domanda, "topic" rappresenta invece l'argomento di riferimento della domanda, mentre il resto sono la domanda con le varie risposte e la veridicità di quest'ultime. Si vuole fare notare al fatto che pare logico pensare che su tre risposte ci sia una sola riposta giusta e che quindi sarebbe stato più ragionevole salvare nel database solo il numero della risposta giusta. Ma il problema è che nella documentazione del ministero non è esplicitamente segnalata questa affermazione, per tanto, si è deciso di salvare i dati così come presentati nella documentazione,  nei confronti di una ottica futura nella quale potrebbe capitare che solo una risposta su tre sia sbagliata.\\
 	La seconda tabella, che rappresenta il numero di domande da presentare per ogni argomento e il numero massimo di errori concessi è composta da: "id", "teoria\_dello\_scafo\_questions", "motori\_questions", "sicurezza\_della\_navigazione\_questions", "manovra\_e\_condotta\_questions", "colreg\_e\_segnalamento\_marittimo\_questions", "meteorologia\_questions", "navigazione\_cartografica\_ed\_elettronica\_questions", "normativa\_diportistica\_e\_ambientale\_questions" e  "errors".\\
 	
-	\item \textbf{Quiz Vela}
+	\item \textbf{Quiz Vela}\\
 	Come di consueto sono state create due tabelle con la funzione di contenere le domande, le risposte e le proprietà della prova. Le tabelle sono state nominate come: "ship\_boat\_quiz" e "ship\_boat\_properties"\\
 	La prima è composta da: "id", "img", "question\_text", "answer" e "topic", le funzioni dei campi sono gli stessi del caso precedente, ma in particolare in "answer" è stata modellata una condizione booleana, siccome per specifica è stato esplicitato che in questo caso ogni domanda può essere vera o falsa, per questo rispetto alla documentazione è stata eliminata una ridondanza (siccome nella documentazione venivano esplicitati entrambi i casi booleani). Mentre la seconda: "id", "questions" e "errors", anche in questo caso con funzioni identiche rispetto alle precedenti presentate.  
 \end{itemize}
