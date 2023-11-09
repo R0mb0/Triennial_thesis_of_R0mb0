@@ -16,13 +16,13 @@ La classe "utilities" (quindi il relativo file) è stata implementata in questo 
 Per prima si è deciso di dividere in file file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
 Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
 
-\begin{minted}{php}
+\begin{pyglist}[language = php]
 	/*using singleton pattern*/
-	public function getMysql(){
-		if($this->mysqli == null){
-			$this->mysqli = new mysqli(SERVER, USER, PASSWORD, DATABASE);
-			
-		}
-		return $this->mysqli;
+public function getMysql(){
+	if($this->mysqli == null){
+		$this->mysqli = new mysqli(SERVER, USER, PASSWORD, DATABASE);
+		
 	}
-\end{minted}
+	return $this->mysqli;
+}
+\end{pyglist}
