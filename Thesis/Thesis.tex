@@ -16,7 +16,8 @@
 	proof,
 	graphicx,
 	epsfig,
-	color,
+	%color,
+	xcolor,
 	hyperref,
 	comment}
 	
@@ -25,6 +26,10 @@
 \usepackage{subcaption}
 \usepackage{float}
 \graphicspath{ {../Images} }
+
+% To include code
+%\usepackage{listings}
+\usepackage{minted}
 	
 	\begin{document}
 		
@@ -45,6 +50,7 @@
 		\include{Chapters/Cap_1}
 		\include{Chapters/Cap_2}
 		\include{Chapters/Cap_3}
+		\include{Chapters/Cap_4}
 		
 		\ringraziamenti
 		\textbf{Non so a chi ringraziare}
