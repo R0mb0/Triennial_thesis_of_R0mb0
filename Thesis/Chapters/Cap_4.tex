@@ -17,7 +17,7 @@ Per prima si è deciso di dividere in file file separati i metodi e le chiavi pe
 Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
 
 \begin{lstlisting}[language=php]
-		/*using singleton pattern*/
+	/*using singleton pattern*/
 	public function getMysql(){
 		if($this->mysqli == null){
 			$this->mysqli = new mysqli(SERVER, USER, PASSWORD, DATABASE);
@@ -25,4 +25,15 @@ Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che
 		}
 		return $this->mysqli;
 	}
+\end{lstlisting}
+
+Codice in html (prova)
+
+\begin{lstlisting}[language=html]
+<!DOCTYPE html>
+<html lang="it" >
+<head>
+<meta charset="UTF-8">
+<title>Quiz patenti nautiche</title>
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" href="style.css">
 \end{lstlisting}
