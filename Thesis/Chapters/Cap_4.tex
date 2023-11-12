@@ -9,12 +9,17 @@ L'intera produzione del sito internet è stata fatta seguendo la filosofia di da
 Secondo la specifica del progetto, il sito deve essere in grado di essere accessibile solo agli utenti registrati (verificando inoltre che la mail che abbiano inserito sia reale), garantendo inoltre la sicurezza, ossia che il sito deve possedere le principali difese per non essere attaccato e che in caso di attacco i dati degli utenti siano all'interno del "database" cifrati in modo da non poter essere utilizzati da terzi.\\
 La prima pagina che è stata creata in assoluto è quella di accesso, dalla quale poi premendo un  pulsante è possibile accedere alla pagina di registrazione. Com'è deducibile queste due pagine sono state in contemporanea siccome la prima permette di verificare li corretto funzionamento della seconda.\\
 
-Dopo aver studiato velocemente "l'html" e il "php" (il "javascript" è stato lasciato in secondo piano) decido di sviluppare il codice ("php") con paradigma ad oggetti, siccome mi è molto famigliare. Ragionando solo a livello di logica decido di creare una classe "utilities" nella quale poter scrivere i metodi che poi mi torneranno utili durante anche lo sviluppo delle restanti parti. \\
+Dopo aver studiato velocemente "l'html" e il "php" (il "javascript" è stato lasciato in secondo piano) decido di sviluppare il codice ("php") con paradigma ad oggetti, siccome mi è molto famigliare. Ragionando solo a livello di logica decido di creare una classe "utilities" nella quale poter scrivere i metodi che poi mi torneranno utili durante anche lo sviluppo delle restanti parti.\\
+
+Si esplicita in questa sede che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
 
 \paragraph{Classe utilities}
 La classe "utilities" (quindi il relativo file) è stata implementata in questo modo:\\
-Per prima si è deciso di dividere in file file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
+Per prima si è deciso di dividere in file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
 Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
+
+% \begin{lstlisting}[language=php]
+% \end{lstlisting}
 
 \begin{lstlisting}[language=php]
 	/*using singleton pattern*/
@@ -27,13 +32,145 @@ Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che
 	}
 \end{lstlisting}
 
-Codice in html (prova)
+In questa classe sono stati scritti i metodi per cifrare e decifrare le stringe da salvare poi nella tabella degli utenti all'interno del database.\\
 
-\begin{lstlisting}[language=html]
-<!DOCTYPE html>
-<html lang="it" >
-<head>
-<meta charset="UTF-8">
-<title>Quiz patenti nautiche</title>
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" href="style.css">
+\begin{lstlisting}[language=php]
+/*Function to crypt a string*/
+public function Encrypt($string){
+	$encrypt_method = "AES-256-CBC";
+	$key = hash( 'sha256', $secret_key );
+	$iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+	$output = base64_encode( openssl_encrypt( $string, $encrypt_method, $key, 0, $iv ) );
+	return $output;
+}
+
+
+/*Function to decrypt a string*/
+public function Decrypt($string){
+	$encrypt_method = "AES-256-CBC";
+	$key = hash( 'sha256', $secret_key );
+	$iv = substr( hash( 'sha256', $secret_iv ), 0, 16 );
+	$output = openssl_decrypt( base64_decode( $string ), $encrypt_method, $key, 0, $iv );
+	return $output;
+}
 \end{lstlisting}
+
+Sempre in questa classe è stato scritto il metodo che si occupa di inviare agli utenti la mail con il link per poter effettuare la verifica della mail di registrazione.\\
+Per la costruzione del metodo sono state usate le classi messe a disposizione da "\href{https://github.com/PHPMailer/PHPMailer}{PHPMailer}"
+
+\begin{lstlisting}[language=php]
+public function SendEmail($address, $subject, $body, $altBody){
+	
+	$mail = new PHPMailer(true);
+	
+	try{
+		//server settings
+		$mail->SMTPDebug = 0; //SMPT::DEBUG_OFF;
+		$mail->isSMTP();
+		$mail->Host       = 'smtp.gmail.com';
+		$mail->SMTPAuth   = true;
+		$mail->Username   = 'quiz.patenti.nautiche@gmail.com';
+		$mail->Password   = MAIL_PASSWORD;
+		$mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+		$mail->Port       = 465;
+		
+		//Recipients
+		$mail->setFrom('quiz.patenti.nautiche@gmail.com', 'Quiz Patenti Nautiche');
+		$mail->addAddress($address);
+		
+		//Content
+		$mail->isHTML(true);
+		$mail->Subject = $subject;
+		$mail->Body = $body;
+		$mail->AltBody = $altBody;
+		
+		//Send
+		$mail->send();
+		
+		echo "Message has been sent";
+	}catch (Exception $e){
+		echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+	}
+}
+\end{lstlisting}
+
+\subparagraph{Approfondimento gestione della verifica della mail di registrazione}
+A questo punto si desidera aprire una breve parentesi per approfondire la gestione della verifica della mail.\\
+Dalla classe "Utilities" è possibile usare il metodo che permette l'invio della mail di verifica, ma ovviamente questo metodo prevede degli argomenti in ingresso che adesso saranno esplicitati in ordine: Il primo è l'indirizzo mail del destinatario, che è prelevabile dal database; l'oggetto della mail e i restanti argomenti sono stati definiti all'interno di un'altra classe chiamata "MailUtilities".\\
+Come prima cosa è stato definito un "link base di rientro" che se cliccato dalla mail permette di ritornare alla pagina della applicazione web.\\
+
+ \begin{lstlisting}[language=php]
+	const URL = "https://quizpatentinautiche.dynamic-dns.net:8080/";
+ \end{lstlisting}
+ 
+  Successivamente è stato stabilito un metodo con il quale poter reperire l'oggetto della mail, del quale si è preferito scriverlo in questa sede per tenere raggruppati i vari argomenti necessari per l'invio della mail in un unico posto.\\
+ 
+\begin{lstlisting}[language=php]
+public function getSubject(){
+	return "Verifica della mail.";
+}
+\end{lstlisting}
+
+Di seguito è stato definito il corpo "html" della mail, il quale per un qualche motivo poco chiaro non viene visualizzato correttamente su alcuni gestori di servizi mail. \\
+
+\begin{lstlisting}[language=php]
+public function getBody($linkToUse){
+	return '<html>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	</head>
+	<body style="background-color: #e9ecef;">
+	<div class="login-form" style="background: #fff;
+	width: 500px; margin: 65px auto; display: -webkit-box;
+	display: flex; flex-direction: column; border-radius: 4px;
+	box-shadow: 0 2px 25px rgba(0, 0, 0, 0.2);">
+	<form method="post">
+	<h1 style="padding: 35px 35px 0 35px; font-weight: 300;
+	font-family: "Rubik", sans-serif; text-align: center;">
+	Verifica la tua mail
+	</h1>
+	<div style="margin: 25px auto; padding: 18px;
+	font-family: "Rubik", sans-serif; text-align: center;">
+	Clicca su questo pulsante per accedere alla pagina di verifica della mail inserita su:
+	<a href='.self::URL.'>Quiz Patenti Nautiche</a>
+	</div>
+	<div>
+	<a href='.$linkToUse.'>
+	<button style="width: 250px; height: 50px; border: none;
+	border-radius: 4px; padding: 18px; font-family: "Rubik", sans-serif;
+	font-size: large; cursor: pointer; background: #2d3b55; color: #fff;
+	letter-spacing: 0.2px; outline: 0; position: relative; top: 50%;
+	left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+	Verifica la tua Mail
+	</button>
+	</a>
+	</div>
+	</form>
+	</div>
+	</body>	</html>';
+}
+ \end{lstlisting}
+ 
+ Ultima è stata la definizione del corpo alternativo nel caso in cui non si voglia visualizzare la mail con il corpo "html".\\
+ 
+  \begin{lstlisting}[language=php]
+ public function getAlternativeBody($linkToUse){
+ 	return 'Usa questo link per accedere alla pagina di verifica della mail: '.$linkToUse;
+ }
+  \end{lstlisting}
+  
+  Sono stati inoltre scritti dei metodi aggiuntivi per facilitare l'interazione con "l'url" da usare per verificare la mail:\\
+  
+ \begin{lstlisting}[language=php]
+   	public function getUrl($myData){
+   		return self::URL."?".http_build_query($myData);
+   	}
+   	
+   	public function getInfoFromUrl($url){
+   		$url_component = parse_url($url);
+   		parse_str($url_component['query'], $params);
+   		return $params;
+   	}
+ \end{lstlisting}
+ 
+ Per spiegare correttamente il funzionamento del sistema 
