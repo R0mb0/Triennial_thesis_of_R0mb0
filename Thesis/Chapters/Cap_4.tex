@@ -18,9 +18,6 @@ La classe "utilities" (quindi il relativo file) è stata implementata in questo 
 Per prima si è deciso di dividere in file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
 Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
 
-% \begin{lstlisting}[language=php]
-% \end{lstlisting}
-
 \begin{lstlisting}[language=php]
 	/*using singleton pattern*/
 	public function getMysql(){
@@ -139,8 +136,8 @@ public function getBody($linkToUse){
 	<button style="width: 250px; height: 50px; border: none;
 	border-radius: 4px; padding: 18px; font-family: "Rubik", sans-serif;
 	font-size: large; cursor: pointer; background: #2d3b55; color: #fff;
-	letter-spacing: 0.2px; outline: 0; position: relative; top: 50%;
-	left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+	letter-spacing: 0.2px; outline: 0; position: relative; top: 50\%;
+	left: 50\%; -ms-transform: translate(-50\%, -50\%); transform: translate(-50\%, -50\%);">
 	Verifica la tua Mail
 	</button>
 	</a>
@@ -173,4 +170,103 @@ public function getBody($linkToUse){
    	}
  \end{lstlisting}
  
- Per spiegare correttamente il funzionamento del sistema 
+ Per spiegare correttamente il funzionamento della logica viene riportato inferiormente la parte di codice della pagina di registrazione che sfrutta i metodi presentati sopra per mandare la mail di verifica dopo la registrazione. 
+ 
+ \begin{lstlisting}[language=php]
+ $mailUtil = new MailUtilities();
+ 
+ $tempArray = array("email" => $email);
+ 
+ $URLToSend = $mailUtil->getURL($tempArray);
+ 
+ $utilities->SendEmail($_POST['email'], $mailUtil->getSubject(), $mailUtil->getBody($URLToSend), $mailUtil->getAlternativeBody($URLToSend));
+ /*--- Return to main page ---*/
+ $_SESSION['user'] = "Registrated";
+ header("Location: main.php");
+ exit;
+  \end{lstlisting}
+  
+  In pratica (dopo aver controllato la consistenza dei dati nel database) come si può facilmente leggere, la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è semplicemente prelevato, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base per poter accedere al sito con in più (come argomento) la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail del sito.\\
+  In particolare (come poi mostrato dal codice riportato inferiormente) per favorire questo processo, la prima pagina in assoluto che viene caricata quando si fa l'accesso alla "web app" non è la pagina di accesso, ma bensì una pagina che a seconda se nell'"url" con il quale si fa l'acceso al sito è presente un argomento o meno, fa poi un "redirect" alla pagina apposita.\\
+  
+ \begin{lstlisting}[language=php]
+ <?php
+ require 'Quiz-Patente-Nautica/Pagina_Web/ValidationMail/mailUtilities.php';
+ 
+ session_start();
+ 
+ $urlUtility = new MailUtilities();
+ $array = $urlUtility->getInfoFromUrl($_SERVER['REQUEST_URI']);
+ 
+ if( $array['email']!== null){	
+ 	
+ 	$_SESSION['email'] = $array['email'];
+ 	header("location:Quiz-Patente-Nautica/Pagina_Web/ValidationMail/verificationMail.php");
+ 	exit;
+ }else{
+ 	header("Location:Quiz-Patente-Nautica/Pagina_Web/main.php");
+ 	exit;
+ }
+ ?>
+ \end{lstlisting}
+ 
+ Nel caso in cui nell'"url" ci sia un argomento, ecco il comportamento della pagina di verifica della mail.\\
+ 
+ \begin{lstlisting}[language=php]
+ /*verify if the mail verifiy is not happened for the account*/
+ 
+ $query = $utilities->getMysql()->query("SELECT verified FROM user_table1 WHERE (email = '{$_SESSION['email']}')");
+ $tempArray = $query->fetch_array(MYSQLI_ASSOC);
+ 
+ //redirect in positive case
+ 
+ if($tempArray['verified'] == true){
+ 	$_SESSION['user'] = "Verified";
+ 	$_SESSION['email'] = null;
+ 	header("location:../main.php");
+ 	exit;
+ 	
+ }
+ 
+ $query = $utilities->getMysql()->query("SELECT id FROM user_table1 WHERE (email = '{$_SESSION['email']}')");
+ $tempArray = $query->fetch_array(MYSQLI_ASSOC);
+ 
+ /*verify if the mail is correct*/
+ if($tempArray['id'] == null){
+ 	$_SESSION['user'] = "NoMail";
+ 	header("location:../main.php");
+ 	exit;
+ }
+ 
+ /*now wait for confirm the mail*/
+ 
+ if(isset($_POST['confirm'])){
+ 	
+ 	$temp = $utilities->getMysql()->query("UPDATE user_table1 SET verified = 1 WHERE (id = '{$tempArray['id']}')");
+ 	
+ 	if(!$temp){
+ 		$_SESSION['user'] = "DatabaseError";
+ 		$_SESSION['email'] = null;
+ 		header("location:../main.php");
+ 		exit;
+ 	}
+ 	
+ 	$query = $utilities->getMysql()->query("SELECT verified FROM user_table1 WHERE (email = '{$_SESSION['email']}')");
+ 	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+ 	
+ 	if($tempArray['verified'] == true){
+ 		$_SESSION['user'] = "YesMail";
+ 		$_SESSION['email'] = null;
+ 		header("location:../main.php");
+ 		exit;
+ 		
+ 	}else{
+ 		$_SESSION['user'] = "DatabaseError";
+ 		$_SESSION['email'] = null;
+ 		header("location:../main.php");
+ 		exit;
+ 	}
+ }
+ \end{lstlisting}
+ 
+ Come si può facilmente notare, prima di tutto viene verificato che l'operazione di verifica non sia già avvenuta, successivamente si aspetta poi che l'utente premi il pulsante di verifica per poter poi scrivere nel database l'avvenuta verifica.\\
