@@ -91,9 +91,12 @@ public function SendEmail($address, $subject, $body, $altBody){
 }
 \end{lstlisting}
 
-\subparagraph{Approfondimento gestione della verifica della mail di registrazione}
+\textbf{Approfondimento gestione della verifica della mail di registrazione}
 A questo punto si desidera aprire una breve parentesi per approfondire la gestione della verifica della mail.\\
 Dalla classe "Utilities" è possibile usare il metodo che permette l'invio della mail di verifica, ma ovviamente questo metodo prevede degli argomenti in ingresso che adesso saranno esplicitati in ordine: Il primo è l'indirizzo mail del destinatario, che è prelevabile dal database; l'oggetto della mail e i restanti argomenti sono stati definiti all'interno di un'altra classe chiamata "MailUtilities".\\
+
+\paragraph{classe MailUtilities}
+
 Come prima cosa è stato definito un "link base di rientro" che se cliccato dalla mail permette di ritornare alla pagina della applicazione web.\\
 
  \begin{lstlisting}[language=php]
@@ -189,6 +192,8 @@ public function getBody($linkToUse){
   In pratica (dopo aver controllato la consistenza dei dati nel database) come si può facilmente leggere, la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è semplicemente prelevato, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base per poter accedere al sito con in più (come argomento) la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail del sito.\\
   In particolare (come poi mostrato dal codice riportato inferiormente) per favorire questo processo, la prima pagina in assoluto che viene caricata quando si fa l'accesso alla "web app" non è la pagina di accesso, ma bensì una pagina che a seconda se nell'"url" con il quale si fa l'acceso al sito è presente un argomento o meno, fa poi un "redirect" alla pagina apposita.\\
   
+ \paragraph{File index.php}
+  
  \begin{lstlisting}[language=php]
  <?php
  require 'Quiz-Patente-Nautica/Pagina_Web/ValidationMail/mailUtilities.php';
@@ -211,6 +216,8 @@ public function getBody($linkToUse){
  \end{lstlisting}
  
  Nel caso in cui nell'"url" ci sia un argomento, ecco il comportamento della pagina di verifica della mail.\\
+ 
+\paragraph{Estratto dalla pagina di verifica della mail: "verificationMail.php"}
  
  \begin{lstlisting}[language=php]
  /*verify if the mail verifiy is not happened for the account*/
@@ -270,3 +277,101 @@ public function getBody($linkToUse){
  \end{lstlisting}
  
  Come si può facilmente notare, prima di tutto viene verificato che l'operazione di verifica non sia già avvenuta, successivamente si aspetta poi che l'utente premi il pulsante di verifica per poter poi scrivere nel database l'avvenuta verifica.\\
+ 
+ A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
+ Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà incluso il codice "html" per mostrare come è strutturata la pagina.\\
+ 
+ \begin{lstlisting}[language=php]
+ <?php
+ //require 'Utilities/keys.php';
+ require 'Utilities/utilities.php';
+ require 'ValidationMail/mailUtilities.php';
+ 
+ /*get utility aviable*/
+ $utilities = new Utilities();
+ 
+ /*Starting the session*/
+ session_start();
+ 
+ /*check if the database connection is okay*/
+ if ($utilities->getMysql()->connect_errno) {
+ 	die('Impossible conncet to database'.$utilities->getMysql()->connect_error);
+ }
+ 
+ if(isset($_POST['register'])){
+ 	
+ 	if(filter_has_var(INPUT_POST, 'agree')){
+ 		
+ 		if(!empty($_POST['name']) && !empty($_POST['surname']) && !empty($_POST['email']) && !empty($_POST['password1']) && !empty($_POST['password2'])){
+ 			
+ 			if($_POST['password1'] == $_POST['password2']){
+ 				
+ 				/*extract all fields to use*/
+ 				$name = $utilities->Encrypt($_POST['name']);
+ 				$surname = $utilities->Encrypt($_POST['surname']);
+ 				$email = $utilities->Encrypt($_POST['email']);
+ 				$password = $utilities->Encrypt($_POST['password1']);
+ 				
+ 				/*make the query in way to register the new dates*/
+ 				$query = $utilities->getMysql()->query("INSERT INTO user_table1 (name, surname, email, password) VALUES ('{$name}', '{$surname}', '{$email}', '{$password}')");
+ 				
+ 				/*verify that the query had success*/
+ 				if(!$query){
+ 					die('Query failed'.$utilities->getMysql()->error);
+ 				}
+ 				
+ 				/*test if the registration was successfully done*/
+ 				$query = $utilities->getMysql()->query("SELECT password FROM user_table1 WHERE (email = '{$email}')");
+ 				$TestPassword = $query->fetch_array(MYSQLI_ASSOC)['password'];
+ 				
+ 				/*verify if the passwords are equal*/
+ 				if($password === $TestPassword){
+ 					
+ 					/*--- Send evrification mail if all is okay ---*/
+ 					
+ 					$mailUtil = new MailUtilities();
+ 					
+ 					$tempArray = array("email" => $email);
+ 					
+ 					$URLToSend = $mailUtil->getURL($tempArray);
+ 					
+ 					$utilities->SendEmail($_POST['email'], $mailUtil->getSubject(), $mailUtil->getBody($URLToSend), $mailUtil->getAlternativeBody($URLToSend));
+ 					/*--- Return to the main page ---*/
+ 					$_SESSION['user'] = "Registrated";
+ 					header("Location: main.php");
+ 					exit;
+ 					
+ 				}else{
+ 					$query = $utilities->getMysql()->query("DELETE * FROM usert_table1 WHERE (email = '{$email}')");
+ 					
+ 					if(!$query){
+ 						die('Query failed'.$utilities->getMysql()->error);
+ 					} 
+ 					
+ 					$utilities->Popup("La registrazione è fallita");
+ 				}
+ 			}else{
+ 				$utilities->Popup("Le password non corrispondono");
+ 			}
+ 		}else{
+ 			$utilities->Popup("I campi devono essere tutti riempiti");
+ 		}
+ 	}else{
+ 		$utilities->Popup("Devi accettare i termini di utilizzo");
+ 	}
+ }
+ 
+ /*Return to main page page*/
+ if(isset($_POST['cancel'])){
+ 	header("Location: main.php");
+ 	exit;
+ }
+ 
+ ?>
+ \end{lstlisting}
+ 
+ Si può subito notare osservando le classi incluse, che è presente quella che contiene i metodi per la gestione della mail, in modo da poter (subito dopo aver completato la prima fase di registrazione) inviare la mail per fare la verifica dell'utente.\\
+ Viene fatta iniziare la sessione siccome nello spostamento tra le varie pagine è necessario tenere in memoria lo stato della sessione, in modo da avere sempre chiaro lo stato dell'utente durante la navigazione.\\
+ Siccome questa pagina fa uso del database, si controlla che la connessione a quest'ultimo sia possibile.\\
+ A questo punto compare una serie di "if" annidati che anche se rendono la lettura del codice più difficile, offrono una maggiore garanzia che la pagina non abbia dei comportamenti anomali, cosa che potrebbe accadere nel momento in cui ogni "if" non fosse annidato ma posto in sequenza.\\
+ Si desidera far notare che a fine registrazione viene impostata la sessione utente allo stato 
