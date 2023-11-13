@@ -139,8 +139,8 @@ public function getBody($linkToUse){
 	<button style="width: 250px; height: 50px; border: none;
 	border-radius: 4px; padding: 18px; font-family: "Rubik", sans-serif;
 	font-size: large; cursor: pointer; background: #2d3b55; color: #fff;
-	letter-spacing: 0.2px; outline: 0; position: relative; top: 50\%;
-	left: 50\%; -ms-transform: translate(-50\%, -50\%); transform: translate(-50\%, -50\%);">
+	letter-spacing: 0.2px; outline: 0; position: relative; top: 50%;
+	left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
 	Verifica la tua Mail
 	</button>
 	</a>
@@ -347,8 +347,7 @@ public function getBody($linkToUse){
  					if(!$query){
  						die('Query failed'.$utilities->getMysql()->error);
  					} 
- 					
- 					$utilities->Popup("La registrazione è fallita");
+					$utilities->Popup("La registrazione è fallita");
  				}
  			}else{
  				$utilities->Popup("Le password non corrispondono");
