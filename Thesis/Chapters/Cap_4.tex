@@ -13,7 +13,7 @@ Dopo aver studiato velocemente "l'html" e il "php" (il "javascript" è stato las
 
 Si esplicita in questa sede che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
 
-\paragraph{Classe utilities}
+\paragraph{Classe utilities}\leavevmode\\
 La classe "utilities" (quindi il relativo file) è stata implementata in questo modo:\\
 Per prima si è deciso di dividere in file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
 Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
@@ -95,7 +95,7 @@ public function SendEmail($address, $subject, $body, $altBody){
 A questo punto si desidera aprire una breve parentesi per approfondire la gestione della verifica della mail.\\
 Dalla classe "Utilities" è possibile usare il metodo che permette l'invio della mail di verifica, ma ovviamente questo metodo prevede degli argomenti in ingresso che adesso saranno esplicitati in ordine: Il primo è l'indirizzo mail del destinatario, che è prelevabile dal database; l'oggetto della mail e i restanti argomenti sono stati definiti all'interno di un'altra classe chiamata "MailUtilities".\\
 
-\paragraph{classe MailUtilities}\\
+\paragraph{classe MailUtilities}\leavevmode\\
 
 Come prima cosa è stato definito un "link base di rientro" che se cliccato dalla mail permette di ritornare alla pagina della applicazione web.\\
 
@@ -192,7 +192,7 @@ public function getBody($linkToUse){
   In pratica (dopo aver controllato la consistenza dei dati nel database) come si può facilmente leggere, la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è semplicemente prelevato, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base per poter accedere al sito con in più (come argomento) la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail del sito.\\
   In particolare (come poi mostrato dal codice riportato inferiormente) per favorire questo processo, la prima pagina in assoluto che viene caricata quando si fa l'accesso alla "web app" non è la pagina di accesso, ma bensì una pagina che a seconda se nell'"url" con il quale si fa l'acceso al sito è presente un argomento o meno, fa poi un "redirect" alla pagina apposita.\\
   
- \paragraph{File index.php}\\
+ \paragraph{File index.php}\leavevmode\\
   
  \begin{lstlisting}[language=php]
  <?php
@@ -217,7 +217,7 @@ public function getBody($linkToUse){
  
  Nel caso in cui nell'"url" ci sia un argomento, ecco il comportamento della pagina di verifica della mail.\\
  
-\paragraph{Estratto dalla pagina di verifica della mail: "verificationMail.php"}
+\paragraph{Estratto dalla pagina di verifica della mail: "verificationMail.php"}\leavevmode\\
  
  \begin{lstlisting}[language=php]
  /*verify if mail verification has not been did yet*/
@@ -281,7 +281,7 @@ public function getBody($linkToUse){
  A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
  Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà incluso il codice "html" per mostrare come è strutturata la pagina.\\
  
- \paragraph{registration.php}\\
+ \paragraph{registration.php}\leavevmode\\
  
  \begin{lstlisting}[language=php]
  <?php
@@ -431,7 +431,7 @@ public function getBody($linkToUse){
   
   Vista ora la pagina di registrazione, si può procedere con l'analisi della pagina di accesso.\\
   
-  \paragraph{main.php}
+  \paragraph{main.php}\leavevmode\\
   
   Questa pagina vuole essere usata come pretesto per mettere in evidenzia che durante l'intero sviluppo della applicazione web è stata prestata particolare attenzione alla scrittura di un codice efficiente in modo non solo di poter risparmiare risorse sul "RaspberryPi" ma anche con l'intento di rendere la navigazione più "responsive" e dove è stato possibile, si è cercato di ridurre il minimo le interazioni tra "server" e "client" con l'intento di alleggerire il costo delle varie connessioni in modo poi da poter garantire a più utenti una esperienza soddisfacente. Nel caso specifico di questa pagina (come sottolineato dal codice riportato inferiormente) la gestione dei veri avvisi è stata fatta utilizzando lo "switch" rispetto ad una serie di "if" in cascata, tenendo presente che il comportamento del sito non sarebbe cambiato a prescindere dall'uso di uno dei due sistemi, in questo modo si è visto (utilizzando l'applicazione "\href{https://htop.dev/}{HTOP}") che l'accesso al sito pesava meno sul "core" della macchina che è stato scelto dal sistema operativo per elaborare la richiesta.\\
   
@@ -448,23 +448,23 @@ public function getBody($linkToUse){
  /*Verify status*/
  switch($_SESSION['user']){
  	case "Registered":
- 	$utilities->Popup("La registrazione è avvenuta con successo");
- 	$utilities->Popup("La mail per verificare l`account è stata inviata");
+ 	$utilities->Popup("La registrazione e' avvenuta con successo");
+ 	$utilities->Popup("La mail per verificare l`account e stata inviata");
  	$_SESSION['user'] = null;
  	break;
  	
  	case "MailSend":
- 	$utilities->Popup("La mail per verificare l`account è stata inviata");
+ 	$utilities->Popup("La mail per verificare l`account e' stata inviata");
  	$_SESSION['user'] = null;
  	break;
  	
  	case "NoMail":
- 	$utilities->Popup("Non è stato possibile confermare la mail");
+ 	$utilities->Popup("Non e' stato possibile confermare la mail");
  	$_SESSION['user'] = null;
  	break;
  	
  	case "YesMail":
- 	$utilities->Popup("La mail è stata confermata con successo");
+ 	$utilities->Popup("La mail e' stata confermata con successo");
  	$_SESSION['user'] = null;
  	break;
  	
@@ -474,17 +474,17 @@ public function getBody($linkToUse){
  	break;
  	
  	case "Verified":
- 	$utilities->Popup("La mail è già stata verificata");
+ 	$utilities->Popup("La mail e' gia' stata verificata");
  	$_SESSION['user'] = null;
  	break;
  	
  	case "YesDelete":
- 	$utilities->Popup("L`account è stato eliminato con successo");
+ 	$utilities->Popup("L`account e' stato eliminato con successo");
  	$_SESSION['user'] = null;
  	break;
  	
  	case "NoDelete":
- 	$utilities->Popup("Non è stato possibile eliminare l`account");
+ 	$utilities->Popup("Non e' stato possibile eliminare l`account");
  	$_SESSION['user'] = null;
  	break;
  	
@@ -537,7 +537,7 @@ public function getBody($linkToUse){
 					}
 					
 				}else{
-					$utilities->Popup("La mail dell`account non è stata verificata.");
+					$utilities->Popup("La mail dell`account non e stata verificata.");
 				}
 				
 			}else{
@@ -552,7 +552,7 @@ public function getBody($linkToUse){
 
 Finora è stato mostrata la registrazione e l'autenticazione dell'utente, ma nel sito è anche disponibile una pagina che permette ("on-fly") della quale viene presentato velocemente il codice "php".\\
 
-\paragraph{maintenance.php}
+\paragraph{maintenance.php}\leavevmode\\
 
 \begin{lstlisting}[language=php]
 	/*function to verify if credentials are okay*/
