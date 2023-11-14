@@ -647,4 +647,47 @@ Finora è stato mostrata la registrazione e l'autenticazione dell'utente, ma nel
 
 Una peculiarità di questa pagina è il fatto che come premesso, vengano fatte delle operazioni "on-fly". La motivazioni dietro questa scelta stanno nella gestione semplificata delle operazioni più critiche (siccome è possibile riciclare del codice) oltre che in questo modo si garantisce una maggiore sicurezza, in quanto non si deve gestire una sessione utente "critica" nella quale sarebbe possibile tentare di fare un attacco di "Hijacking". La non presenza di una sessione con tanto di pagina di "atterraggio" nella quale poter poi effettuare le operazioni di gestione dell'account previene questo tipo di attacchi.\\
 Come si può leggere da codice, questa pagina mette a disposizioni due principali operazioni: quella di farsi mandare nuovamente la mail per la verifica dell'utente e la possibilità di poter cancellare l'account.\\
-A questo punto si vuole evidenziare come la scelta progettuale fatta risulti particolarmente efficace. Supponiamo che un utente volesse fare il rinvio della mail di verifica, questa operazione implica che la mail dell'utente deve rimanere in sessione (dopo aver effettuato l'acceso) in modo che la pagina di manutenzione possa poi eseguire l'operazione. Ma è evidente che è rischioso tenere in sessione dei dati sensibili dell'utente. Per questo motivo le operazioni "on-fly" quindi con ri-autenticazione
+A questo punto si vuole evidenziare come la scelta progettuale fatta risulti particolarmente efficace. Supponiamo che un utente volesse fare il rinvio della mail di verifica, questa operazione implica che la mail dell'utente deve rimanere in sessione (dopo aver effettuato l'acceso) in modo che la pagina di manutenzione possa poi eseguire l'operazione. Ma è evidente che è rischioso tenere in sessione dei dati sensibili dell'utente. Per questo motivo le operazioni "on-fly" quindi con ri-autenticazione offrono un margine di sicurezza maggiore.\\
+
+Supponendo che non vi siano problemi e che l'autenticazione dell'utente avvenga senza difficoltà, ora si può iniziare a discutere delle pagine che amministrano il vero e proprio servizio della "web app".\\
+Nella pagina di accesso alle varie esercitazioni disponibili, non c'è molto cose da discutere se non il fatto che questa pagina amministra la sessione, controllando e impostando le varie variabili poi amministrare dalle pagine delle varie esercitazioni. 
+
+\paragraph{Estratto di Entry.php}\leavevmode\\
+
+\begin{lstlisting}[language=php]
+/*format all session variable*/
+$_SESSION['permission']        = null;
+$_SESSION['numbers']           = null;
+$_SESSION['topic']             = null;
+$_SESSION['questions']         = null;
+$_SESSION['maxQuestions']      = null;
+$_SESSION['score']             = null;
+$_SESSION['answeredQuestions'] = null;
+
+/*control if user is logged*/
+if($_SESSION['mail'] !== null && $_SESSION['password'] !== null){
+	
+	$query = $utilities->getMysql()->query("SELECT password FROM user_table1 WHERE (email = '{$_SESSION['mail']}')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	$password = $tempArray['password'];
+	
+	if($_SESSION['password'] !== $password){
+		$_SESSION['user']     = "NotAllow";
+		$_SESSION['mail']     = null;
+		$_SESSION['password'] = null;
+		header("Location: ../main.php");
+		exit;
+	}
+	
+}else{
+	$_SESSION['user']     = "NotAllow";
+	$_SESSION['mail']     = null;
+	$_SESSION['password'] = null;
+	header("Location: ../main.php");
+	exit;
+}
+\end{lstlisting}
+Dal codice incluso si può inoltre notare che viene controllato, osservando le variabili di sessione, che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. A questo punto può risultare contraddittorio rispetto al caso prima espresso, che in questa sede si tengano in sessione le credenziali dell'utente, ma si vuole far notare che le credenziali tenute in sessione non sono in chiaro (caso richiesto nella condizione espressa precedentemente) e che inoltre lo "spoofing" a questo livello non presenterebbe un problema, in quanto il caso peggiore che potrebbe accadere è che qualcuno possa accedere alle esercitazioni con le  credenziali di un'altra persona senza la possibilità di interagire con l'utente al quale sono state "rubate" le credenziali di autenticazione.\\
+
+Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno.\\
+
