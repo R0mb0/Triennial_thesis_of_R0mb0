@@ -689,5 +689,130 @@ if($_SESSION['mail'] !== null && $_SESSION['password'] !== null){
 \end{lstlisting}
 Dal codice incluso si può inoltre notare che viene controllato, osservando le variabili di sessione, che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. A questo punto può risultare contraddittorio rispetto al caso prima espresso, che in questa sede si tengano in sessione le credenziali dell'utente, ma si vuole far notare che le credenziali tenute in sessione non sono in chiaro (caso richiesto nella condizione espressa precedentemente) e che inoltre lo "spoofing" a questo livello non presenterebbe un problema, in quanto il caso peggiore che potrebbe accadere è che qualcuno possa accedere alle esercitazioni con le  credenziali di un'altra persona senza la possibilità di interagire con l'utente al quale sono state "rubate" le credenziali di autenticazione.\\
 
-Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno.\\
+Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno. I primi file saranno riportati maggiormente nella loro interezza in modo da esplicitare il metodo con il quale è stata condotta la costruzione dei restanti. Per poi arrivare a riportare di ogni file solo le parti salienti.\\
+
+\paragraph{Simulazione elementi di carteggio}\leavevmode\\
+
+\begin{lstlisting}[language=php]
+if($_SESSION['permission'] !== "true"){
+	/*control if user is logged*/
+	if($_SESSION['mail'] !== null && $_SESSION['password'] !== null){
+		
+		$query = $utilities->getMysql()->query("SELECT password FROM user_table1 WHERE (email = '{$_SESSION['mail']}')");
+		$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+		$password = $tempArray['password'];
+		
+		if($_SESSION['password'] !== $password){
+			$_SESSION['user']     = "NotAllow";
+			$_SESSION['mail']     = null;
+			$_SESSION['password'] = null;
+			header("Location: ../../main.php");
+			exit;
+		}
+		/*in case of page reload*/
+		$_SESSION['permission'] = "true";
+		
+	}else{
+		$_SESSION['user']     = "NotAllow";
+		$_SESSION['mail']     = null;
+		$_SESSION['password'] = null;
+		header("Location: ../../main.php");
+		exit;
+	}
+}
+
+/*find course properties*/
+$query = $utilities->getMysql()->query("SELECT * FROM charting_elements_properties WHERE (id = '1')");
+$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+$maxQuestions = $tempArray['questions'];//<--- Very important field
+$maxErrors = $tempArray['errors'];//<--- Very important field
+
+/*find questions number*/
+$query = $utilities->getMysql()->query("SELECT COUNT(*) FROM charting_elements");
+$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+$questionsNumber = $tempArray['COUNT(*)'];//<--- Very important field
+
+
+
+/*--------- GENERATE INDEXES AND EXTRACT QUESTIONS ----------*/
+
+$indexNumbers = array();
+$questions = array();
+
+$temp = 0;
+
+while($temp < $maxQuestions){
+	
+	if($_SESSION['numbers'][0] !== null){
+		// if i'm here meaning that the page has been reloaded     
+		if($indexNumbers[0] !== null){
+			//generate number in recursive case
+			$tempNum = random_int(1, $questionsNumber);
+			//verify that the number isn't duplicated
+			while(in_array($tempNum,$indexNumbers) || in_array($tempNum,$_SESSION['numbers'])){
+				$tempNum = random_int(1, $questionsNumber);
+			}
+			
+			//insert number
+			$indexNumbers[$temp] = $tempNum; 
+			
+		}else{
+			//generate number on base case
+			$tempNum = random_int(1, $questionsNumber);
+			//verify that the number is new (respect the past)
+			while(in_array($tempNum,$_SESSION['numbers'])){
+				$tempNum = random_int(1, $questionsNumber);
+			}
+			//insert number
+			$indexNumbers[$temp] = $tempNum; 
+		}
+		
+	}else{
+		//if i'm here meaning that the page is new
+		if($indexNumbers[0] !== null){
+			//generate number in recursive case
+			$tempNum = random_int(1, $questionsNumber);
+			//verify that the number isn't duplicated
+			while(in_array($tempNum,$indexNumbers)){
+				$tempNum = random_int(1, $questionsNumber);
+			}
+			
+			//insert number
+			$indexNumbers[$temp] = $tempNum;
+			
+		}else{
+			//generate number on base case
+			$indexNumbers[$temp] = random_int(1, $questionsNumber);
+		}
+	}
+	
+	/*extract questions from db using the index generated*/
+	$query = $utilities->getMysql()->query("SELECT * FROM charting_elements WHERE (id = '{$indexNumbers[$temp]}')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	
+	$questions[$temp] = array(
+	"question_text"   => $tempArray['question_text'],
+	"question1"       => $tempArray['question_1'],
+	"question2"       => $tempArray['question_2'],
+	"question3"       => $tempArray['question_3'],
+	"question4"       => $tempArray['question_4'],
+	"question5"       => $tempArray['question_5'],
+	"answer1"         => $tempArray['answer_1'],
+	"answer2"         => $tempArray['answer_2'],
+	"answer3"         => $tempArray['answer_3'],
+	"answer4"         => $tempArray['answer_4'],
+	"answer5"         => $tempArray['answer_5'],
+	);
+	
+	++$temp;
+}
+
+$_SESSION['numbers'] = $indexNumbers;
+\end{lstlisting}
+
+Come si può facilmente vedere, una delle prime che vengono fatte in assoluto è sempre il controllo dell'utente, per evitare l'accesso non autorizzato al servizio. Da notare inoltre che grazie alla variabile di sessione "permission" si garantisce che l'utente non venga espulso nel caso in cui ricarichi la pagina.\\
+Successivamente si procede con l'estrazione dal database delle proprietà della simulazione, come il numero di domande da somministrare e il numero di errori massimi da poter commettere. Viene poi fatto il calcolo del numero delle domande presenti nel database in modo da poter stabilire il "range" per la selezione causale delle domande da presentare. Il fatto di contare le domande presenti nel database garantisce che ogni volta che viene inserita una nuova domanda nel database, questa sia subito disponibile senza dover aggiornare dei parametri che in questo caso sono deducibili. In questo modo viene anche semplificato il mantenimento e aggiornamento delle domande.\\
+A questo punto è possibile estrarre casualmente i vari indici delle domande da presentare. Questa operazione viene fatta con un ciclo "while" annidato che "cicla" fino a che non ha generato senza ripetizioni (anche nei confronti dell'ultima esercitazione fatta) tutti gli indici richiesti. Per cercare di tenere alto il livello di efficienza delle operazioni l'ultima parte del ciclo "while" è stata preposta alla estrazione ed inserimento in un "array" delle domande, in modo da poter risparmiare il fatto di dover fare un secondo ciclo.\\
+
+
 
