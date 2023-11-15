@@ -237,9 +237,9 @@ Il codice "html" riportato di seguito serve per mostrare come le informazioni es
 	?>
 	<h3><?php
 	if($maxErrors > 1){
-		echo "La prova è stata superata se si sono commessi massimo ".$maxErrors." errori.";
+		echo "La prova e' stata superata se si sono commessi massimo ".$maxErrors." errori.";
 	}else{
-		echo "La prova è stata superata se è stato commesso massimo ".$maxErrors." errore.";  
+		echo "La prova e' stata superata se e' stato commesso massimo ".$maxErrors." errore.";  
 	}
 	
 	?></h3>
@@ -255,7 +255,7 @@ Il codice "html" riportato di seguito serve per mostrare come le informazioni es
 Un problema che però si evidenzia a questo punto è che serve un sistema per poter nascondere la risposta al quesito, in modo da permettere l'esercizio. Questa cosa non la si può far se non con il "javascript" che permette lato "front-end" di animare le varie parti del "html".\\
 Qui di seguito è riportato lo "script" che è stato scritto per permettere questa funzionalità.\\
 
-\begin{lstlisting}[language=javascript]
+\begin{lstlisting}[language=html]
 	<script>
 	
 	/*hide elements at the beginning*/
@@ -334,7 +334,7 @@ Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione rife
 		if($_SESSION['numbers'] - 1 >= 1 && $_SESSION['numbers'] !== null){
 			--$_SESSION['numbers'];
 		}else{
-			$utilities->Popup("Non è possibile visualizzare la domanda precedente");
+			$utilities->Popup("Non e' possibile visualizzare la domanda precedente");
 		}
 	}
 	
@@ -349,7 +349,7 @@ Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione rife
 		if($_SESSION['numbers'] + 1 <= $maxQuestions && $_SESSION['numbers'] !== null){
 			++$_SESSION['numbers'];
 		}else{
-			$utilities->Popup("Non è possibile visualizzare la domanda successiva");
+			$utilities->Popup("Non e' possibile visualizzare la domanda successiva");
 		}
 	}
 	
