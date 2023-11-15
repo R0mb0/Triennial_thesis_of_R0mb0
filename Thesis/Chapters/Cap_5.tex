@@ -283,7 +283,7 @@ La funzione "check" dichiarata nella parte di "scripting" viene evocata dal puls
 Siccome ogni esercitazione viene generata nella parte di codice in "php" e che questa viene eseguita soltanto durante il caricamento della pagina, come ultima cosa è stata dichiarata una funzione che se invocata dal pulsante "nextPage" forza il "reloading" della pagina, generando di fatto (nelle modalità vista prima) una nuova esercitazione.\\
 
 Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione riferita sempre allo stesso tipo di domande. Incominciando come di consueto ad analizzare il codice in "php".
-\paragraph{Esercitazione elementi di carteggio}
+\paragraph{Elementi di carteggio (esercitazione)}\leavevmode\\
 
 \begin{lstlisting}[language=php]
 	
@@ -374,5 +374,336 @@ Come si può leggere, anche in questo caso la prima cosa che viene fatta è semp
 Saltata la parte che riguarda la gestione dei pulsanti perché di poco interesse, si mostra come in questo caso, non dovendo gestire più di una domanda si è preferito dichiarare tante variabili quante le informazioni necessarie, al posto di dichiarare un "array" come nel caso precedente.\\
 Lampante a questo punto sarà la semplicità con la quale le informazioni sono state riportate nella parte visibile della pagina. Ma siccome ancora non è stato mostrato il codice "html" tipico delle esercitazioni, anche in questo caso viene riportato nella sua interezza, per dar modo di comprendere questo aspetto.\\
 
-\begin{lstlisting}[language=php]
+\begin{lstlisting}[language=html]
+	<html lang="it" >
+	<head>
+	<meta charset="UTF-8">
+	<title>Esercitazione su elementi di carteggio nautico</title>
+	<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Rubik:400,700'><link rel="stylesheet" href="exerciseStyle.css">
+	
+	</head>
+	<body>  
+	
+	<div class="welcomeText">
+	<h1>Quiz patenti nautiche DD 131 del 31 Maggio 2022</h1>
+	<h2>Esercitazione sulle domande su elementi di carteggio nautico</h2>
+	</div>
+	
+	<div class="question-form">
+	<form method="post">
+	<h1><?php
+	echo "Indice domanda: ".$_SESSION['numbers']." / ". $maxQuestions;
+	?>
+	</h1>
+	<div class="content">
+	<?php 
+	echo "<b>".$question_text."</b><br>";
+	echo"<br>";
+	echo $question1."<br>";
+	echo $question2."<br>";
+	echo $question3."<br>";
+	echo $question4."<br>";
+	echo $question5;
+	?> 
+	</div>
+	<div class="actions">
+	<input type="button" name="revision" value="Guarda la soluzione" id="revision" onclick="check()"/>
+	<div id="chart">Non hai la carta nautica? <a href="../Nautical_Charts/Carta_Nautica_5D.pdf" download> Scaricala qui</a></div>
+	</div>
+	<div id="answer">
+	<?php
+	echo "Soluzione quesito 1: <b>".$answer1."</b><br>";
+	echo "Soluzione quesito 2: <b>".$answer2."</b><br>";
+	echo "Soluzione quesito 3: <b>".$answer3."</b><br>";
+	echo "Soluzione quesito 4: <b>".$answer4."</b><br>";
+	echo "Soluzione quesito 5: <b>".$answer5."</b>";
+	?>
+	</div>
+	<div class="foot">
+	<input type="submit" name="prevPage" value="Domanda precedente" id="button3"/>
+	<input type="submit" name="cancel" value="Esci dalla esercitazione" id="button2"/>
+	<input type="submit" name="nextPage" value="Domanda successiva" id="button1"/>
+	</div>
+	</form>
+	</div>
 \end{lstlisting}
+
+La parte di "scripting" non viene riportata in quanto non presenta importanti differenze rispetto a quella mostrata in precedenza.\\
+
+Si analizzano ora le peculiarità della prova di carteggio.\\
+
+\paragraph{Simulazione carteggio}\leavevmode\\
+
+L'unica cosa d'interesse in questo caso risiede nella gestione e presentazione di domande prese da due bacini differenti, ovvero, quelle sulla carta nautica "5D" e "42D". 
+
+\begin{lstlisting}[language=php]
+	/*find course properties*/
+	$query = $utilities->getMysql()->query("SELECT * FROM charting_test_properties WHERE (id = '1')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	
+	$max5DQuestions = $tempArray['5d_questions'];//<--- Very important field
+	$max42DQuestions = $tempArray['42d_questions'];//<--- Very important field
+	$maxErrors = $tempArray['errors'];//<--- Very important field
+	
+	/*find current questions numbers*/
+	$query = $utilities->getMysql()->query("SELECT COUNT(*) FROM charting_test_5d");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	$questionsNumber5D = $tempArray['COUNT(*)'];//<--- Very important field
+	
+	$query = $utilities->getMysql()->query("SELECT COUNT(*) FROM charting_test_42d");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	$questionsNumber42D = $tempArray['COUNT(*)'];//<--- Very important field
+	
+	
+	/*--------- GENERATE THE INDEXES AND extract questions---------*/
+	$questionsIndex = 0;
+	$indexNumbers = array();
+	$questions = array();
+	
+	//---------- CHART 5D
+	$temp = 0;
+	while($temp < $max5DQuestions){
+		
+		if($_SESSION['numbers']['5d'][0] !== null){
+			// if i'm here meaning that the page has been reloaded      
+			if($indexNumbers['5d'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int(1, $questionsNumber5D); // this 1 is because i know that the questions starts form 1 into db
+				//verify that number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['5d']) || in_array($tempNum,$_SESSION['numbers']['5d'])){
+					$tempNum = random_int(1, $questionsNumber5D);
+				}
+				
+				//insert number
+				$indexNumbers['5d'][$temp] = $tempNum; 
+				
+			}else{
+				//generate number on base case
+				$tempNum = random_int(1, $questionsNumber5D);
+				//verify that the number is new (respect the past)
+				while(in_array($tempNum,$_SESSION['numbers']['5d'])){
+					$tempNum = random_int(1, $questionsNumber5D);
+				}
+				//insert number
+				$indexNumbers['5d'][$temp] = $tempNum; 
+			}
+			
+		}else{
+			
+			//if i'm here meaning that the page is new
+			if($indexNumbers['5d'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int(1, $questionsNumber5D);
+				//verify that the number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['5d'])){
+					$tempNum = random_int(1, $questionsNumber5D);
+				}
+				
+				//insert number
+				$indexNumbers['5d'][$temp] = $tempNum;
+				
+			}else{
+				//generate number on base case
+				$indexNumbers['5d'][$temp] = random_int(1, $questionsNumber5D);
+			}
+		}
+		
+		//extract questions from db
+		$query = $utilities->getMysql()->query("SELECT * FROM charting_test_5d WHERE (id = '{$indexNumbers['5d'][$temp]}')");
+		$tempArray = $query->fetch_array(MYSQLI_ASSOC);  
+		
+		$questions[$questionsIndex] = array(
+		"index"         => $tempArray['id'],
+		"question_text" => $tempArray['question_text'],
+		"answer"        => $tempArray['answer'],
+		"area"		=> $tempArray['area'],
+		"is42d"         => false,
+		);
+		++$questionsIndex;
+		
+		++$temp;
+	}
+	
+	//---------- CHART 42D
+	$temp = 0;
+	while($temp < $max42DQuestions){
+		
+		if($_SESSION['numbers']['42d'][0] !== null){
+			// if i'm here meaning that the page has been reloaded     
+			if($indexNumbers['42d'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int(1, $questionsNumber42D); // this 1 is because i know that the questions starts form 1 into db
+				//verify that the number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['42d']) || in_array($tempNum,$_SESSION['numbers']['42d'])){
+					$tempNum = random_int(1, $questionsNumber42D);
+				}
+				
+				//insert number
+				$indexNumbers['42d'][$temp] = $tempNum; 
+				
+			}else{
+				//generate number on base case
+				$tempNum = random_int(1, $questionsNumber42D);
+				//verify that the number is new (respect the past)
+				while(in_array($tempNum,$_SESSION['numbers']['42d'])){
+					$tempNum = random_int(1, $questionsNumber42D);
+				}
+				//insert number
+				$indexNumbers['42d'][$temp] = $tempNum; 
+			}
+			
+		}else{
+			//if i'm here meaning that the page is new
+			if($indexNumbers['42d'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int(1, $questionsNumber42D);
+				//verify that the number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['42d'])){
+					$tempNum = random_int(1, $questionsNumber42D);
+				}
+				
+				//insert number
+				$indexNumbers['42d'][$temp] = $tempNum;
+				
+			}else{
+				//generate number on base case
+				$indexNumbers['42d'][$temp] = random_int(1, $questionsNumber42D);
+			}
+		}
+		
+		//extract questions from db
+		$query = $utilities->getMysql()->query("SELECT * FROM charting_test_42d WHERE (id = '{$indexNumbers['42d'][$temp]}')");
+		$tempArray = $query->fetch_array(MYSQLI_ASSOC);  
+		
+		$questions[$questionsIndex] = array(
+		"index"         => $tempArray['id'],
+		"question_text" => $tempArray['question_text'],
+		"answer"        => $tempArray['answer'],
+		"area"		=> $tempArray['area'],	
+		"is42d"         => true,
+		);
+		++$questionsIndex;
+		
+		++$temp;
+	}
+	
+	
+	$_SESSION['numbers'] = $indexNumbers;
+	
+	$totalQuestions = count($questions);
+\end{lstlisting}
+In generale (come si può notare) l'estrazione delle domande non avviene in modi differenti da quanto già visto. Si può osservare il fatto che per ogni tipo di domande è stato fatto un ciclo "while" con la logica identica a quanto visto prima. La scelta di un doppio ciclo potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come formato da due parti. Però un lavoro di rifinitura è stato fatto per quanto riguarda la memorizzazione delle risorse, infatti viene usato un solo "array" (al posto di due come si sarebbe portati a pensare) in modo da risparmiare spazio in memoria. Fa da discrimine tra i due tipi di domande il campo "is42d".\\
+Il resto del codice della pagina (come già anticipato) non presenta diversità degne di essere evidenziate.\\
+
+\paragraph{Carteggio 5D e 42D (esercitazione)}\leavevmode\\
+In questo caso le due pagine distinte di esercitazione sono state accorpate in un unico paragrafo siccome sono identiche tranne che per il fatto che puntano ad una categoria di domande differenti (distinte con la nomenclatura visibile nella parte di codice riportata della simulazione).\\
+Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" e quella in "javascrpit" debbano collaborare in modo tale che tramite quest'ultimo l'utente possa selezionare l'argomento tra quelli presenti nel database e la parte in "php" possa dunque caricare le domande rispetto all'argomento selezionato. Il passaggio d'informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url" Il codice per la gestione dei quesiti in tal senso è riportato inferiormente.\\
+
+\textbf{Parte di codice php}\\
+
+\begin{lstlisting}[language=php]
+/*---------- RETRIEVE URL TOPIC ----------*/
+$Array = $urlUtility->getInfoFromUrl($_SERVER['REQUEST_URI']);
+
+if($Array['topic'] !== null && $Array['topic'] !== $_SESSION['topic']){
+	$_SESSION['topic'] = $Array['topic'];
+	
+	/*change temp array to determinate questions*/
+	$query = $utilities->getMysql()->query("SELECT * FROM charting_test_5d WHERE (topic = '{$Array['topic']}')");
+	$tempArray = $query->fetch_all(MYSQLI_ASSOC);
+	$_SESSION['maxQuestions'] = null;
+	$_SESSION['questions']    = $tempArray;
+	$_SESSION['numbers']       = 0;
+}
+
+/*--------- QUESTIONS PREPARATION ----------*/
+
+$id       = null;
+$topic    = null;
+$question = null;
+$answer   = null;
+if($_SESSION['maxQuestions'] == null){
+	$_SESSION['maxQuestions'] = count($_SESSION['questions']);
+}
+
+/*extract questions*/
+if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
+	
+	$id = $_SESSION['questions'][$_SESSION['numbers']]['id'];
+	$topic = $_SESSION['questions'][$_SESSION['numbers']]['topic'];
+	$question = $_SESSION['questions'][$_SESSION['numbers']]['question_text'];
+	$answer = $_SESSION['questions'][$_SESSION['numbers']]['answer'];
+	$area = $_SESSION['questions'][$_SESSION['numbers']]['area'];	
+}
+\end{lstlisting}
+
+\textbf{parte di codice html}. Per mostrare come è fatto il menu a tendina poi utilizzato con il "javascrpit".\\
+
+\begin{lstlisting}[language=html]
+	 <input type="button" onclick="dropFunction()" class="dropbtn" name="dropdown" value="Seleziona capitolo">
+	
+	<div id="myDropdown" class="dropdown-content">
+	<?php
+	$query = $utilities->getMysql()->query("SELECT DISTINCT topic FROM charting_test_5d");
+	$tempArray = $query->fetch_all(MYSQLI_ASSOC);
+	foreach($tempArray as $arr1){
+		foreach($arr1 as $arr2){
+			$var = "'".$arr2."'";
+			echo '<a onclick="setArgument('.$var.')">'.$arr2.'</a>';
+		}
+	}		
+	
+	?>			
+\end{lstlisting}
+
+\textbf{Parte di codice javascript}\\
+
+\begin{lstlisting}[language=html]
+	<script type='text/javascript'>
+	
+	//hide revision elements at the beginning
+	var x = document.getElementById("answer");
+	x.style.display = "none";
+	
+	//show elements when the revision button is clicked
+	function check(){
+		var x = document.getElementById("answer");
+		
+		if(x.style.display === "none"){
+			x.style.display = "block";
+		}else{
+			x.style.display = "none";
+		}	
+	}
+	
+	//dropdown button toggle to hide and show contents
+	function dropFunction() {
+		document.getElementById("myDropdown").classList.toggle("show");
+	}
+	
+	// close dropdown menu when is clicked outside of it
+	window.onclick = function(event) {
+		if (!event.target.matches('.dropbtn')) {
+			var dropdowns = document.getElementsByClassName("dropdown-content");
+			var i;
+			for (i = 0; i < dropdowns.length; i++) {
+				var openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	}
+	
+	// set the argument topic to url
+	function setArgument(topic){
+		var URL = window.location.href;
+		var data ={'topic': topic};
+		var parameters = new URLSearchParams(data);
+		window.location.href = URL.split('?')[0]+"?"+parameters;
+	}
+	</script>
+\end{lstlisting}
+
+Il codice presentato mette in evidenzia come il menu a tendina definito nella parte "html" e gestito con il "javascript" permette all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione dell'"url" fatto con l'ultima funzione definita in "javascript".\\
+La gestione delle domanda caricate in base all'argomento è deducibile in quanto molto simile a quello mostrato in precedenza. 
