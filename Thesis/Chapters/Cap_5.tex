@@ -597,7 +597,7 @@ Il resto del codice della pagina (come già anticipato) non presenta diversità 
 
 \paragraph{Carteggio 5D e 42D (esercitazione)}\leavevmode\\
 In questo caso le due pagine distinte di esercitazione sono state accorpate in un unico paragrafo siccome sono identiche tranne che per il fatto che puntano ad una categoria di domande differenti (distinte con la nomenclatura visibile nella parte di codice riportata della simulazione).\\
-Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" e quella in "javascrpit" debbano collaborare in modo tale che tramite quest'ultimo l'utente possa selezionare l'argomento tra quelli presenti nel database e la parte in "php" possa dunque caricare le domande rispetto all'argomento selezionato. Il passaggio d'informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url" Il codice per la gestione dei quesiti in tal senso è riportato inferiormente.\\
+Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" e quella in "javascrpit" debbano collaborare in modo tale che tramite quest'ultimo l'utente possa selezionare l'argomento tra quelli presenti nel database e la parte in "php" possa dunque caricare le domande rispetto all'argomento selezionato. Il passaggio d'informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url" dato che si sono avuti dei problemi con il funzionamento di "AJAX". Questo problema in particolare sarà affrontato più avanti con la presentazione di un caso nel quale l'uso di "AJAX" sarebbe stato particolarmente conveniente.Il codice per la gestione dei quesiti in tal senso è riportato inferiormente.\\
 
 \textbf{Parte di codice php}\\
 
@@ -706,4 +706,476 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 \end{lstlisting}
 
 Il codice presentato mette in evidenzia come il menu a tendina definito nella parte "html" e gestito con il "javascript" permette all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione dell'"url" fatto con l'ultima funzione definita in "javascript".\\
-La gestione delle domanda caricate in base all'argomento è deducibile in quanto molto simile a quello mostrato in precedenza. 
+La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a quello mostrato in precedenza.\\
+
+Ora si passa ad osservare le parti salienti del codice della simulazione ed esercitazione per i quiz di base.\\
+
+\paragraph{Simulazione quiz base}\leavevmode\\
+Il codice che regola questa simulazione è più complesso rispetto ai precedenti, per questa prova bisogna selezionare (in base al regolamento) una certa quantità di domande in base all'argomento, ma per semplificare le tabelle del database, le domande sono state inserite tutte nella stessa tabella caratterizzate dall'argomento di appartenenza e dall'indice assoluto stabilito dal regolamento. Questa soluzione permette in generale una facilità maggiore in caso di aggiornamento delle domande.
+Però evidenzia come a livello di codice debba essere fatto del lavoro in più, dovendo in primo luogo estrarre per ogni argomento il "range" tra gli indicici in cui fare la selezione causale delle domande.\\
+Per questo motivo non verrà riportato tutto il codice, ma solo quello che mostra l'intera gestione di un singolo argomento, in modo da poter semplificare la lettura e la comprensione.\\
+
+\begin{lstlisting}[language=php]
+	/*---------- EXTRACT QUESTIONS PROPERTIES ----------*/
+	$query = $utilities->getMysql()->query("SELECT * FROM base_quiz_properties WHERE (id = '1')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	
+	$teoria_dello_scafo_questions                      = $tempArray['teoria_dello_scafo_questions'];
+	$motori_questions                                  = $tempArray['motori_questions'];
+	$sicurezza_della_navigazione_questions             = $tempArray['sicurezza_della_navigazione_questions'];
+	$manovra_e_condotta_questions                      = $tempArray['manovra_e_condotta_questions'];
+	$colreg_e_segnalamento_marittimo_questions         = $tempArray['colreg_e_segnalamento_marittimo_questions'];
+	$meteorologia_questions                            = $tempArray['meteorologia_questions'];
+	$navigazione_cartografica_ed_elettronica_questions = $tempArray['navigazione_cartografica_ed_elettronica_questions'];
+	$normativa_diportistica_e_ambientale_questions     = $tempArray['normativa_diportistica_e_ambientale_questions'];
+	$errors                                            = $tempArray['errors'];
+	
+	/*---------- FIND RANGE TO GENERATE QUESTIONS ----------*/
+	$teoria_dello_scafo_questions_range = array();
+	
+	//---------- TEORIA DELLO SCAFO
+	$query = $utilities->getMysql()->query("SELECT MIN(DISTINCT id) AS id FROM base_quiz WHERE (topic = 'TEORIA DELLO SCAFO')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	$teoria_dello_scafo_questions_range['min'] = $tempArray['id'];
+	$query = $utilities->getMysql()->query("SELECT MAX(DISTINCT id) AS id FROM base_quiz WHERE (topic = 'TEORIA DELLO SCAFO')");
+	$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+	$teoria_dello_scafo_questions_range['max'] = $tempArray['id'];
+	
+	/*--------- PART TO GENERATE THE INDEXES AND TO CATCH THE QUESTIONS---------*/
+	
+	// variables where save indexes
+	$indexNumbers = array();
+	$questions = array();
+	$indexQuestions = 0; //this will be increased after every question inserted.
+	
+	/---------- TEORIA DELLO SCAFO
+	//-> $teoria_dello_scafo_questions
+	//-> $teoria_dello_scafo_questions_range
+	//-> teoria_dello_scafo
+	$temp = 0;
+	while($temp < $teoria_dello_scafo_questions){
+		
+		if($_SESSION['numbers']['teoria_dello_scafo'] !== null){
+			// if i'm here meaning that the page has been reloaded
+			if($indexNumbers['teoria_dello_scafo'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				//verify that the number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['teoria_dello_scafo']) || in_array($tempNum,$_SESSION['numbers']['teoria_dello_scafo'])){
+					$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				}
+				
+				//insert number
+				$indexNumbers['teoria_dello_scafo'][$temp] = $tempNum;
+				
+			}else{
+				//generate number on base case
+				$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				//verify that the number is new (respect the past)
+				while(in_array($tempNum,$_SESSION['numbers']['teoria_dello_scafo'])){
+					$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				}
+				//insert number
+				$indexNumbers['teoria_dello_scafo'][$temp] = $tempNum;
+			}
+			
+		}else{
+			//if i'm here meaning that the page is new
+			if($indexNumbers['teoria_dello_scafo'][0] !== null){
+				//generate number in recursive case
+				$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				//verify that the number isn't duplicated
+				while(in_array($tempNum,$indexNumbers['teoria_dello_scafo'])){
+					$tempNum = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+				}
+				
+				//insert number
+				$indexNumbers['teoria_dello_scafo'][$temp] = $tempNum;
+				
+			}else{
+				//generate number on base case
+				$indexNumbers['teoria_dello_scafo'][$temp] = random_int($teoria_dello_scafo_questions_range['min'], $teoria_dello_scafo_questions_range['max']);
+			}
+		}
+		/*catch question*/
+		$query = $utilities->getMysql()->query("SELECT * FROM base_quiz WHERE (id = '{$indexNumbers['teoria_dello_scafo'][$temp]}')");
+		$tempArray = $query->fetch_array(MYSQLI_ASSOC);
+		$questions[$indexQuestions] = $tempArray;
+		++$indexQuestions;
+		
+		++$temp;
+		}
+		
+		$_SESSION['numbers'] = $indexNumbers;
+		
+		// get current number of loaded questions
+		$totalQuestions = count($questions);
+		
+		/*--------- PREPARE ARRAY WITH ANSWER FOR CHECKING PART IN JS---------*/
+		$questionsAnswers = array();
+		
+		$temp = 0;
+		while($temp < $totalQuestions){
+			
+			$questionsAnswers[$temp]['answer_1'] = $questions[$temp]['answer_1'];
+			$questionsAnswers[$temp]['answer_2'] = $questions[$temp]['answer_2'];
+			$questionsAnswers[$temp]['answer_3'] = $questions[$temp]['answer_3'];
+			
+			++$temp;
+		}
+\end{lstlisting}
+Osservando questo codice si può notare che la logica di fondo non è stata stravolta ma è stata adeguata al specifico caso, infatti, come anche in precedenza, le domande sono state tutte inserite in un "array" comune e l'inserimento è stato fatto come di consueto alla fine dei cicli "while" annidati per poter risparmiare risorse. La novità principale di questo risiede nel sistema un pochino più complesso di selezione delle domande.\\
+Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavorare con le carte nautiche è facile commettere degli errori di misurazione meccanici) qui l'utente deve selezionare la risposta che ritiene giusta rispetto a tre risposte proposte. Viene quindi riportato inferiormente la parte di codice "html" che mostra come è stata costruita la visualizzazione delle domande.\\
+
+\begin{lstlisting}[language=html]
+	<?php
+	/*--------- GENERATE QUESTIONS---------*/
+	$temp = 0;
+	while($temp < $totalQuestions){
+		
+		
+		//prepare variables
+		$answers_1 = null;
+		$answers_2 = null;
+		$answers_3 = null;
+		
+		//--------- generate the check's answers with truth properties ----------
+		
+		//first answer case
+		if($questions[$temp]['answer_1'] == 'V'){
+			$answers_1 = "
+			<div class='answer1' id='answer1".$temp."' style='color: green'> V-> ".$questions[$temp]['answer_text_1']." </div>
+			<div class='answer1_null' id='answer1_null".$temp."' > V-> ".$questions[$temp]['answer_text_1']." </div>
+			";
+		}else{
+			$answers_1 = "
+			<div class='answer1' id='answer1".$temp."' style='color: red'> F-> ".$questions[$temp]['answer_text_1']." </div>
+			<div class='answer1_null' id='answer1_null".$temp."' > F-> ".$questions[$temp]['answer_text_1']." </div>
+			";
+		}
+		
+		//second answer case
+		if($questions[$temp]['answer_2'] == 'V'){
+			$answers_2 = "
+			<div class='answer2' id='answer2".$temp."' style='color: green'> V-> ".$questions[$temp]['answer_text_2']." </div>
+			<div class='answer2_null' id='answer2_null".$temp."' > V-> ".$questions[$temp]['answer_text_2']." </div>
+			";
+		}else{
+			$answers_2 = "
+			<div class='answer2' id='answer2".$temp."' style='color: red'> F-> ".$questions[$temp]['answer_text_2']." </div>
+			<div class='answer2_null' id='answer2_null".$temp."' > F-> ".$questions[$temp]['answer_text_2']." </div>
+			";
+		}
+		
+		//thirth answer case
+		if($questions[$temp]['answer_3'] == 'V'){
+			$answers_3 = "
+			<div class='answer3' id='answer3".$temp."' style='color: green'> V-> ".$questions[$temp]['answer_text_3']." </div>
+			<div class='answer3_null' id='answer3_null".$temp."' > V-> ".$questions[$temp]['answer_text_3']." </div>
+			";
+		}else{
+			$answers_3 = "
+			<div class='answer3' id='answer3".$temp."' style='color: red'> F-> ".$questions[$temp]['answer_text_3']." </div>
+			<div class='answer3_null' id='answer3_null".$temp."' > F-> ".$questions[$temp]['answer_text_3']." </div>
+			";
+		}
+		
+		
+		//--------- PRINT QUESTION ----------
+		$tempImg = null;
+		if($questions[$temp]['img'] !== null){
+			$tempImg = "<div class='answerImg' id='answerImg".$temp."'> <img src='data:image/jpeg;base64,".base64_encode($questions[$temp]['img'])."'/> </div>";
+		}
+		echo "<div class='question'>
+		<p><b> ".$questions[$temp]['question_text']." </b></p>
+		".$tempImg."
+		<div id= 'answerRadios'>
+		<div class='label1' id='label1".$temp."'> <label> <input type='radio' name='radio".$temp."' id='radio1".$temp."' > ".$questions[$temp]['answer_text_1']." </label> </div>
+		<div class='label2' id='label2".$temp."'> <label> <input type='radio' name='radio".$temp."' id='radio2".$temp."' > ".$questions[$temp]['answer_text_2']." </label> </div>
+		<div class='label3' id='label3".$temp."'> <label> <input type='radio' name='radio".$temp."' id='radio3".$temp."' > ".$questions[$temp]['answer_text_3']." </label> </div>
+		</div>
+		".$answers_1."
+		".$answers_2."
+		".$answers_3."
+		</div>";
+		
+		++$temp;
+	}
+	?>
+	</div>
+	<div class="actions">
+	<input type='button' name='revision' value='Verifica le risposte' id='revision' onclick='check()'/>
+	</div>
+\end{lstlisting}
+
+Per prima cosa sono state preparate in delle variabili le "stringhe di codice html" per ogni risposta in modo da poter poi successivamente riferirsi a queste in una forma più compatta e chiara. Successivamente c'è la parte di codice che effettivamente "stampa" le domande con le relative risposte (la fase di prima è propedeutica per evitare di complicare questa porzione). Si può notare che per raccogliere la risposta dell'utente si è usato l'oggetto "radio" (dei quali ne è selezionabile solo uno per domanda) rispetto ai classici pulsanti.\\ 
+Come di consueto la correzione del codice è delegata alla parte in "javascript", qui riportato inferiormente.\\
+
+\begin{lstlisting}[language=html]
+	<script>
+	
+	/*--------- PREPARE IMPORT FIELDS---------*/
+	var errors    = 0;
+	var corrected = false;
+	
+	/*--------- GET IMPORTANT FIELDS FROM PHP---------*/
+	var maxErrors = <?php echo $errors;?>;
+	//the array with all answers
+	var questionsAnswers = JSON.parse(<?php echo "'".json_encode($questionsAnswers)."'"; ?>);
+	var totalQuestions = <?php echo $totalQuestions;?>;
+	
+	/*--------- HIDE THE ELEMENTS AT THE BEGINNING---------*/
+	var temp = 0;
+	
+	while(temp < totalQuestions){
+		var answer1      = document.getElementById("answer1"+temp);
+		var answer1_null = document.getElementById("answer1_null"+temp);
+		var answer2      = document.getElementById("answer2"+temp);
+		var answer2_null = document.getElementById("answer2_null"+temp);
+		var answer3      = document.getElementById("answer3"+temp);
+		var answer3_null = document.getElementById("answer3_null"+temp);
+		
+		answer1.style.display      = "none";
+		answer1_null.style.display = "none";
+		answer2.style.display      = "none";
+		answer2_null.style.display = "none";
+		answer3.style.display      = "none";
+		answer3_null.style.display = "none";
+		
+		++temp;
+	}
+	
+	var passed    = document.getElementById("passed");
+	var notpassed = document.getElementById("notpassed");
+	
+	passed.style.display    = "none";
+	notpassed.style.display = "none";
+	
+	/*--------- CHECKING FUNCTION---------*/
+	function check(){
+		
+		temp = 0;
+		while(temp < totalQuestions && !corrected){
+			
+			// hide common fields
+			var label1       = document.getElementById("label1"+temp);
+			var label2       = document.getElementById("label2"+temp);
+			var label3       = document.getElementById("label3"+temp);
+			
+			label1.style.display = "none";
+			label2.style.display = "none";
+			label3.style.display = "none";
+			
+			//GIVEN ANSWER 1
+			if(document.getElementById(String('radio1'+temp)).checked){
+				
+				//show answer
+				var answer1      = document.getElementById("answer1"+temp);
+				var answer2_null = document.getElementById("answer2_null"+temp);
+				var answer3_null = document.getElementById("answer3_null"+temp);
+				
+				answer1.style.display         = "block";
+				answer2_null.style.display    = "block";
+				answer3_null.style.display    = "block";
+				
+				//count error
+				if(questionsAnswers[temp]['answer_1']!== 'V'){
+					++errors;
+				}
+				
+			}else{
+				//GIVEN ANSWER 2
+				if(document.getElementById(String('radio2'+temp)).checked){
+					
+					//show answer
+					var answer1_null = document.getElementById("answer1_null"+temp);
+					var answer2      = document.getElementById("answer2"+temp);
+					var answer3_null = document.getElementById("answer3_null"+temp);
+					
+					answer1_null.style.display    = "block";
+					answer2.style.display         = "block";
+					answer3_null.style.display    = "block";
+					
+					//count error
+					if(questionsAnswers[temp]['answer_2']!== 'V'){
+						++errors;
+					}
+					
+				}else{
+					//GIVEN ANSWER 3
+					if(document.getElementById(String('radio3'+temp)).checked){
+						
+						//show answer
+						var answer1_null = document.getElementById("answer1_null"+temp);
+						var answer2_null = document.getElementById("answer2_null"+temp);
+						var answer3      = document.getElementById("answer3"+temp);
+						
+						answer1_null.style.display    = "block";
+						answer2_null.style.display    = "block";
+						answer3.style.display         = "block";
+						
+						//count error
+						if(questionsAnswers[temp]['answer_3']!== 'V'){
+							++errors;
+						}
+						
+					}else{
+						//NULL ANSWER CASE
+						
+						//show answer
+						var answer1_null = document.getElementById("answer1_null"+temp);
+						var answer2_null = document.getElementById("answer2_null"+temp);
+						var answer3_null = document.getElementById("answer3_null"+temp);
+						
+						answer1_null.style.display    = "block";
+						answer2_null.style.display    = "block";
+						answer3_null.style.display    = "block";
+						
+						//count error
+						++errors;
+						
+					}
+				}
+			}
+			
+			// end while cycle
+			++temp;
+		}
+		
+		//set that the correction has happened
+		corrected = true;
+		
+		if(errors < maxErrors){
+			
+			passed.style.display = "block";
+			
+		}else{
+			
+			notpassed.style.display = "block";
+		}
+		
+	}
+\end{lstlisting}
+
+In questo caso particolare, nella fase di preparazione della operazione di correzione è stato necessario passare delle informazione del "back-end" (quindi della parte di codice "php") nel "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni usando il sistema "JSON" al posto di "AJAX" che purtroppo, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si presuppone che siano le chiamate a sistema a fallire siccome durante le prove il terminale non riportava alcun errore, anzi, se attivate le stampe per il "debug" venivano riportati dei messaggi che comunicavano il fatto che le informazioni sono state passate correttamente, anche se alla fine ciò non risultava.\\
+Finita la fase di preparazione, si è passati ad oscurare tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata quindi scritta la funzione che si occupa di eseguire la correzione delle risposte date, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data qual'è la risposta corretta. In generale la correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettere V oppure F a seconda se la riposta adiacente sia vera oppure falsa e la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta scelta, in verde nel caso in cui l'utente abbia segnato la risposta giusta e in rosso nel caso contrario. Ogni risposta errata data farà aumentare il contatore degli errori, con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.\\
+
+Osservata la simulazione passiamo ora ad analizzare la parte di esercitazione associata alla simulazione.\\
+
+\paragraph{Quiz base (esercitazione)}\leavevmode\\
+Rispetto a quanto visto prima in questa parte non ci sono parti nuove, se non il fatto che anche in questo caso si tiene il conto degli errori commessi. La problematica in questo caso sta sempre nella comunicazione tra "front-end" e "back-end", siccome è solo la parte del "javascript" che è in grado di verificare se durante la risposta (perché viene visualizzata una domanda per volta) sia stato commesso o meno un errore. La soluzione (come anche in passato) è stata quella di mettere in comunicazione questi due emisferi salvando dei parametri nell'"url", primo tra tutti il tipo di domande scelte come nel caso della esercitazione sulla prova di carteggio, date le problematica nel far funzionare "AJAX".\\
+Qui di seguito è riportato il codice in "php".\\
+
+\begin{lstlisting}[language=php]
+/*---------- CATCH URL VARIABLES ----------*/
+$Array = $urlUtility->getInfoFromUrl($_SERVER['REQUEST_URI']);
+
+//---------- CATCH SCORE
+if($Array['score'] !== null){
+	$_SESSION['score'] = $Array['score'];
+}
+
+//---------- CATCH LAST QUESTIONS VARIABLES
+if($Array['index'] !== null && $Array['answer'] !== null){
+	
+	if($_SESSION['answeredQuestions'][$Array['index']] == null){
+		$_SESSION['answeredQuestions'][$Array['index']] = $Array['answer']; 
+	} 
+}
+
+//---------- CATCH TOPIC 
+if($Array['topic'] !== null && $Array['topic'] !== $_SESSION['topic']){
+	$_SESSION['topic'] = $Array['topic'];
+	
+	/*change temp array to determinate questions*/
+	$query = $utilities->getMysql()->query("SELECT * FROM base_quiz WHERE (topic = '{$Array['topic']}')");
+	$tempArray = $query->fetch_all(MYSQLI_ASSOC);
+	/*format variables for question preparation part*/
+	$_SESSION['maxQuestions']         = null;
+	//get number of extracted questions
+	$_SESSION['questions']            = $tempArray;
+	$_SESSION['numbers']              = 0;
+	$_SESSION['score']                = 0;
+	$_SESSION['answeredQuestions']    = null;
+}
+\end{lstlisting}
+
+Si vuole fare osservare come nel codice appena mostrato vi è una funzionalità (implementata a livello di "php" con il "catch" dell'ultima risposta data trasmessa dal "javascript") che permette di tenere in sessione le risposte date in precedenza in modo da poter ricontrollare anche in un secondo momento che non sia quello della correzione. Il resto del codice in "php" non presente differenze sostanziali rispetto a quanto già potuto osservare, e anche il codice "html" è intuibile tenendo a mente quello scritto nel caso della simulazione.\\
+Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri inseriti nell'"url" e anche come vengono gestire le riposte date in precedenza.\\
+
+\begin{lstlisting}[language=html]
+	
+	/*--------- SECTION WHERE VERIFY IF THE QUESTION WAS ANSWERED ----------*/
+	//useful variables
+	var questionIndex = <?php if($id !== null){echo $id;}else{echo "-1";}?>;
+	var answerGiven = null;
+	
+	//verified the past answer
+	if(Boolean(<?php if($_SESSION['answeredQuestions'][$id] !== null){echo true;}else{echo false;}?>)){
+		
+		// to not permit other review
+		corrected = true;
+		
+		switch(<?php if($_SESSION['answeredQuestions'][$id] !== null) {echo $_SESSION['answeredQuestions'][$id];}else{echo "-1";} ?>){
+			
+			case <?php echo ANSWER1; ?>:
+			
+			answerRadios.style.display = "none";
+			answer1.style.display      = "block";
+			answer2_null.style.display = "block";
+			answer3_null.style.display = "block";
+			break;
+			
+			case <?php echo ANSWER2; ?>:
+			
+			answerRadios.style.display = "none";
+			answer1_null.style.display = "block";
+			answer2.style.display      = "block";
+			answer3_null.style.display = "block";
+			break;
+			
+			case <?php echo ANSWER3; ?>:
+			
+			answerRadios.style.display = "none";
+			answer1_null.style.display = "block";
+			answer2_null.style.display = "block";
+			answer3.style.display      = "block";
+			break;
+			
+		}
+		
+	}
+	
+// set argument topic to url
+function setArgument(topic){
+	var URL = window.location.href;
+	var data ={'topic': topic};
+	var parameters = new URLSearchParams(data);
+	window.location.href = URL.split('?')[0]+"?"+parameters;
+}
+
+//set the new score to url
+function setScore(score){
+	var URL = window.location.href;
+	var data ={'score': score};
+	var parameters = new URLSearchParams(data);
+	window.history.pushState(null, document.title, (URL.split('?')[0]+"?"+parameters))
+}
+
+//set the answer given to php session by url
+function setAnswerGiven(index, answer){
+	var URL = window.location.href;
+	
+	var data1 ={'index': index};
+	var data2 ={'answer': answer};
+	var parameters1 = new URLSearchParams(data1);
+	var parameters2 = new URLSearchParams(data2);
+	window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
+}
+
+\end{lstlisting}
+
+Purtroppo anche in questo caso non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità poiché ritenute importanti. Come si può osservare, nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la correzione la risposta data in precedenza.\\
+Altra cosa qui mostrata perché degna di nota è come sono stati salvati tutti i paramatri nell'"url" in modo da poter essere poi ripresi dalla parte in "php".\\
+
+L'ultima parte del sito implementata, ovvero la simulazione e l'esercitazione dei quiz della vela non viene riportata, in quanto sulla base di quello che è stato mostrato finora sarebbe irrilevante, siccome ripetizione di logiche e di codice già visto. 
