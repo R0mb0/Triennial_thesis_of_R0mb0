@@ -1056,7 +1056,7 @@ Come di consueto la correzione del codice è delegata alla parte in "javascript"
 		
 	}
 \end{lstlisting}
-
+\leavevmode\\
 In questo caso particolare, nella fase di preparazione della operazione di correzione è stato necessario passare delle informazione del "back-end" (quindi della parte di codice "php") nel "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni usando il sistema "JSON" al posto di "AJAX" che purtroppo, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si presuppone che siano le chiamate a sistema a fallire siccome durante le prove il terminale non riportava alcun errore, anzi, se attivate le stampe per il "debug" venivano riportati dei messaggi che comunicavano il fatto che le informazioni sono state passate correttamente, anche se alla fine ciò non risultava.\\
 Finita la fase di preparazione, si è passati ad oscurare tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata quindi scritta la funzione che si occupa di eseguire la correzione delle risposte date, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data qual'è la risposta corretta. In generale la correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettere V oppure F a seconda se la riposta adiacente sia vera oppure falsa e la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta scelta, in verde nel caso in cui l'utente abbia segnato la risposta giusta e in rosso nel caso contrario. Ogni risposta errata data farà aumentare il contatore degli errori, con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.\\
 
@@ -1103,7 +1103,7 @@ if($Array['topic'] !== null && $Array['topic'] !== $_SESSION['topic']){
 Si vuole fare osservare come nel codice appena mostrato vi è una funzionalità (implementata a livello di "php" con il "catch" dell'ultima risposta data trasmessa dal "javascript") che permette di tenere in sessione le risposte date in precedenza in modo da poter ricontrollare anche in un secondo momento che non sia quello della correzione. Il resto del codice in "php" non presente differenze sostanziali rispetto a quanto già potuto osservare, e anche il codice "html" è intuibile tenendo a mente quello scritto nel caso della simulazione.\\
 Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri inseriti nell'"url" e anche come vengono gestire le riposte date in precedenza.\\
 
-\begin{lstlisting}[language=html]
+\begin{lstlisting}[language=javascript]
 	
 	/*--------- SECTION WHERE VERIFY IF THE QUESTION WAS ANSWERED ----------*/
 	//useful variables
@@ -1146,35 +1146,35 @@ Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri ins
 		
 	}
 	
-// set argument topic to url
-function setArgument(topic){
-	var URL = window.location.href;
-	var data ={'topic': topic};
-	var parameters = new URLSearchParams(data);
-	window.location.href = URL.split('?')[0]+"?"+parameters;
-}
+	// set argument topic to url
+	function setArgument(topic){
+		var URL = window.location.href;
+		var data ={'topic': topic};
+		var parameters = new URLSearchParams(data);
+		window.location.href = URL.split('?')[0]+"?"+parameters;
+	}
 
-//set the new score to url
-function setScore(score){
-	var URL = window.location.href;
-	var data ={'score': score};
-	var parameters = new URLSearchParams(data);
-	window.history.pushState(null, document.title, (URL.split('?')[0]+"?"+parameters))
-}
+	//set the new score to url
+	function setScore(score){
+		var URL = window.location.href;
+		var data ={'score': score};
+		var parameters = new URLSearchParams(data);
+		window.history.pushState(null, document.title, (URL.split('?')[0]+"?"+parameters))
+	}
 
-//set the answer given to php session by url
-function setAnswerGiven(index, answer){
-	var URL = window.location.href;
+	//set the answer given to php session by url
+	function setAnswerGiven(index, answer){
+		var URL = window.location.href;
 	
-	var data1 ={'index': index};
-	var data2 ={'answer': answer};
-	var parameters1 = new URLSearchParams(data1);
-	var parameters2 = new URLSearchParams(data2);
-	window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
-}
-
+		var data1 ={'index': index};
+		var data2 ={'answer': answer};
+		var parameters1 = new URLSearchParams(data1);
+		var parameters2 = new URLSearchParams(data2);
+		window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
+	}
 \end{lstlisting}
 
+\leavevmode\\
 Purtroppo anche in questo caso non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità poiché ritenute importanti. Come si può osservare, nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la correzione la risposta data in precedenza.\\
 Altra cosa qui mostrata perché degna di nota è come sono stati salvati tutti i paramatri nell'"url" in modo da poter essere poi ripresi dalla parte in "php".\\
 
