@@ -255,7 +255,7 @@ Il codice "html" riportato di seguito serve per mostrare come le informazioni es
 Un problema che però si evidenzia a questo punto è che serve un sistema per poter nascondere la risposta al quesito, in modo da permettere l'esercizio. Questa cosa non la si può far se non con il "javascript" che permette lato "front-end" di animare le varie parti del "html".\\
 Qui di seguito è riportato lo "script" che è stato scritto per permettere questa funzionalità.\\
 
-\begin{lstlisting}[language=html]
+\begin{lstlisting}[language=java]
 	<script>
 	
 	/*hide elements at the beginning*/
@@ -658,7 +658,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 
 \textbf{Parte di codice javascript}\\
 
-\begin{lstlisting}[language=html]
+\begin{lstlisting}[language=java]
 	<script type='text/javascript'>
 	
 	//hide revision elements at the beginning
@@ -911,7 +911,7 @@ Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavora
 Per prima cosa sono state preparate in delle variabili le "stringhe di codice html" per ogni risposta in modo da poter poi successivamente riferirsi a queste in una forma più compatta e chiara. Successivamente c'è la parte di codice che effettivamente "stampa" le domande con le relative risposte (la fase di prima è propedeutica per evitare di complicare questa porzione). Si può notare che per raccogliere la risposta dell'utente si è usato l'oggetto "radio" (dei quali ne è selezionabile solo uno per domanda) rispetto ai classici pulsanti.\\ 
 Come di consueto la correzione del codice è delegata alla parte in "javascript", qui riportato inferiormente.\\
 
-\begin{lstlisting}[language=html]
+\begin{lstlisting}[language=java]
 	<script>
 	
 	/*--------- PREPARE IMPORT FIELDS---------*/
