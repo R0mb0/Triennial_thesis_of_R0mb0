@@ -2,21 +2,22 @@
 
 \section{Creazione del sito internet}\label{sez:Creazione sito internet}
 
-La creazione del dito internet si può suddividere nella creazione delle singole pagine che lo compongo.
+La realizzazione del sito internet è definibile a partire dalla creazione delle singole pagine che lo compongono.\\%si può suddividere nella creazione delle singole pagine che lo compongo.
 
 \subsection{Creazione pagina di registrazione e di accesso}
-L'intera produzione del sito internet è stata fatta seguendo la filosofia di dare più importanza ai lavori "più grossi", facendosi che quindi il progetto si sia sviluppo a partire da un nucleo principale per poi espandersi, al contrario di  come comunemente vengono condotti questo genere di progetti, partendo dalle specifiche più esterne (in modo da avere più velocemente una idea del prodotto finito) per poi convergere verso il nucleo.\\
-Secondo la specifica del progetto, il sito deve essere in grado di essere accessibile solo agli utenti registrati (verificando inoltre che la mail che abbiano inserito sia reale), garantendo inoltre la sicurezza, ossia che il sito deve possedere le principali difese per non essere attaccato e che in caso di attacco i dati degli utenti siano all'interno del "database" cifrati in modo da non poter essere utilizzati da terzi.\\
-La prima pagina che è stata creata in assoluto è quella di accesso, dalla quale poi premendo un  pulsante è possibile accedere alla pagina di registrazione. Com'è deducibile queste due pagine sono state in contemporanea siccome la prima permette di verificare li corretto funzionamento della seconda.\\
-
-Dopo aver studiato velocemente "l'html" e il "php" (il "javascript" è stato lasciato in secondo piano) decido di sviluppare il codice ("php") con paradigma ad oggetti, siccome mi è molto famigliare. Ragionando solo a livello di logica decido di creare una classe "utilities" nella quale poter scrivere i metodi che poi mi torneranno utili durante anche lo sviluppo delle restanti parti.\\
-
+L'intera produzione del sito internet è stata fatta cercando di dare più importanza ai lavori "più grossi", in modo che il progetto si sviluppi a partire da un nucleo principale per poi espandersi. In contrapposizione al  modo comune di  condurre questo genere di progetti, ovvero quello di partire dalle specifiche più "esterne" per  avere più velocemente una idea del progetto finito, convergendo in seguito verso il "nucleo".\\
+Secondo la specifica del progetto, il sito doveva essere accessibile solo agli utenti registrati (verificando inoltre che la mail di registrazione fosse reale) garantendo la sicurezza dei dati personali, tramite l'implementazione delle principali difese contro gli attacchi e in caso di penetrazione i dati degli utenti presenti all'interno del "database" sarebbero dovuti essere cifrati per prevenirne l'uso illecito.\\
+La prime pagine create sono state quelle di accesso e di registrazione, dato che queste due pagine verificavano vicendevolmente il corretto funzionamento reciproco.\\
+\bigskip
+Dopo aver studiato velocemente i linguaggi: "html", "php" e "javascript". Si da il via allo sviluppo, scrivendo la parte di codice in "php", utilizzando come paradigma quello ad oggetti, siccome mi è molto famigliare.\\
+Come prima cosa viene creata una classe "utilities" nella quale poter ospitare i vari metodi utili nelle restanti parti future.\\
+\bigskip
 Si esplicita in questa sede che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
 
 \paragraph{Classe utilities}\leavevmode\\
 La classe "utilities" (quindi il relativo file) è stata implementata in questo modo:\\
-Per prima si è deciso di dividere in file separati i metodi e le chiavi per il loro funzionamento. Questa cosa è stata fatta prevalentemente per ragioni di ordine del codice e per aumentare la sicurezza.\\
-Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Essendo evidente che questo oggetto è per sua stessa statico, durante l'implementazione del metodo si è usato il "singleton pattern" per evitare che in memoria vi siano multipli oggetti identici.\\
+Si è deciso di dividere in file separati i metodi e le rispettive password di accesso ai servizi (come quelle per costruire le "query" del database) in modo da aumentare la sicurezza e l'ordine del codice.\\
+Il primo metodo scritto è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Siccome quest'oggetto è per sua stessa statico, durante la sua l'implementazione è stato usato il "singleton pattern" per evitare che in memoria ci fossero degli oggetti duplicati.\\
 
 \begin{lstlisting}[language=php]
 	/*using singleton pattern*/
@@ -29,7 +30,7 @@ Il primo metodo presente è quello che permette di creare l'oggetto "mysqli" che
 	}
 \end{lstlisting}
 
-\textcolor{black}{In questa classe sono stati scritti i metodi per cifrare e decifrare le stringe da salvare poi nella tabella degli utenti all'interno del database.}\\
+\textcolor{black}{Successivamente sono stati scritti i metodi per cifrare e decifrare le stringe da salvare nella tabella utenti all'interno del database.}\\
 
 \begin{lstlisting}[language=php]
 /*Function to crypt a string*/
