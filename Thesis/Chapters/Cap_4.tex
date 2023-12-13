@@ -53,8 +53,8 @@ public function Decrypt($string){
 }
 \end{lstlisting}
 
-\textcolor{black}{Sempre in questa classe è stato scritto il metodo che si occupa di inviare agli utenti la mail con il link per poter effettuare la verifica della mail di registrazione.\\
-Per la costruzione del metodo sono state usate le classi messe a disposizione da "\href{https://github.com/PHPMailer/PHPMailer}{PHPMailer}"}.
+\textcolor{black}{Sempre in questa classe è stato scritto il metodo che si occupa di inviare agli utenti la mail con il link di verifica della mail con cui ci si registra.\\
+Per la costruzione del metodo sono stati usati i metodi messi a disposizione da "\href{https://github.com/PHPMailer/PHPMailer}{PHPMailer}"}.
 
 \begin{lstlisting}[language=php]
 public function SendEmail($address, $subject, $body, $altBody){
@@ -94,18 +94,18 @@ public function SendEmail($address, $subject, $body, $altBody){
 
 \textcolor{black}{
 \textbf{Approfondimento gestione della verifica della mail di registrazione}\\
-A questo punto si desidera aprire una breve parentesi per approfondire la gestione della verifica della mail.\\
-Dalla classe "Utilities" è possibile usare il metodo che permette l'invio della mail di verifica, ma ovviamente questo metodo prevede degli argomenti in ingresso che adesso saranno esplicitati in ordine: Il primo è l'indirizzo mail del destinatario, che è prelevabile dal database; l'oggetto della mail e i restanti argomenti sono stati definiti all'interno di un'altra classe chiamata "MailUtilities".}\\
+A questo punto si desidera aprire una breve parentesi per approfondire la gestione del processo di verifica della mail.\\
+Nella classe "Utilities" è possibile trovare il metodo che permette l'invio della mail di verifica, gli argomenti in ingresso del metodo sono rispettivamente: l'indirizzo mail del destinatario ( prelevato dal database), l'oggetto della mail e i restanti argomenti si reperiscono da un'altra classe chiamata "MailUtilities".}\\
 
 \paragraph{\textcolor{black}{classe MailUtilities}}\leavevmode\\
 
-\textcolor{black}{Come prima cosa è stato definito un "link base di rientro" che se cliccato dalla mail permette di ritornare alla pagina della applicazione web.}\\
+\textcolor{black}{Come prima cosa è stato definito un "link base di rientro" che se cliccato permette di ritornare alla pagina principale del sito.}\\
 
  \begin{lstlisting}[language=php]
 	const URL = "https://quizpatentinautiche.dynamic-dns.net:8080/";
  \end{lstlisting}
  
-  \textcolor{black}{Successivamente è stato stabilito un metodo con il quale poter reperire l'oggetto della mail, del quale si è preferito scriverlo in questa sede per tenere raggruppati i vari argomenti necessari per l'invio della mail in un unico posto.}\\
+  \textcolor{black}{Successivamente è stato scritto un metodo per reperire l'oggetto della mail, si è preferito scriverlo in questa classe per tenere raggruppati i vari argomenti necessari per l'invio della mail.}\\
  
 \begin{lstlisting}[language=php]
 public function getSubject(){
@@ -113,7 +113,7 @@ public function getSubject(){
 }
 \end{lstlisting}
 
-\textcolor{black}{Di seguito è stato definito il corpo "html" della mail, il quale per un qualche motivo poco chiaro non viene visualizzato correttamente su alcuni gestori di servizi mail. }\\
+\textcolor{black}{Di seguito è stato definito il corpo "html" della mail, il quale (per un motivo poco chiaro) non viene visualizzato correttamente su alcuni gestori online di servizi mail. }\\
 
 \begin{lstlisting}[language=php]
 public function getBody($linkToUse){
@@ -153,7 +153,7 @@ public function getBody($linkToUse){
 }
  \end{lstlisting}
  
- \textcolor{black}{Ultima è stata la definizione del corpo alternativo nel caso in cui non si voglia visualizzare la mail con il corpo "html".}\\
+ \textcolor{black}{Per ultimo si è definito un corpo alternativo nel caso in cui l'utente non voglia una visualizzazione in "html".}\\
  
   \begin{lstlisting}[language=php]
  public function getAlternativeBody($linkToUse){
@@ -161,7 +161,7 @@ public function getBody($linkToUse){
  }
   \end{lstlisting}
   
-  \textcolor{black}{Sono stati inoltre scritti dei metodi aggiuntivi per facilitare l'interazione con "l'url" da usare per verificare la mail:}\\
+  \textcolor{black}{Sono stati inoltre scritti dei metodi aggiuntivi per facilitare la gestione  "dell'url" usato per la verifica della mail.}\\
   
  \begin{lstlisting}[language=php]
    	public function getUrl($myData){
@@ -175,7 +175,7 @@ public function getBody($linkToUse){
    	}
  \end{lstlisting}
  
- \textcolor{black}{Per spiegare correttamente il funzionamento della logica viene riportato inferiormente la parte di codice della pagina di registrazione che sfrutta i metodi presentati sopra per mandare la mail di verifica dopo la registrazione.}\\ 
+ \textcolor{black}{Per spiegare più facilmente il funzionamento del processo appena presentato,  viene riportato inferiormente una parte di codice della pagina di registrazione che sfrutta i metodi presentati sopra per mandare la mail di verifica dopo la registrazione.}\\ 
  
  \begin{lstlisting}[language=php]
  $mailUtil = new MailUtilities();
@@ -191,8 +191,8 @@ public function getBody($linkToUse){
  exit;
   \end{lstlisting}
   
- \textcolor{black}{ In pratica (dopo aver controllato la consistenza dei dati nel database) come si può facilmente leggere, la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è semplicemente prelevato, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base per poter accedere al sito con in più (come argomento) la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail del sito.\\
-  In particolare (come poi mostrato dal codice riportato inferiormente) per favorire questo processo, la prima pagina in assoluto che viene caricata quando si fa l'accesso alla "web app" non è la pagina di accesso, ma bensì una pagina che a seconda se nell'"url" con il quale si fa l'acceso al sito è presente un argomento o meno, fa poi un "redirect" alla pagina apposita.}\\
+ \textcolor{black}{ In pratica (dopo aver controllato la consistenza dei dati nel database) la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è prelevato dal rispettivo metodo, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base di accesso al sito con in aggiunta (come argomento "nell'url") la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail.\\
+  In particolare (come mostrato dal codice riportato inferiormente) per favorire questo processo, la pagina posizionata a livello di "root" non è quella di accesso, ma bensì una pagina che a seconda se "nell'url" con il quale si fa l'acceso al sito è presente un argomento o meno effettua un "redirect" alla giusta pagina.}\\
   
  \paragraph{\textcolor{black}{File index.php}}\leavevmode\\
   
@@ -217,7 +217,7 @@ public function getBody($linkToUse){
  ?>
  \end{lstlisting}
  
- \textcolor{black}{Nel caso in cui nell'"url" ci sia un argomento, ecco il comportamento della pagina di verifica della mail.}\\
+ \textcolor{black}{Ecco il comportamento della pagina di verifica della mail nel caso in cui "nell'url" ci sia un argomento.}\\
  
 \paragraph{\textcolor{black}{Estratto dalla pagina di verifica della mail: "verificationMail.php"}}\leavevmode\\
  
@@ -278,10 +278,10 @@ public function getBody($linkToUse){
  }
  \end{lstlisting}
  
- \textcolor{black}{Come si può facilmente notare, prima di tutto viene verificato che l'operazione di verifica non sia già avvenuta, successivamente si aspetta che l'utente premi il pulsante di verifica per poter poi scrivere nel database l'avvenuta verifica.}\\
+ \textcolor{black}{Il funzionamento è il seguente,  prima di tutto viene verificato che l'operazione di verifica non sia stata fatta in passato, successivamente si aspetta che l'utente prema il pulsante di verifica per aggiornare il database.}\\
  
  \textcolor{black}{A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
- Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà incluso il codice "html" per mostrare come è strutturata la pagina.}\\
+ Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà introdotto il codice "html" per mostrare come è strutturata la pagina.}\\
  
  \paragraph{\textcolor{black}{registration.php}}\leavevmode\\
  
@@ -373,11 +373,11 @@ public function getBody($linkToUse){
  ?>
  \end{lstlisting}
  
- \textcolor{black}{Si può subito notare osservando le classi incluse, che è presente quella che contiene i metodi per la gestione della mail, in modo da poter (subito dopo aver completato la prima fase di registrazione) inviare la mail per fare la verifica dell'utente.\\
- Viene fatta iniziare la sessione siccome nello spostamento tra le varie pagine è necessario tenere in memoria lo stato della sessione, in modo da avere sempre chiaro lo stato dell'utente durante la navigazione.\\
- Siccome questa pagina fa uso del database, si controlla che la connessione a quest'ultimo sia possibile.\\
- A questo punto compare una serie di "if" annidati che anche se rendono la lettura del codice più difficile, offrono una maggiore garanzia che la pagina non abbia dei comportamenti anomali, cosa che potrebbe accadere nel momento in cui ogni "if" non fosse annidato ma posto in sequenza.\\
- Si desidera far notare che a fine registrazione viene impostata la sessione utente allo stato "registered" in modo da poter poi far apparire nella pagina principale il messaggio di registrazione avvenuta.}\\
+ \textcolor{black}{Osservando le classi incluse si può notare che è presente quella che gestisce l'invio della mail, in modo da poter (subito dopo aver completato la prima fase di registrazione) inviare una mail per la verifica dell'utente.\\
+ Si avvia la sessione per non perdere lo stato della memoria (di conseguenza quello dell'utente) nello spostamento tra le varie pagine.\\
+ Siccome questa pagina fa uso del database, si controlla che la connessione a quest'ultimo.\\
+ A questo punto compare una serie di "if" annidati che anche se rendono la lettura del codice più difficile, offrono una maggiore garanzia che la pagina non abbia dei comportamenti anomali, cosa che potrebbe accadere nel momento in cui ogni "if" fosse posto in sequenza.\\
+ Come ultima cosa a fine registrazione s'imposta nella sessione lo stato "registered" in modo da poter poi far apparire nella pagina principale il messaggio di registrazione avvenuta.}\\
  
  \begin{lstlisting}[language=html]
  	<!DOCTYPE html>
@@ -429,13 +429,14 @@ public function getBody($linkToUse){
  	</html>
   \end{lstlisting}
   
-  \textcolor{black}{Osservando la parte in "html" della pagina si possono notare i vari oggetti che sono stati istanziati per essere poi interagiti tramite la parte in "php". Da questo momento in poi, raramente verrà incluso il codice "html" delle pagine siccome quest'ultimo è più meno sempre lo stesso. Verranno invece evidenziate soltanto la parti peculiari degne di nota.}\\
+  \textcolor{black}{Nella parte in "html" della pagina si possono notare i vari oggetti che sono stati istanziati per essere poi interagiti tramite la parte in "php".\\
+  	 Da questo momento in poi, raramente verrà incluso il codice "html" delle pagine siccome quest'ultimo non varia molto. Verranno invece evidenziate soltanto le parti degne di nota.}\\
   
   \textcolor{black}{Vista ora la pagina di registrazione, si può procedere con l'analisi della pagina di accesso.}\\
   
   \paragraph{\textcolor{black}{main.php}}\leavevmode\\
   
-  \textcolor{black}{Questa pagina vuole essere usata come pretesto per mettere in evidenzia che durante l'intero sviluppo della applicazione web è stata prestata particolare attenzione alla scrittura di un codice efficiente in modo non solo di poter risparmiare risorse sul "RaspberryPi" ma anche con l'intento di rendere la navigazione più "responsive" e dove è stato possibile, si è cercato di ridurre il minimo le interazioni tra "server" e "client" con l'intento di alleggerire il costo delle varie connessioni in modo poi da poter garantire a più utenti una esperienza soddisfacente. Nel caso specifico di questa pagina (come sottolineato dal codice riportato inferiormente) la gestione dei veri avvisi è stata fatta utilizzando lo "switch" rispetto ad una serie di "if" in cascata, tenendo presente che il comportamento del sito non sarebbe cambiato a prescindere dall'uso di uno dei due sistemi, in questo modo si è visto (utilizzando l'applicazione "\href{https://htop.dev/}{HTOP}") che l'accesso al sito pesava meno sul "core" della macchina che è stato scelto dal sistema operativo per elaborare la richiesta.}\\
+  \textcolor{black}{In questa pagina si può evincere che durante l'intero sviluppo della applicazione web è stata prestata particolare attenzione alla scrittura di un codice efficiente in modo non solo di poter risparmiare risorse sul "RaspberryPi" ma anche con l'intento di rendere la navigazione più "responsive". Si è cercato di ridurre al minimo le interazioni tra "server" e "client" con l'intento di alleggerire il costo delle varie connessioni in modo da garantire a più utenti una esperienza di navigazione soddisfacente. Nel caso specifico di questa pagina (il cui codice è riportato) la gestione dei veri avvisi è stata fatta utilizzando lo "switch" rispetto ad una serie di "if" in cascata, tenendo presente che il comportamento del sito non sarebbe cambiato a prescindere dall'uso di uno dei due sistemi. ma in questo modo si è visto (utilizzando l'applicazione "\href{https://htop.dev/}{HTOP}") che l'accesso al sito pesava meno sul "core" della macchina che è stato scelto dal sistema operativo per elaborare la richiesta.}\\
   
  \begin{lstlisting}[language=php]
  /*reset latest connection*/
@@ -497,7 +498,7 @@ public function getBody($linkToUse){
  }
 \end{lstlisting}
 
- \textcolor{black}{Viene ora presentata a titolo informativo (perché non vi si trova qualcosa di peculiare da commentare) la parte di codice che si occupa di gestire l'autenticazione dell'utente.}\\ 
+ \textcolor{black}{Viene ora riportata senza commenti (poiché superflui data la natura del codice) la porzione che si occupa di gestire l'autenticazione dell'utente.}\\ 
 
 \begin{lstlisting}[language=php]
 	/*when login button is clicked*/
@@ -552,7 +553,7 @@ public function getBody($linkToUse){
 	}
 \end{lstlisting}
 
-\textcolor{black}{Finora è stato mostrata la registrazione e l'autenticazione dell'utente, ma nel sito è anche disponibile una pagina che permette ("on-fly") della quale viene presentato velocemente il codice "php".}\\
+\textcolor{black}{Finora è stata mostrata la registrazione e l'autenticazione dell'utente, ma nel sito è anche disponibile una pagina (della quale si riporta inferiormente il codice in "php") che permette la manutenzione dell'account ("on-fly").}\\
 
 \paragraph{\textcolor{black}{maintenance.php}}\leavevmode\\
 
@@ -647,6 +648,7 @@ public function getBody($linkToUse){
 	}
 \end{lstlisting}
 
-\textcolor{black}{Una peculiarità di questa pagina è il fatto che come premesso, vengano fatte delle operazioni "on-fly". La motivazioni dietro questa scelta stanno nella gestione semplificata delle operazioni più critiche (siccome è possibile riciclare del codice) oltre che in questo modo si garantisce una maggiore sicurezza, in quanto non si deve gestire una sessione utente "critica" nella quale sarebbe possibile tentare di fare un attacco di "Hijacking". La non presenza di una sessione con tanto di pagina di "atterraggio" nella quale poter poi effettuare le operazioni di gestione dell'account previene questo tipo di attacchi.\\
-Come si può leggere da codice, questa pagina mette a disposizioni due principali operazioni: quella di farsi mandare nuovamente la mail per la verifica dell'utente e la possibilità di poter cancellare l'account.\\
-A questo punto si vuole evidenziare come la scelta progettuale fatta risulti particolarmente efficace. Supponiamo che un utente volesse fare il rinvio della mail di verifica, questa operazione implica che la mail dell'utente deve rimanere in sessione (dopo aver effettuato l'acceso) in modo che la pagina di manutenzione possa poi eseguire l'operazione. Ma è evidente che è rischioso tenere in sessione dei dati sensibili dell'utente. Per questo motivo le operazioni "on-fly" quindi con ri-autenticazione offrono un margine di sicurezza maggiore.}\\
+\textcolor{black}{Una peculiarità di questa pagina è il fatto che (come premesso) le operazioni vengano fatte "on-fly". La motivazione dietro questa scelta risiede nella gestione semplificata delle operazioni più critiche, dato che è possibile riciclare del codice dalle pagine precedenti e che in questo modo si garantisce una maggiore sicurezza, siccome non è presente una sessione utente "critica" nella quale sarebbero possibili dei tentativi "Hijacking". \\
+La non presenza di una sessione con tanto di pagina di "atterraggio" dove effettuare le operazioni di gestione dell'account previene questo tipo di attacchi.\\
+Come si può leggere da codice, questa pagina mette a disposizione due principali operazioni: quella di farsi mandare nuovamente la mail per la verifica dell'utente e la possibilità di poter cancellare l'account.\\
+A questo punto si desidera presentare come la scelta progettuale fatta risulti particolarmente efficace. Supponendo che un utente volesse fare il rinvio della mail di verifica, questa operazione implicherebbe che la mail dell'utente debba rimanere in sessione (dopo aver effettuato l'acceso) in modo che la pagina di manutenzione possa completare l'operazione con la conseguenza di dover tenere in sessione una informazione sensibile. Per questo motivo le operazioni "on-fly" (quindi con ri-autenticazione) offrono un margine di sicurezza maggiore.}\\
