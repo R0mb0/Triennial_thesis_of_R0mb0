@@ -1,5 +1,5 @@
-Supponendo che non vi siano problemi e che l'autenticazione dell'utente avvenga senza difficoltà, ora si può iniziare a discutere delle pagine che amministrano il vero e proprio servizio della "web app".\\
-Nella pagina di accesso alle varie esercitazioni disponibili, non c'è molto cose da discutere se non il fatto che questa pagina amministra la sessione, controllando e impostando le varie variabili poi amministrare dalle pagine delle varie esercitazioni. 
+\textcolor{black}{Supponendo che non vi siano problemi e che l'autenticazione dell'utente avvenga senza difficoltà, ora si può iniziare a discutere delle pagine che amministrano il vero e proprio servizio della "web app".\\
+Nella pagina di accesso alle varie esercitazioni disponibili, non c'è molto cose da discutere se non il fatto che questa pagina amministra la sessione, controllando e impostando le varie variabili poi amministrare dalle pagine delle varie esercitazioni.}
 
 \paragraph{Estratto di Entry.php}\leavevmode\\
 
@@ -36,11 +36,12 @@ Nella pagina di accesso alle varie esercitazioni disponibili, non c'è molto cos
 		exit;
 	}
 \end{lstlisting}
-Dal codice incluso si può inoltre notare che viene controllato, osservando le variabili di sessione, che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. A questo punto può risultare contraddittorio rispetto al caso prima espresso, che in questa sede si tengano in sessione le credenziali dell'utente, ma si vuole far notare che le credenziali tenute in sessione non sono in chiaro (caso richiesto nella condizione espressa precedentemente) e che inoltre lo "spoofing" a questo livello non presenterebbe un problema, in quanto il caso peggiore che potrebbe accadere è che qualcuno possa accedere alle esercitazioni con le  credenziali di un'altra persona senza la possibilità di interagire con l'utente al quale sono state "rubate" le credenziali di autenticazione.\\
 
-Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno. I primi file saranno riportati maggiormente nella loro interezza in modo da esplicitare il metodo con il quale è stata condotta la costruzione dei restanti. Per poi arrivare a riportare di ogni file solo le parti salienti.\\
+\textcolor{black}{Dal codice incluso si può inoltre notare che viene controllato, osservando le variabili di sessione, che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. A questo punto può risultare contraddittorio rispetto al caso prima espresso, che in questa sede si tengano in sessione le credenziali dell'utente, ma si vuole far notare che le credenziali tenute in sessione non sono in chiaro (caso richiesto nella condizione espressa precedentemente) e che inoltre lo "spoofing" a questo livello non presenterebbe un problema, in quanto il caso peggiore che potrebbe accadere è che qualcuno possa accedere alle esercitazioni con le  credenziali di un'altra persona senza la possibilità di interagire con l'utente al quale sono state "rubate" le credenziali di autenticazione.}\\
 
-\paragraph{Simulazione elementi di carteggio}\leavevmode\\
+\textcolor{black}{Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno. I primi file saranno riportati maggiormente nella loro interezza in modo da esplicitare il metodo con il quale è stata condotta la costruzione dei restanti. Per poi arrivare a riportare di ogni file solo le parti salienti.}\\
+
+\paragraph{\textcolor{black}{Simulazione elementi di carteggio}}\leavevmode\\
 
 \begin{lstlisting}[language=php]
 	if($_SESSION['permission'] !== "true"){
@@ -159,11 +160,11 @@ Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, met
 	$_SESSION['numbers'] = $indexNumbers;
 \end{lstlisting}
 
-Come si può facilmente vedere, una delle prime che vengono fatte in assoluto è sempre il controllo dell'utente, per evitare l'accesso non autorizzato al servizio. Da notare inoltre che grazie alla variabile di sessione "permission" si garantisce che l'utente non venga espulso nel caso in cui ricarichi la pagina.\\
+\textcolor{black}{Come si può facilmente vedere, una delle prime che vengono fatte in assoluto è sempre il controllo dell'utente, per evitare l'accesso non autorizzato al servizio. Da notare inoltre che grazie alla variabile di sessione "permission" si garantisce che l'utente non venga espulso nel caso in cui ricarichi la pagina.\\
 Successivamente si procede con l'estrazione dal database delle proprietà della simulazione, come il numero di domande da somministrare e il numero di errori massimi da poter commettere. Viene poi fatto il calcolo del numero delle domande presenti nel database in modo da poter stabilire il "range" per la selezione causale delle domande da presentare. Il fatto di contare le domande presenti nel database garantisce che ogni volta che viene inserita una nuova domanda nel database, questa sia subito disponibile senza dover aggiornare dei parametri che in questo caso sono deducibili. In questo modo viene anche semplificato il mantenimento e aggiornamento delle domande.\\
-A questo punto è possibile estrarre casualmente i vari indici delle domande da presentare. Questa operazione viene fatta con un ciclo "while" annidato che "cicla" fino a che non ha generato senza ripetizioni (anche nei confronti dell'ultima esercitazione fatta) tutti gli indici richiesti. Per cercare di tenere alto il livello di efficienza delle operazioni l'ultima parte del ciclo "while" è stata preposta alla estrazione ed inserimento in un "array" delle domande, in modo da poter risparmiare il fatto di dover fare un secondo ciclo.\\
+A questo punto è possibile estrarre casualmente i vari indici delle domande da presentare. Questa operazione viene fatta con un ciclo "while" annidato che "cicla" fino a che non ha generato senza ripetizioni (anche nei confronti dell'ultima esercitazione fatta) tutti gli indici richiesti. Per cercare di tenere alto il livello di efficienza delle operazioni l'ultima parte del ciclo "while" è stata preposta alla estrazione ed inserimento in un "array" delle domande, in modo da poter risparmiare il fatto di dover fare un secondo ciclo.}\\
 
-Il codice "html" riportato di seguito serve per mostrare come le informazioni estratte nella parte di "php" sono state integrate nella parte visibile della pagina. In generale si è sempre usato il sistema di interrompere il codice "html" richiamando il "tag" del "php" e di usare il comando "echo" per riportare le informazioni necessarie.\\
+\textcolor{black}{Il codice "html" riportato di seguito serve per mostrare come le informazioni estratte nella parte di "php" sono state integrate nella parte visibile della pagina. In generale si è sempre usato il sistema di interrompere il codice "html" richiamando il "tag" del "php" e di usare il comando "echo" per riportare le informazioni necessarie.}\\
 
 \begin{lstlisting}[language=html]
 	<!DOCTYPE html>
@@ -252,8 +253,8 @@ Il codice "html" riportato di seguito serve per mostrare come le informazioni es
 	</div>
 \end{lstlisting}
 
-Un problema che però si evidenzia a questo punto è che serve un sistema per poter nascondere la risposta al quesito, in modo da permettere l'esercizio. Questa cosa non la si può far se non con il "javascript" che permette lato "front-end" di animare le varie parti del "html".\\
-Qui di seguito è riportato lo "script" che è stato scritto per permettere questa funzionalità.\\
+\textcolor{black}{Un problema che però si evidenzia a questo punto è che serve un sistema per poter nascondere la risposta al quesito, in modo da permettere l'esercizio. Questa cosa non la si può far se non con il "javascript" che permette lato "front-end" di animare le varie parti del "html".\\
+Qui di seguito è riportato lo "script" che è stato scritto per permettere questa funzionalità.}\\
 
 \begin{lstlisting}[language=java]
 	<script>
@@ -279,11 +280,11 @@ Qui di seguito è riportato lo "script" che è stato scritto per permettere ques
 	</script>
 \end{lstlisting}
 
-La funzione "check" dichiarata nella parte di "scripting" viene evocata dal pulsante identificato come "revision", e permette di mostrare o di nascondere la parte in "html" contrassegnata come "anser". La quale inizialmente viene resa nascosta.\\
-Siccome ogni esercitazione viene generata nella parte di codice in "php" e che questa viene eseguita soltanto durante il caricamento della pagina, come ultima cosa è stata dichiarata una funzione che se invocata dal pulsante "nextPage" forza il "reloading" della pagina, generando di fatto (nelle modalità vista prima) una nuova esercitazione.\\
+\textcolor{black}{La funzione "check" dichiarata nella parte di "scripting" viene evocata dal pulsante identificato come "revision", e permette di mostrare o di nascondere la parte in "html" contrassegnata come "anser". La quale inizialmente viene resa nascosta.\\
+Siccome ogni esercitazione viene generata nella parte di codice in "php" e che questa viene eseguita soltanto durante il caricamento della pagina, come ultima cosa è stata dichiarata una funzione che se invocata dal pulsante "nextPage" forza il "reloading" della pagina, generando di fatto (nelle modalità vista prima) una nuova esercitazione.}\\
 
-Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione riferita sempre allo stesso tipo di domande. Incominciando come di consueto ad analizzare il codice in "php".
-\paragraph{Elementi di carteggio (esercitazione)}\leavevmode\\
+\textcolor{black}{Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione riferita sempre allo stesso tipo di domande. Incominciando come di consueto ad analizzare il codice in "php"}.
+\paragraph{\textcolor{black}{Elementi di carteggio (esercitazione)}}\leavevmode\\
 
 \begin{lstlisting}[language=php]
 	
@@ -370,9 +371,9 @@ Ora che è stata mostrata la simulazione, si vuole mostrare l'esercitazione rife
 	$answer5       = $tempArray['answer_5'];
 \end{lstlisting}
 
-Come si può leggere, anche in questo caso la prima cosa che viene fatta è sempre il controllo dell'utente (da questo punto non più riportato nei codici avvenire).  Poi nel caso di una nuova esercitazione viene instanziata una variabile di sessione che tiene il conto dell'indice della domanda corrente, in modo che durante il "reload" si possa accedere alla domanda successiva o alla precedente se è possibile. Si può notare che la variabile viene sempre instanziata con il valore di 1, questo perché per specifica le domande sono conteggiate a partire dal numero 1 e non dallo 0 come abitudine informatica.\\
+\textcolor{black}{Come si può leggere, anche in questo caso la prima cosa che viene fatta è sempre il controllo dell'utente (da questo punto non più riportato nei codici avvenire).  Poi nel caso di una nuova esercitazione viene instanziata una variabile di sessione che tiene il conto dell'indice della domanda corrente, in modo che durante il "reload" si possa accedere alla domanda successiva o alla precedente se è possibile. Si può notare che la variabile viene sempre instanziata con il valore di 1, questo perché per specifica le domande sono conteggiate a partire dal numero 1 e non dallo 0 come abitudine informatica.\\
 Saltata la parte che riguarda la gestione dei pulsanti perché di poco interesse, si mostra come in questo caso, non dovendo gestire più di una domanda si è preferito dichiarare tante variabili quante le informazioni necessarie, al posto di dichiarare un "array" come nel caso precedente.\\
-Lampante a questo punto sarà la semplicità con la quale le informazioni sono state riportate nella parte visibile della pagina. Ma siccome ancora non è stato mostrato il codice "html" tipico delle esercitazioni, anche in questo caso viene riportato nella sua interezza, per dar modo di comprendere questo aspetto.\\
+Lampante a questo punto sarà la semplicità con la quale le informazioni sono state riportate nella parte visibile della pagina. Ma siccome ancora non è stato mostrato il codice "html" tipico delle esercitazioni, anche in questo caso viene riportato nella sua interezza, per dar modo di comprendere questo aspetto.}\\
 
 \begin{lstlisting}[language=html]
 	<html lang="it" >
@@ -428,13 +429,13 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	</div>
 \end{lstlisting}
 
-La parte di "scripting" non viene riportata in quanto non presenta importanti differenze rispetto a quella mostrata in precedenza.\\
+\textcolor{black}{La parte di "scripting" non viene riportata in quanto non presenta importanti differenze rispetto a quella mostrata in precedenza.}\\
 
-Si analizzano ora le peculiarità della prova di carteggio.\\
+\textcolor{black}{Si analizzano ora le peculiarità della prova di carteggio.}\\
 
-\paragraph{Simulazione carteggio}\leavevmode\\
+\paragraph{\textcolor{black}{Simulazione carteggio}}\leavevmode\\
 
-L'unica cosa d'interesse in questo caso risiede nella gestione e presentazione di domande prese da due bacini differenti, ovvero, quelle sulla carta nautica "5D" e "42D". 
+\textcolor{black}{L'unica cosa d'interesse in questo caso risiede nella gestione e presentazione di domande prese da due bacini differenti, ovvero, quelle sulla carta nautica "5D" e "42D".}\\ 
 
 \begin{lstlisting}[language=php]
 	/*find course properties*/
@@ -592,14 +593,14 @@ L'unica cosa d'interesse in questo caso risiede nella gestione e presentazione d
 	
 	$totalQuestions = count($questions);
 \end{lstlisting}
-In generale (come si può notare) l'estrazione delle domande non avviene in modi differenti da quanto già visto. Si può osservare il fatto che per ogni tipo di domande è stato fatto un ciclo "while" con la logica identica a quanto visto prima. La scelta di un doppio ciclo potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come formato da due parti. Però un lavoro di rifinitura è stato fatto per quanto riguarda la memorizzazione delle risorse, infatti viene usato un solo "array" (al posto di due come si sarebbe portati a pensare) in modo da risparmiare spazio in memoria. Fa da discrimine tra i due tipi di domande il campo "is42d".\\
-Il resto del codice della pagina (come già anticipato) non presenta diversità degne di essere evidenziate.\\
+\textcolor{black}{In generale (come si può notare) l'estrazione delle domande non avviene in modi differenti da quanto già visto. Si può osservare il fatto che per ogni tipo di domande è stato fatto un ciclo "while" con la logica identica a quanto visto prima. La scelta di un doppio ciclo potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come formato da due parti. Però un lavoro di rifinitura è stato fatto per quanto riguarda la memorizzazione delle risorse, infatti viene usato un solo "array" (al posto di due come si sarebbe portati a pensare) in modo da risparmiare spazio in memoria. Fa da discrimine tra i due tipi di domande il campo "is42d".\\
+Il resto del codice della pagina (come già anticipato) non presenta diversità degne di essere evidenziate.}\\
 
-\paragraph{Carteggio 5D e 42D (esercitazione)}\leavevmode\\
-In questo caso le due pagine distinte di esercitazione sono state accorpate in un unico paragrafo siccome sono identiche tranne che per il fatto che puntano ad una categoria di domande differenti (distinte con la nomenclatura visibile nella parte di codice riportata della simulazione).\\
-Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" e quella in "javascrpit" debbano collaborare in modo tale che tramite quest'ultimo l'utente possa selezionare l'argomento tra quelli presenti nel database e la parte in "php" possa dunque caricare le domande rispetto all'argomento selezionato. Il passaggio d'informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url" dato che si sono avuti dei problemi con il funzionamento di "AJAX". Questo problema in particolare sarà affrontato più avanti con la presentazione di un caso nel quale l'uso di "AJAX" sarebbe stato particolarmente conveniente.Il codice per la gestione dei quesiti in tal senso è riportato inferiormente.\\
+\paragraph{\textcolor{black}{Carteggio 5D e 42D (esercitazione)}}\leavevmode\\
+\textcolor{black}{In questo caso le due pagine distinte di esercitazione sono state accorpate in un unico paragrafo siccome sono identiche tranne che per il fatto che puntano ad una categoria di domande differenti (distinte con la nomenclatura visibile nella parte di codice riportata della simulazione).\\
+Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" e quella in "javascrpit" debbano collaborare in modo tale che tramite quest'ultimo l'utente possa selezionare l'argomento tra quelli presenti nel database e la parte in "php" possa dunque caricare le domande rispetto all'argomento selezionato. Il passaggio d'informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url" dato che si sono avuti dei problemi con il funzionamento di "AJAX". Questo problema in particolare sarà affrontato più avanti con la presentazione di un caso nel quale l'uso di "AJAX" sarebbe stato particolarmente conveniente.Il codice per la gestione dei quesiti in tal senso è riportato inferiormente.}\\
 
-\textbf{Parte di codice php}\\
+\textbf{\textcolor{black}{Parte di codice php}}\\
 
 \begin{lstlisting}[language=php]
 /*---------- RETRIEVE URL TOPIC ----------*/
@@ -637,7 +638,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 }
 \end{lstlisting}
 
-\textbf{parte di codice html}. Per mostrare come è fatto il menu a tendina poi utilizzato con il "javascrpit".\\
+\textcolor{black}{\textbf{parte di codice html}. Per mostrare come è fatto il menu a tendina poi utilizzato con il "javascrpit".}\\
 
 \begin{lstlisting}[language=html]
 	 <input type="button" onclick="dropFunction()" class="dropbtn" name="dropdown" value="Seleziona capitolo">
@@ -656,7 +657,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 	?>			
 \end{lstlisting}
 
-\textbf{Parte di codice javascript}\\
+\textcolor{black}{\textbf{Parte di codice javascript}}\\
 
 \begin{lstlisting}[language=java]
 	<script type='text/javascript'>
@@ -705,15 +706,15 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 	</script>
 \end{lstlisting}
 
-Il codice presentato mette in evidenzia come il menu a tendina definito nella parte "html" e gestito con il "javascript" permette all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione dell'"url" fatto con l'ultima funzione definita in "javascript".\\
-La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a quello mostrato in precedenza.\\
+\textcolor{black}{Il codice presentato mette in evidenzia come il menu a tendina definito nella parte "html" e gestito con il "javascript" permette all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione dell'"url" fatto con l'ultima funzione definita in "javascript".\\
+La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a quello mostrato in precedenza.}\\
 
-Ora si passa ad osservare le parti salienti del codice della simulazione ed esercitazione per i quiz di base.\\
+\textcolor{black}{Ora si passa ad osservare le parti salienti del codice della simulazione ed esercitazione per i quiz di base.}\\
 
-\paragraph{Simulazione quiz base}\leavevmode\\
-Il codice che regola questa simulazione è più complesso rispetto ai precedenti, per questa prova bisogna selezionare (in base al regolamento) una certa quantità di domande in base all'argomento, ma per semplificare le tabelle del database, le domande sono state inserite tutte nella stessa tabella caratterizzate dall'argomento di appartenenza e dall'indice assoluto stabilito dal regolamento. Questa soluzione permette in generale una facilità maggiore in caso di aggiornamento delle domande.
+\paragraph{\textcolor{black}{Simulazione quiz base}}\leavevmode\\
+\textcolor{black}{Il codice che regola questa simulazione è più complesso rispetto ai precedenti, per questa prova bisogna selezionare (in base al regolamento) una certa quantità di domande in base all'argomento, ma per semplificare le tabelle del database, le domande sono state inserite tutte nella stessa tabella caratterizzate dall'argomento di appartenenza e dall'indice assoluto stabilito dal regolamento. Questa soluzione permette in generale una facilità maggiore in caso di aggiornamento delle domande.\\
 Però evidenzia come a livello di codice debba essere fatto del lavoro in più, dovendo in primo luogo estrarre per ogni argomento il "range" tra gli indicici in cui fare la selezione causale delle domande.\\
-Per questo motivo non verrà riportato tutto il codice, ma solo quello che mostra l'intera gestione di un singolo argomento, in modo da poter semplificare la lettura e la comprensione.\\
+Per questo motivo non verrà riportato tutto il codice, ma solo quello che mostra l'intera gestione di un singolo argomento, in modo da poter semplificare la lettura e la comprensione.}\\
 
 \begin{lstlisting}[language=php]
 	/*---------- EXTRACT QUESTIONS PROPERTIES ----------*/
@@ -824,8 +825,8 @@ Per questo motivo non verrà riportato tutto il codice, ma solo quello che mostr
 			++$temp;
 		}
 \end{lstlisting}
-Osservando questo codice si può notare che la logica di fondo non è stata stravolta ma è stata adeguata al specifico caso, infatti, come anche in precedenza, le domande sono state tutte inserite in un "array" comune e l'inserimento è stato fatto come di consueto alla fine dei cicli "while" annidati per poter risparmiare risorse. La novità principale di questo risiede nel sistema un pochino più complesso di selezione delle domande.\\
-Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavorare con le carte nautiche è facile commettere degli errori di misurazione meccanici) qui l'utente deve selezionare la risposta che ritiene giusta rispetto a tre risposte proposte. Viene quindi riportato inferiormente la parte di codice "html" che mostra come è stata costruita la visualizzazione delle domande.\\
+\textcolor{black}{Osservando questo codice si può notare che la logica di fondo non è stata stravolta ma è stata adeguata al specifico caso, infatti, come anche in precedenza, le domande sono state tutte inserite in un "array" comune e l'inserimento è stato fatto come di consueto alla fine dei cicli "while" annidati per poter risparmiare risorse. La novità principale di questo risiede nel sistema un pochino più complesso di selezione delle domande.\\
+Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavorare con le carte nautiche è facile commettere degli errori di misurazione meccanici) qui l'utente deve selezionare la risposta che ritiene giusta rispetto a tre risposte proposte. Viene quindi riportato inferiormente la parte di codice "html" che mostra come è stata costruita la visualizzazione delle domande.}\\
 
 \begin{lstlisting}[language=html]
 	<?php
@@ -908,8 +909,8 @@ Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavora
 	</div>
 \end{lstlisting}
 
-Per prima cosa sono state preparate in delle variabili le "stringhe di codice html" per ogni risposta in modo da poter poi successivamente riferirsi a queste in una forma più compatta e chiara. Successivamente c'è la parte di codice che effettivamente "stampa" le domande con le relative risposte (la fase di prima è propedeutica per evitare di complicare questa porzione). Si può notare che per raccogliere la risposta dell'utente si è usato l'oggetto "radio" (dei quali ne è selezionabile solo uno per domanda) rispetto ai classici pulsanti.\\ 
-Come di consueto la correzione del codice è delegata alla parte in "javascript", qui riportato inferiormente.\\
+\textcolor{black}{Per prima cosa sono state preparate in delle variabili le "stringhe di codice html" per ogni risposta in modo da poter poi successivamente riferirsi a queste in una forma più compatta e chiara. Successivamente c'è la parte di codice che effettivamente "stampa" le domande con le relative risposte (la fase di prima è propedeutica per evitare di complicare questa porzione). Si può notare che per raccogliere la risposta dell'utente si è usato l'oggetto "radio" (dei quali ne è selezionabile solo uno per domanda) rispetto ai classici pulsanti.\\ 
+Come di consueto la correzione del codice è delegata alla parte in "javascript", qui riportato inferiormente.}\\
 
 \begin{lstlisting}[language=java]
 	<script>
@@ -1055,16 +1056,16 @@ Come di consueto la correzione del codice è delegata alla parte in "javascript"
 		}
 		
 	}
-\end{lstlisting}
-\leavevmode\\
-In questo caso particolare, nella fase di preparazione della operazione di correzione è stato necessario passare delle informazione del "back-end" (quindi della parte di codice "php") nel "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni usando il sistema "JSON" al posto di "AJAX" che purtroppo, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si presuppone che siano le chiamate a sistema a fallire siccome durante le prove il terminale non riportava alcun errore, anzi, se attivate le stampe per il "debug" venivano riportati dei messaggi che comunicavano il fatto che le informazioni sono state passate correttamente, anche se alla fine ciò non risultava.\\
-Finita la fase di preparazione, si è passati ad oscurare tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata quindi scritta la funzione che si occupa di eseguire la correzione delle risposte date, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data qual'è la risposta corretta. In generale la correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettere V oppure F a seconda se la riposta adiacente sia vera oppure falsa e la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta scelta, in verde nel caso in cui l'utente abbia segnato la risposta giusta e in rosso nel caso contrario. Ogni risposta errata data farà aumentare il contatore degli errori, con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.\\
+\end{lstlisting}\leavevmode\\
 
-Osservata la simulazione passiamo ora ad analizzare la parte di esercitazione associata alla simulazione.\\
+\textcolor{black}{In questo caso particolare, nella fase di preparazione della operazione di correzione è stato necessario passare delle informazione del "back-end" (quindi della parte di codice "php") nel "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni usando il sistema "JSON" al posto di "AJAX" che purtroppo, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si presuppone che siano le chiamate a sistema a fallire siccome durante le prove il terminale non riportava alcun errore, anzi, se attivate le stampe per il "debug" venivano riportati dei messaggi che comunicavano il fatto che le informazioni sono state passate correttamente, anche se alla fine ciò non risultava.\\
+Finita la fase di preparazione, si è passati ad oscurare tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata quindi scritta la funzione che si occupa di eseguire la correzione delle risposte date, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data qual'è la risposta corretta. In generale la correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettere V oppure F a seconda se la riposta adiacente sia vera oppure falsa e la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta scelta, in verde nel caso in cui l'utente abbia segnato la risposta giusta e in rosso nel caso contrario. Ogni risposta errata data farà aumentare il contatore degli errori, con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.}\\
 
-\paragraph{Quiz base (esercitazione)}\leavevmode\\
-Rispetto a quanto visto prima in questa parte non ci sono parti nuove, se non il fatto che anche in questo caso si tiene il conto degli errori commessi. La problematica in questo caso sta sempre nella comunicazione tra "front-end" e "back-end", siccome è solo la parte del "javascript" che è in grado di verificare se durante la risposta (perché viene visualizzata una domanda per volta) sia stato commesso o meno un errore. La soluzione (come anche in passato) è stata quella di mettere in comunicazione questi due emisferi salvando dei parametri nell'"url", primo tra tutti il tipo di domande scelte come nel caso della esercitazione sulla prova di carteggio, date le problematica nel far funzionare "AJAX".\\
-Qui di seguito è riportato il codice in "php".\\
+\textcolor{black}{Osservata la simulazione passiamo ora ad analizzare la parte di esercitazione associata alla simulazione.}\\
+
+\paragraph{\textcolor{black}{Quiz base (esercitazione)}}\leavevmode\\
+\textcolor{black}{Rispetto a quanto visto prima in questa parte non ci sono parti nuove, se non il fatto che anche in questo caso si tiene il conto degli errori commessi. La problematica in questo caso sta sempre nella comunicazione tra "front-end" e "back-end", siccome è solo la parte del "javascript" che è in grado di verificare se durante la risposta (perché viene visualizzata una domanda per volta) sia stato commesso o meno un errore. La soluzione (come anche in passato) è stata quella di mettere in comunicazione questi due emisferi salvando dei parametri nell'"url", primo tra tutti il tipo di domande scelte come nel caso della esercitazione sulla prova di carteggio, date le problematica nel far funzionare "AJAX".\\
+Qui di seguito è riportato il codice in "php".}\\
 
 \begin{lstlisting}[language=php]
 /*---------- CATCH URL VARIABLES ----------*/
@@ -1100,8 +1101,8 @@ if($Array['topic'] !== null && $Array['topic'] !== $_SESSION['topic']){
 }
 \end{lstlisting}
 
-Si vuole fare osservare come nel codice appena mostrato vi è una funzionalità (implementata a livello di "php" con il "catch" dell'ultima risposta data trasmessa dal "javascript") che permette di tenere in sessione le risposte date in precedenza in modo da poter ricontrollare anche in un secondo momento che non sia quello della correzione. Il resto del codice in "php" non presente differenze sostanziali rispetto a quanto già potuto osservare, e anche il codice "html" è intuibile tenendo a mente quello scritto nel caso della simulazione.\\
-Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri inseriti nell'"url" e anche come vengono gestire le riposte date in precedenza.\\
+\textcolor{black}{Si vuole fare osservare come nel codice appena mostrato vi è una funzionalità (implementata a livello di "php" con il "catch" dell'ultima risposta data trasmessa dal "javascript") che permette di tenere in sessione le risposte date in precedenza in modo da poter ricontrollare anche in un secondo momento che non sia quello della correzione. Il resto del codice in "php" non presente differenze sostanziali rispetto a quanto già potuto osservare, e anche il codice "html" è intuibile tenendo a mente quello scritto nel caso della simulazione.\\
+Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri inseriti nell'"url" e anche come vengono gestire le riposte date in precedenza.}\\
 
 \begin{lstlisting}[language=java]
 	
@@ -1172,10 +1173,8 @@ Nel caso del "javascript" una cosa degna di essere mostrata sono i parametri ins
 		var parameters2 = new URLSearchParams(data2);
 		window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
 	}
-\end{lstlisting}
+\end{lstlisting}\leavevmode\\
+\textcolor{black}{Purtroppo anche in questo caso non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità poiché ritenute importanti. Come si può osservare, nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la correzione la risposta data in precedenza.\\
+Altra cosa qui mostrata perché degna di nota è come sono stati salvati tutti i paramatri nell'"url" in modo da poter essere poi ripresi dalla parte in "php".}\\
 
-\leavevmode\\
-Purtroppo anche in questo caso non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità poiché ritenute importanti. Come si può osservare, nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la correzione la risposta data in precedenza.\\
-Altra cosa qui mostrata perché degna di nota è come sono stati salvati tutti i paramatri nell'"url" in modo da poter essere poi ripresi dalla parte in "php".\\
-
-L'ultima parte del sito implementata, ovvero la simulazione e l'esercitazione dei quiz della vela non viene riportata, in quanto sulla base di quello che è stato mostrato finora sarebbe irrilevante, siccome ripetizione di logiche e di codice già visto. 
+\textcolor{black}{L'ultima parte del sito implementata, ovvero la simulazione e l'esercitazione dei quiz della vela non viene riportata, in quanto sulla base di quello che è stato mostrato finora sarebbe irrilevante, siccome ripetizione di logiche e di codice già visto.} 
