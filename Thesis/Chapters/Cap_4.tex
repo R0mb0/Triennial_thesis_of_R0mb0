@@ -192,7 +192,7 @@ public function getBody($linkToUse){
   \end{lstlisting}
   
  \textcolor{black}{ In pratica (dopo aver controllato la consistenza dei dati nel database) la mail di destinazione viene presa direttamente dal campo di testo della pagina, l'oggetto della mail da inviare è prelevato dal rispettivo metodo, mentre "l'url" che verrà usato nel corpo della mail (generato usando il metodo "getUrl") sarà l'unione del link base di accesso al sito con in aggiunta (come argomento "nell'url") la mail cifrata dell'utente stesso da usare per fare poi l'accesso al database dalla pagina di verifica della mail.\\
-  In particolare (come mostrato dal codice riportato inferiormente) per favorire questo processo, la pagina posizionata a livello di "root" non è quella di accesso, ma bensì una pagina che a seconda se "nell'url" con il quale si fa l'acceso al sito è presente un argomento o meno effettua un "redirect" alla giusta pagina.}\\
+ In particolare (come mostrato dal codice riportato inferiormente) per favorire questo processo, la pagina posizionata a livello di "root" non è quella di accesso, ma bensì una pagina che a seconda se "nell'url" con il quale si fa l'acceso al sito è presente un argomento o meno effettua un "redirect" alla giusta pagina.}\\
   
  \paragraph{\textcolor{black}{File index.php}}\leavevmode\\
   
@@ -279,7 +279,7 @@ public function getBody($linkToUse){
  \end{lstlisting}
  
  \textcolor{black}{Il funzionamento è il seguente,  prima di tutto viene verificato che l'operazione di verifica non sia stata fatta in passato, successivamente si aspetta che l'utente prema il pulsante di verifica per aggiornare il database.}\\
- 
+ \bigskip
  \textcolor{black}{A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
  Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà introdotto il codice "html" per mostrare come è strutturata la pagina.}\\
  
@@ -431,12 +431,12 @@ public function getBody($linkToUse){
   
   \textcolor{black}{Nella parte in "html" della pagina si possono notare i vari oggetti che sono stati istanziati per essere poi interagiti tramite la parte in "php".\\
   	 Da questo momento in poi, raramente verrà incluso il codice "html" delle pagine siccome quest'ultimo non varia molto. Verranno invece evidenziate soltanto le parti degne di nota.}\\
-  
+  \bigskip
   \textcolor{black}{Vista ora la pagina di registrazione, si può procedere con l'analisi della pagina di accesso.}\\
   
   \paragraph{\textcolor{black}{main.php}}\leavevmode\\
   
-  \textcolor{black}{In questa pagina si può evincere che durante l'intero sviluppo della applicazione web è stata prestata particolare attenzione alla scrittura di un codice efficiente in modo non solo di poter risparmiare risorse sul "RaspberryPi" ma anche con l'intento di rendere la navigazione più "responsive". Si è cercato di ridurre al minimo le interazioni tra "server" e "client" con l'intento di alleggerire il costo delle varie connessioni in modo da garantire a più utenti una esperienza di navigazione soddisfacente. Nel caso specifico di questa pagina (il cui codice è riportato) la gestione dei veri avvisi è stata fatta utilizzando lo "switch" rispetto ad una serie di "if" in cascata, tenendo presente che il comportamento del sito non sarebbe cambiato a prescindere dall'uso di uno dei due sistemi. ma in questo modo si è visto (utilizzando l'applicazione "\href{https://htop.dev/}{HTOP}") che l'accesso al sito pesava meno sul "core" della macchina che è stato scelto dal sistema operativo per elaborare la richiesta.}\\
+  \textcolor{black}{Nel codice di questa pagina si può notare che durante l'intero sviluppo della applicazione web è stata prestata particolare attenzione alla scrittura di un codice efficiente in modo non solo di poter risparmiare risorse sul "RaspberryPi" ma anche con l'intento di rendere la navigazione più "responsive". Si è cercato di ridurre al minimo le interazioni tra "server" e "client" con l'intento di alleggerire il costo delle varie connessioni in modo da garantire a più utenti una esperienza di navigazione soddisfacente. Nel caso specifico di questa pagina (il cui codice è riportato) la gestione dei veri avvisi è stata fatta utilizzando lo "switch" rispetto ad una serie di "if" in cascata, tenendo presente che il comportamento del sito non sarebbe cambiato a prescindere dall'uso di uno dei due sistemi. ma in questo modo si è visto (utilizzando l'applicazione "\href{https://htop.dev/}{HTOP}") che l'accesso al sito pesava meno sul "core" della macchina che è stato scelto dal sistema operativo per elaborare la richiesta.}\\
   
  \begin{lstlisting}[language=php]
  /*reset latest connection*/
