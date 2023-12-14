@@ -283,6 +283,8 @@ public function getBody($linkToUse){
  \textcolor{black}{A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
  Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà introdotto il codice "html" per mostrare come è strutturata la pagina.}\\
  
+ %% Insert verification mail page here %%
+ 
  \paragraph{\textcolor{black}{registration.php}}\leavevmode\\
  
  \begin{lstlisting}[language=php]
@@ -431,7 +433,14 @@ public function getBody($linkToUse){
   
   \textcolor{black}{Nella parte in "html" della pagina si possono notare i vari oggetti che sono stati istanziati per essere poi interagiti tramite la parte in "php".\\
   	 Da questo momento in poi, raramente verrà incluso il codice "html" delle pagine siccome quest'ultimo non varia molto. Verranno invece evidenziate soltanto le parti degne di nota.}\\
-  \bigskip
+  
+ \begin{figure}[h]
+ 	\begin{center}
+ 		\includegraphics[scale=0.25]{Sites-images/03-Pagina_di_registrazione.png}
+ 		\caption{Pagina di registrazione.}
+ 	\end{center}
+ \end{figure}
+  
   \textcolor{black}{Vista ora la pagina di registrazione, si può procedere con l'analisi della pagina di accesso.}\\
   
   \paragraph{\textcolor{black}{main.php}}\leavevmode\\
@@ -553,6 +562,14 @@ public function getBody($linkToUse){
 	}
 \end{lstlisting}
 
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.25]{Sites-images/01-Home_sito.png}
+		\caption{Pagina d'accesso.}
+	\end{center}
+\end{figure}
+
+\subsection{Pagina di manutenzione}
 \textcolor{black}{Finora è stata mostrata la registrazione e l'autenticazione dell'utente, ma nel sito è anche disponibile una pagina (della quale si riporta inferiormente il codice in "php") che permette la manutenzione dell'account ("on-fly").}\\
 
 \paragraph{\textcolor{black}{maintenance.php}}\leavevmode\\
@@ -652,3 +669,10 @@ public function getBody($linkToUse){
 La non presenza di una sessione con tanto di pagina di "atterraggio" dove effettuare le operazioni di gestione dell'account previene questo tipo di attacchi.\\
 Come si può leggere da codice, questa pagina mette a disposizione due principali operazioni: quella di farsi mandare nuovamente la mail per la verifica dell'utente e la possibilità di poter cancellare l'account.\\
 A questo punto si desidera presentare come la scelta progettuale fatta risulti particolarmente efficace. Supponendo che un utente volesse fare il rinvio della mail di verifica, questa operazione implicherebbe che la mail dell'utente debba rimanere in sessione (dopo aver effettuato l'acceso) in modo che la pagina di manutenzione possa completare l'operazione con la conseguenza di dover tenere in sessione una informazione sensibile. Per questo motivo le operazioni "on-fly" (quindi con ri-autenticazione) offrono un margine di sicurezza maggiore.}\\
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.25]{Sites-images/02-Pagina_di_manutenzione.png}
+		\caption{Pagina di manutenzione.}
+	\end{center}
+\end{figure}
