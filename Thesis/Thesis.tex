@@ -36,7 +36,9 @@
 %%% Defining syntax highlighting %%%
 
 %% Defien colors
-\definecolor{comment}{HTML}{FF8000}
+%% Colore giallo per i commenti: EDC31B
+%\definecolor{comment}{HTML}{FF8000}
+\definecolor{comment}{HTML}{EDC31B}
 \definecolor{text}{HTML}{000000}
 \definecolor{background}{HTML}{F0F0F0}
 
@@ -46,7 +48,8 @@
 %Colors
 \definecolor{PHP_keyword}{HTML}{6c9c11}
 \definecolor{PHP_emph1}{HTML}{0F58A2}
-\definecolor{PHP_emph2}{HTML}{CCAA00}
+%\definecolor{PHP_emph2}{HTML}{CCAA00}
+\definecolor{PHP_emph2}{HTML}{2EB62C}
 \definecolor{PHP_emph4}{HTML}{C60484}
 \definecolor{PHP_string}{HTML}{C78F0A}
 \definecolor{PHP_variable}{HTML}{C82210}%C82210
@@ -336,7 +339,8 @@ keywordstyle    =\color{blue}\bfseries,
 },
 ndkeywordstyle  =\color{HTML_keyword}\bfseries,
 morecomment     =[s]{<!--}{-->},
-commentstyle    =\color{darkgray}\ttfamily,
+%commentstyle    =\color{darkgray}\ttfamily,
+commentstyle    =\color{comment}\ttfamily,
 tag             =[s]
 %design
 backgroundcolor =\color{background},
@@ -379,7 +383,8 @@ identifierstyle=\color{black},
 comment=[l]{//},
 morecomment=[s]{/*}{*/},
 morecomment=[s]{<!--}{-->},
-commentstyle=\color{purple}\ttfamily,
+%commentstyle=\color{purple}\ttfamily,
+commentstyle=\color{comment}\ttfamily,
 stringstyle=\color{red}\ttfamily,
 morestring=[b]',
 morestring=[b]",
