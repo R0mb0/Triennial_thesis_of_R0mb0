@@ -1,6 +1,3 @@
-\raggedright
-\textcolor{black}{Supponendo che non vi siano problemi e che l'autenticazione avvenga senza difficoltà, si accede quindi alle pagine che erogano il servizio per cui è stato sviluppato il sito .\\
-La pagina di selezione delle varie esercitazioni disponibili non presenta molte cose da commentare, tranne il fatto che questa pagina amministra la sessione, controllando e impostando le variabili utilizzate dalle pagine delle esercitazioni.}
 
 \subsection{Pagina di selezione dei corsi}
 
@@ -43,7 +40,7 @@ La pagina di selezione delle varie esercitazioni disponibili non presenta molte 
 \raggedright
 \textcolor{black}{Dal codice incluso si può notare come vengono controllate le variabili di sessione in modo che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. Questa operazione può risultare contraddittoria rispetto alla gestione dell'utente prima presentata (dove si affermava che fosse pericoloso tenere in sessione i dati sensibili), ma si desidera far notare che i dati non sono in "chiaro" (condizione comune nel caso contrapposto, basti pensare al passaggio in chiaro dell'indice utente all'interno del database per evitare di gestire le credenziali), e che inoltre lo "spoofing" non rappresenterebbe un problema, in quanto nel caso peggiore qualcuno potrebbe accedere alle esercitazioni con le  credenziali di un'altra persona, ma ciò senza la possibilità di interagire con le credenziali dell'utente.}\\
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/07-Home_accesso_alle_prove.png}
 		\caption{Pagina di selezione dei corsi.}
@@ -299,7 +296,9 @@ Si riportata lo "script" che è stato scritto per risolvere il problema.}\\
 Siccome ogni esercitazione viene organizzata nella parte di codice in "php", eseguita soltanto durante il caricamento della pagina, come ultima cosa è stata dichiarata una funzione invocata dal pulsante "nextPage" per forzare il "reloading" della pagina, generando di fatto (nelle modalità vista prima) una nuova esercitazione.}\\
 \vspace*{2mm}
 \textcolor{black}{Finito di presentare il codice della simulazione, si desidera procedere con quello dell'esercitazione riferita sempre allo stesso tipo di domande. Incominciando ad analizzare il codice in "php"}.
-%\vspace*{-0.cm}
+
+%\vspace*{-0cm}
+
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/12-Simulazione_elementi_di_carteggio.png}
@@ -460,24 +459,34 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	</div>
 \end{lstlisting}
 
-\raggedright
-\textcolor{black}{La parte di "scripting" non viene riportata poiché simile a quella precedente.}\\
-\bigskip
+\begin{minipage}{\textwidth}
+%	\vspace*{-9cm}
+	\raggedright
+	\textcolor{black}{La parte di "scripting" non viene riportata poiché simile a quella precedente.}\\
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+	%\vspace*{-2cm}
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/14-Elementi_di_carteggio.png}
+			\caption{Pagina degli elementi di carteggio.}
+		\end{center}
+	\end{figure}
+\end{minipage}
+
+\newpage
+
+\begin{minipage}{\textwidth}
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/15-Elementi_di_carteggio-con_soluzioni.png}
+			\caption{Pagina degli elementi di carteggio con soluzioni.}
+		\end{center}
+	\end{figure}
+\end{minipage}
+
 \textcolor{black}{Si analizzano ora le peculiarità della prova di carteggio.}\\
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/14-Elementi_di_carteggio.png}
-		\caption{Pagina degli elementi di carteggio.}
-	\end{center}
-\end{figure}
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/15-Elementi_di_carteggio-con_soluzioni.png}
-		\caption{Pagina degli elementi di carteggio con soluzioni.}
-	\end{center}
-\end{figure}
 
 \paragraph{\textcolor{black}{Simulazione carteggio}}\leavevmode\\
 
@@ -639,31 +648,39 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	
 	$totalQuestions = count($questions);
 \end{lstlisting}
-\textcolor{black}{In generale l'estrazione delle domande non avviene in modi differenti rispetto a quanto presentato in passato. Si può osservare che per ogni tipo di domande è stato fatto un ciclo "while" con la stessa logica del precedente. In questo caso la scelta di un doppio ciclo (uno per ogni insieme di domande) potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come diviso in due parti. Però si è comunque cercato di rendere il codice efficiente usando un solo "array" (al posto di due come si sarebbe portati a pensare) per memorizzare tutte le domande estratte, in modo da risparmiare spazio in memoria. Il campo "is42d" permette di distinguere tra i due tipi di domande.\\
-Il resto del codice della pagina non presenta ulteriori diversità.}\\
 
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/16-Simulazione_carteggio1.png}
+\begin{minipage}{\textwidth}
+	
+	\vspace*{-12cm}
+	
+	\textcolor{black}{In generale l'estrazione delle domande non avviene in modi differenti rispetto a quanto presentato in passato. Si può osservare che per ogni tipo di domande è stato fatto un ciclo "while" con la stessa logica del precedente. In questo caso la scelta di un doppio ciclo (uno per ogni insieme di domande) potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come diviso in due parti. Però si è comunque cercato di rendere il codice efficiente usando un solo "array" (al posto di due come si sarebbe portati a pensare) per memorizzare tutte le domande estratte, in modo da risparmiare spazio in memoria. Il campo "is42d" permette di distinguere tra i due tipi di domande.\\
+		Il resto del codice della pagina non presenta ulteriori diversità.}\\
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/16-Simulazione_carteggio1.png}
 			\includegraphics[scale=0.25]{Sites-images/17-Simulazione_carteggio2.png}
-		\caption{Pagina di simulazione del carteggio.}
-		(Ricomposta)
-	\end{center}
-\end{figure}
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/18-Simulazione_carteggio-con_soluzioni1.png}
-		\includegraphics[scale=0.25]{Sites-images/19-Simulazione_carteggio-con_soluzioni2.png}
-		\caption{Pagina di simulazione del carteggio con soluzioni.}
-		(Ricomposta)
-	\end{center}
-\end{figure}
+			\caption{Pagina di simulazione del carteggio.}
+			(Ricomposta)
+		\end{center}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/18-Simulazione_carteggio-con_soluzioni1.png}
+			\includegraphics[scale=0.25]{Sites-images/19-Simulazione_carteggio-con_soluzioni2.png}
+			\caption{Pagina di simulazione del carteggio con soluzioni.}
+			(Ricomposta)
+		\end{center}
+	\end{figure}
+\end{minipage}
 
 \paragraph{\textcolor{black}{Carteggio 5D e 42D (esercitazione)}}\leavevmode\\
 \textcolor{black}{Durante la spiegazione di questa parte, sono state accorpate le due pagine distinte per l'esercitazione nelle due categorie di domande, siccome risultano identiche tranne per il tipo di domande puntate.\\
 Le domande presenti in questa sezione sono divisibili per argomenti, motivo per cui all'inizio della esercitazione viene chiesto di quale argomento caricare le domande. Questo tipo di gestione comporta che la parte di codice in "php" debba collaborale con quella in "javascrpit" in modo tale che tramite quest'ultima l'utente possa selezionare l'argomento tra quelli presenti nel database e che la parte in "php" possa dunque caricare le domande richieste. Il passaggio delle informazioni tra il "front-end" ed il "back-end" è fatto attraverso l'impostazione di argomenti nel "url", siccome ci sono dei problemi con il funzionamento di "AJAX". Questo aspetto sarà affrontato più avanti con la presentazione di un caso nel quale l'uso di "AJAX" sarebbe stato particolarmente conveniente.\\
-Il codice per la gestione delle domande è riportato inferiormente.}\\
+Il codice per la gestione delle domande è riportato inferiormente.}\newline 
 
 \textbf{\textcolor{black}{Parte di codice php}}\\
 
@@ -703,7 +720,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 }
 \end{lstlisting}
 
-\textcolor{black}{\textbf{parte di codice html}. Per mostrare come è fatto il menu a tendina poi utilizzato con il "javascrpit".}\\
+\textcolor{black}{\textbf{Parte di codice html}. \\Per mostrare com'è fatto il menu a tendina poi utilizzato con il "javascrpit".}\\
 
 \begin{lstlisting}[language=html]
 	 <input type="button" onclick="dropFunction()" class="dropbtn" name="dropdown" value="Seleziona capitolo">
@@ -771,28 +788,34 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 	</script>
 \end{lstlisting}
 
-\raggedright
-\textcolor{black}{Nel codice riportato si può vedere come il menu a tendina definito nella parte "html" e gestito con il "javascript" permetta all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione "dell'url" fatto con l'ultima funzione definita in "javascript".\\
-La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a casi precedenti.}\\
+\begin{minipage}{\textwidth}
+	\vspace*{-19cm}
+	\raggedright
+	\textcolor{black}{Nel codice riportato si può vedere come il menu a tendina definito nella parte "html" e gestito con il "javascript" permetta all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione "dell'url" fatto con l'ultima funzione definita in "javascript".\\
+	La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a casi precedenti.}\\
+\end{minipage}
 
-\begin{center}
-	\textbf{Esempio delle pagine del carteggio sulla carta 5d.}
-\end{center}
-
-\begin{figure}[H]
+\begin{minipage}{\textwidth}
 	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/20-Carteggio_5d.png}
-		\caption{Pagina di carteggio sulla carta 5d.}
+		\textbf{Esempio delle pagine del carteggio sulla carta 5d.}
 	\end{center}
-\end{figure}
-\vspace*{-2.5cm}
-\begin{figure}[H]
-	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/21-Carteggio_5d_Selezione.png}
-		\caption{Pagina di carteggio sulla carta 5d con selezione.}
-	\end{center}
-\end{figure}
+	
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/20-Carteggio_5d.png}
+			\caption{Pagina di carteggio sulla carta 5d.}
+		\end{center}
+	\end{figure}
+	
+	\begin{figure}[H]
+		\begin{center}
+			\includegraphics[scale=0.25]{Sites-images/21-Carteggio_5d_Selezione.png}
+			\caption{Pagina di carteggio sulla carta 5d con selezione.}
+		\end{center}
+	\end{figure}
+\end{minipage}
 
+\begin{minipage}{\textwidth}
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/22-Carteggio_5d_Domanda.png}
@@ -806,6 +829,8 @@ La gestione delle domande caricate in base all'argomento è deducibile in quanto
 		\caption{Pagina di carteggio sulla carta 5d con la risposta.}
 	\end{center}
 \end{figure}
+\end{minipage}
+
 
 \textcolor{black}{Ora si passa alla presentazione delle parti salienti del codice della simulazione ed esercitazione per i quiz di base.}\\
 
@@ -1159,11 +1184,11 @@ La correzione del codice è delegata alla parte in "javascript", qui riportato i
 	}
 \end{lstlisting}\leavevmode\\
 
-\textcolor{black}{In questa situazione, nella fase di preparazione dell'operazione di correzione è stato necessario passare delle informazione dal "back-end" (quindi della parte di codice "php") al "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni tramite il sistema "JSON" al posto di "AJAX" che, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si pensa che siano le chiamate a sistema a fallire siccome durante le prove, il terminale non riportava alcun errore, anzi, se si attivavano le stampe per il "debug" venivano visualizzati dei messaggi che comunicavano esito positivo, anche se alla fine ciò non risultava.\\
-Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata scritta la funzione che si occupa di eseguire la correzione delle risposte, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data e quella corretta. La correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettera V oppure F a seconda se la riposta adiacente sia vera oppure falsa, la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta, in verde nel caso in cui l'utente abbia scelto la risposta giusta e in rosso nel caso contrario. Ogni risposta errata farà aumentare il contatore degli errori con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.}\\
+\textcolor{black}{Nella fase di preparazione dell'operazione di correzione è stato necessario passare delle informazione dal "back-end" (quindi della parte in "php") al "front-end" (ovvero la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni tramite il sistema "JSON" al posto di "AJAX" che si presuppone non aver  funzionato a causa del fallimento delle chiamate a sistema, siccome durante le prove, il terminale non riportava alcun errore, anzi, se si attivavano le stampe per il "debug" venivano visualizzati dei messaggi che comunicavano esito positivo, anche se alla fine ciò non risultava.\\
+Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata scritta la funzione per la correzione delle risposte, in questo caso una funzionalità importante è quella di mostrare la risposta data e quella corretta. La correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettera V oppure F a seconda se la riposta adiacente sia vera oppure falsa, la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta, in verde nel caso in cui l'utente abbia scelto la risposta giusta e in rosso nel caso contrario. Ogni risposta errata farà aumentare il contatore degli errori con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il
+superamento della prova viene fatta comparire alla fine della correzione.}\\
 
 \begin{minipage}{\textwidth}
-
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.22]{Sites-images/28-Simulazione_quiz_base1.png}
@@ -1175,7 +1200,9 @@ Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che
 		(Ricomposta)
 	\end{center}
 \end{figure}
+\end{minipage}
 
+\begin{minipage}{\textwidth}
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.22]{Sites-images/33-Simulazione_quiz_base-risposte1.png}
@@ -1187,8 +1214,7 @@ Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che
 		(Ricomposta)
 	\end{center}
 \end{figure}
-
-
+\end{minipage}
 
 \textcolor{black}{Osservata la simulazione si analizza ora la parte di esercitazione associata alla simulazione.}\\
 
@@ -1302,10 +1328,13 @@ Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri
 		var parameters2 = new URLSearchParams(data2);
 		window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
 	}
-\end{lstlisting}\leavevmode\\
-\textcolor{black}{Purtroppo anche in questa situazione non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità ritenute importanti.\\
-Nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la risposta data in precedenza.\\
-Altra cosa qui mostrata è come sono stati salvati tutti i paramatri "nell'url" in modo da poter essere poi ripresi dalla parte in "php".}\\
+\end{lstlisting}
+\begin{minipage}{\textwidth}
+	\vspace*{-11cm}
+	\textcolor{black}{Purtroppo anche in questa situazione non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità ritenute importanti.\\
+	Nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la risposta data in precedenza.\\
+	Altra cosa qui mostrata è come sono stati salvati tutti i paramatri "nell'url" in modo da poter essere poi ripresi dalla parte in "php".}\\
+\end{minipage}
 
 \begin{minipage}{\textwidth}
 \begin{figure}[H]
@@ -1328,6 +1357,10 @@ Altra cosa qui mostrata è come sono stati salvati tutti i paramatri "nell'url" 
 		\caption{Pagina dei quiz base con domanda.}
 	\end{center}
 \end{figure}
+
+\end{minipage}
+
+\begin{minipage}{\textwidth}
 
 \begin{figure}[H]
 	\begin{center}
