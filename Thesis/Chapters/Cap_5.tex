@@ -1,3 +1,4 @@
+\raggedright
 \textcolor{black}{Supponendo che non vi siano problemi e che l'autenticazione avvenga senza difficoltà, si accede quindi alle pagine che erogano il servizio per cui è stato sviluppato il sito .\\
 La pagina di selezione delle varie esercitazioni disponibili non presenta molte cose da commentare, tranne il fatto che questa pagina amministra la sessione, controllando e impostando le variabili utilizzate dalle pagine delle esercitazioni.}
 
@@ -39,6 +40,7 @@ La pagina di selezione delle varie esercitazioni disponibili non presenta molte 
 	}
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Dal codice incluso si può notare come vengono controllate le variabili di sessione in modo che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. Questa operazione può risultare contraddittoria rispetto alla gestione dell'utente prima presentata (dove si affermava che fosse pericoloso tenere in sessione i dati sensibili), ma si desidera far notare che i dati non sono in "chiaro" (condizione comune nel caso contrapposto, basti pensare al passaggio in chiaro dell'indice utente all'interno del database per evitare di gestire le credenziali), e che inoltre lo "spoofing" non rappresenterebbe un problema, in quanto nel caso peggiore qualcuno potrebbe accedere alle esercitazioni con le  credenziali di un'altra persona, ma ciò senza la possibilità di interagire con le credenziali dell'utente.}\\
 
 \begin{figure}[h]
@@ -48,6 +50,7 @@ La pagina di selezione delle varie esercitazioni disponibili non presenta molte 
 	\end{center}
 \end{figure}
 
+\raggedright
 \textcolor{black}{Ora in ordine di rilevanza verranno presentati i file di ogni esercitazione, mettendo in evidenza le peculiarità di ognuno. I primi file saranno riportati maggiormente nella loro interezza in modo da esplicitare il metodo con il quale è stata condotta la costruzione dei restanti. Degli ultimi si riporteranno solo le parti salienti.}\\
 
 \subsection{Presentazione delle pagine dei corsi}
@@ -171,6 +174,7 @@ La pagina di selezione delle varie esercitazioni disponibili non presenta molte 
 	$_SESSION['numbers'] = $indexNumbers;
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Una delle prime operazioni che vengono svolte è il controllo dell'utente, per evitare l'accesso non autorizzato al servizio. Da notare inoltre che grazie alla variabile di sessione "permission" si garantisce che l'utente non venga espulso nel caso in cui ricarichi la pagina.\\
 Successivamente si procede estraendo dal database le proprietà della simulazione, come il numero di domande da somministrare e il numero di errori massimi da poter commettere. Successivamente viene fatto il calcolo del numero delle domande presenti nel database in modo da poter stabilire il "range" per la selezione causale delle domande da presentare. Il fatto di contare ogni volta le domande presenti nel database garantisce che ogni nuova domanda inserita sia subito disponibile senza fare ulteriori aggiornamenti. Di conseguenza risulta semplificato il mantenimento e aggiornamento del database.\\
 A questo punto si estraggono casualmente i vari indici delle domande da presentare. Questa operazione viene fatta con un ciclo "while" annidato che prosegue fino a che non siano stati generati senza ripetizioni (anche nei confronti dell'ultima esercitazione fatta) tutti gli indici richiesti. Per cercare di tenere alto il livello di efficienza delle operazioni l'ultima parte del ciclo "while" si compone della estrazione ed inserimento in un "array" delle domande permettendo di non dover svolgere un ulteriore ciclo.}\\
@@ -264,16 +268,15 @@ A questo punto si estraggono casualmente i vari indici delle domande da presenta
 	</div>
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Un problema che si solleva a questo punto dello sviluppo è la creazione di un sistema che permetta di nascondere la risposta del quesito, permettendo quindi l'esercizio. Questa cosa è realizzabile solo con il "javascript" che permette lato "front-end" di animare le varie parti del "html".\\
 Si riportata lo "script" che è stato scritto per risolvere il problema.}\\
 
 \begin{lstlisting}[language=java]
 	<script>
-	
 	/*hide elements at the beginning*/
 	var x = document.getElementById("answer");
 	x.style.display = "none";
-	
 	/*show elements when the button is clicked*/
 	function check(){
 		var x = document.getElementById("answer");
@@ -291,19 +294,20 @@ Si riportata lo "script" che è stato scritto per risolvere il problema.}\\
 	</script>
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{La funzione "check" viene evocata dal pulsante identificato come "revision" e permette di mostrare o di nascondere la parte in "html" contrassegnata come "answer" (inizialmente nascosta).\\
 Siccome ogni esercitazione viene organizzata nella parte di codice in "php", eseguita soltanto durante il caricamento della pagina, come ultima cosa è stata dichiarata una funzione invocata dal pulsante "nextPage" per forzare il "reloading" della pagina, generando di fatto (nelle modalità vista prima) una nuova esercitazione.}\\
-\bigskip
+\vspace*{2mm}
 \textcolor{black}{Finito di presentare il codice della simulazione, si desidera procedere con quello dell'esercitazione riferita sempre allo stesso tipo di domande. Incominciando ad analizzare il codice in "php"}.
-
-\begin{figure}[h]
+%\vspace*{-0.cm}
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/12-Simulazione_elementi_di_carteggio.png}
 		\caption{Pagina della simulazione elementi di carteggio.}
 	\end{center}
 \end{figure}
-
-\begin{figure}[h]
+\vspace*{-1cm}
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/13-Simulazione_elementi_di_carteggio-con_soluzioni.png}
 		\caption{Pagina della simulazione elementi di carteggio con le soluzioni.}
@@ -397,6 +401,7 @@ Siccome ogni esercitazione viene organizzata nella parte di codice in "php", ese
 	$answer5       = $tempArray['answer_5'];
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Anche in questo caso la prima cosa che viene fatta è sempre il controllo dell'utente (da questo punto non più riportato nelle parti di codice successive).  Durante la generazione di una nuova esercitazione viene scritta una variabile di sessione con l'indice della domanda corrente, in modo che dopo il "reload" si possa accedere alla domanda successiva o alla precedente se è possibile (cioè a meno di non trovarsi agli estremi della lista di domande). Durante il primo accesso all'esercitazione la varaibile viene sempre instanziata con il valore di 1, siccome per specifica le domande sono conteggiate a partire dal numero 1 e non dallo 0 come abitudine informatica.\\
 Saltata la parte che riguarda la gestione dei pulsantisi mostra come in questo caso, non dovendo gestire più di una domanda per volta,  si sia preferito dichiarare tante variabili quante le informazioni necessarie, al posto di dichiarare un "array" come nel caso precedente.\\
 Lampante a questo punto sarà la semplicità con la quale le informazioni sono state riportate nella parte visibile della pagina. Dato che non è stato mostrato prima il codice "html" tipico delle esercitazioni, anche in questo caso viene riportato nella sua interezza, per dar modo di comprendere questo aspetto.}\\
@@ -455,6 +460,7 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	</div>
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{La parte di "scripting" non viene riportata poiché simile a quella precedente.}\\
 \bigskip
 \textcolor{black}{Si analizzano ora le peculiarità della prova di carteggio.}\\
@@ -765,6 +771,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 	</script>
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Nel codice riportato si può vedere come il menu a tendina definito nella parte "html" e gestito con il "javascript" permetta all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione "dell'url" fatto con l'ultima funzione definita in "javascript".\\
 La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a casi precedenti.}\\
 
@@ -772,28 +779,28 @@ La gestione delle domande caricate in base all'argomento è deducibile in quanto
 	\textbf{Esempio delle pagine del carteggio sulla carta 5d.}
 \end{center}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/20-Carteggio_5d.png}
 		\caption{Pagina di carteggio sulla carta 5d.}
 	\end{center}
 \end{figure}
-
-\begin{figure}[h]
+\vspace*{-2.5cm}
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/21-Carteggio_5d_Selezione.png}
 		\caption{Pagina di carteggio sulla carta 5d con selezione.}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/22-Carteggio_5d_Domanda.png}
 		\caption{Pagina di carteggio sulla carta 5d con la domanda.}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/23-Carteggio_5d_Risposta.png}
 		\caption{Pagina di carteggio sulla carta 5d con la risposta.}
@@ -804,6 +811,7 @@ La gestione delle domande caricate in base all'argomento è deducibile in quanto
 
 \paragraph{\textcolor{black}{Simulazione quiz base}}\leavevmode\\
 
+\raggedright
 \textcolor{black}{Il codice che amministra questa simulazione è più complesso rispetto ai precedenti, per questa prova bisogna selezionare (in base al regolamento) una certa quantità di domande per ogni argomento ma per semplificare il database, le domande sono state inserite tutte nella stessa tabella e sono distinguibili attraverso l'argomento di appartenenza e dall'indice assoluto stabilito dal regolamento. Questa soluzione permette una manutenzione facilitata in caso di aggiornamento delle domande.\\
 Però rende il codice più complesso, dovendo in primo luogo estrarre per ogni argomento il "range" tra gli indicici in cui fare la selezione causale delle domande.\\
 Per questo motivo non verrà riportato tutto il codice, ma solo quello che mostra l'intera gestione delle domande di un singolo argomento, in modo da poter semplificare la lettura e la comprensione.}\\
@@ -1001,6 +1009,7 @@ Rispetto al passato dove la risposta alle domande era aperta (siccome nel lavora
 	</div>
 \end{lstlisting}
 
+\raggedright
 \textcolor{black}{Per prima cosa sono state preparate in delle variabili le "stringhe di codice html" per ogni risposta, in modo da riferirsi successivamente a queste in una forma più compatta e chiara. Vi è la parte di codice che effettivamente "stampa" le domande con le relative risposte (la fase di prima è propedeutica per evitare di complicare questa porzione). Per raccogliere la risposta dell'utente si è usato l'oggetto "radio" (dei quali ne è selezionabile solo uno per domanda) rispetto ai classici pulsanti.\\ 
 La correzione del codice è delegata alla parte in "javascript", qui riportato inferiormente.}\\
 
@@ -1153,29 +1162,33 @@ La correzione del codice è delegata alla parte in "javascript", qui riportato i
 \textcolor{black}{In questa situazione, nella fase di preparazione dell'operazione di correzione è stato necessario passare delle informazione dal "back-end" (quindi della parte di codice "php") al "front-end" (in questo caso la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni tramite il sistema "JSON" al posto di "AJAX" che, si presuppone a causa di alcune chiamate a sistema sbagliate, non ha mai funzionato. Si pensa che siano le chiamate a sistema a fallire siccome durante le prove, il terminale non riportava alcun errore, anzi, se si attivavano le stampe per il "debug" venivano visualizzati dei messaggi che comunicavano esito positivo, anche se alla fine ciò non risultava.\\
 Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata scritta la funzione che si occupa di eseguire la correzione delle risposte, in questo caso una caratteristica fondamentale è quella di mostrare la risposta data e quella corretta. La correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettera V oppure F a seconda se la riposta adiacente sia vera oppure falsa, la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta, in verde nel caso in cui l'utente abbia scelto la risposta giusta e in rosso nel caso contrario. Ogni risposta errata farà aumentare il contatore degli errori con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.}\\
 
-\begin{figure}[h]
+\begin{minipage}{\textwidth}
+
+\begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/28-Simulazione_quiz_base1.png}
-		\includegraphics[scale=0.25]{Sites-images/29-Simulazione_quiz_base2.png}
-		\includegraphics[scale=0.25]{Sites-images/30-Simulazione_quiz_base3.png}
-		\includegraphics[scale=0.25]{Sites-images/31-Simulazione_quiz_base4.png}
-		\includegraphics[scale=0.25]{Sites-images/32-Simulazione_quiz_base5.png}
+		\includegraphics[scale=0.22]{Sites-images/28-Simulazione_quiz_base1.png}
+		\includegraphics[scale=0.22]{Sites-images/29-Simulazione_quiz_base2.png}
+		\includegraphics[scale=0.22]{Sites-images/30-Simulazione_quiz_base3.png}
+		\includegraphics[scale=0.22]{Sites-images/31-Simulazione_quiz_base4.png}
+		\includegraphics[scale=0.22]{Sites-images/32-Simulazione_quiz_base5.png}
 		\caption{Pagina di simulazione dei quiz base.}
 		(Ricomposta)
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
-		\includegraphics[scale=0.25]{Sites-images/33-Simulazione_quiz_base-risposte1.png}
-		\includegraphics[scale=0.25]{Sites-images/34-Simulazione_quiz_base-risposte2.png}
-		\includegraphics[scale=0.25]{Sites-images/35-Simulazione_quiz_base-risposte3.png}
-		\includegraphics[scale=0.25]{Sites-images/36-Simulazione_quiz_base-risposte4.png}
-		\includegraphics[scale=0.25]{Sites-images/37-Simulazione_quiz_base-risposte5.png}
+		\includegraphics[scale=0.22]{Sites-images/33-Simulazione_quiz_base-risposte1.png}
+		\includegraphics[scale=0.22]{Sites-images/34-Simulazione_quiz_base-risposte2.png}
+		\includegraphics[scale=0.22]{Sites-images/35-Simulazione_quiz_base-risposte3.png}
+		\includegraphics[scale=0.22]{Sites-images/36-Simulazione_quiz_base-risposte4.png}
+		\includegraphics[scale=0.22]{Sites-images/37-Simulazione_quiz_base-risposte5.png}
 		\caption{Pagina di simulazione dei quiz base con soluzioni.}
 		(Ricomposta)
 	\end{center}
 \end{figure}
+
+
 
 \textcolor{black}{Osservata la simulazione si analizza ora la parte di esercitazione associata alla simulazione.}\\
 
@@ -1294,32 +1307,35 @@ Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri
 Nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la risposta data in precedenza.\\
 Altra cosa qui mostrata è come sono stati salvati tutti i paramatri "nell'url" in modo da poter essere poi ripresi dalla parte in "php".}\\
 
-\begin{figure}[h]
+\begin{minipage}{\textwidth}
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/38-Quiz_Base.png}
 		\caption{Pagina dei quiz base.}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/39-Quiz_Base_selezione.png}
 		\caption{Pagina dei quiz base con selezione.}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/40-Quiz_Base_Domanda.png}
 		\caption{Pagina dei quiz base con domanda.}
 	\end{center}
 \end{figure}
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/41-Quiz_Base_Soluzione.png}
 		\caption{Pagina dei quiz base con soluzione.}
 	\end{center}
 \end{figure}
+\end{minipage}
 
-\textcolor{black}{L'ultima parte del sito implementata, ovvero la simulazione e l'esercitazione dei quiz della vela non viene riportata, in quanto sulla base di quello che è stato mostrato finora sarebbe irrilevante, poiché ripetizione di logiche e di codice già visto.} 
+\raggedright
+\textcolor{black}{L'ultima parte del sito implementata, ovvero la simulazione e l'esercitazione dei quiz della vela non viene riportata, in quanto sulla base di quello che è stato mostrato finora sarebbe una ripetizione di logiche e di codice già visto.} 
