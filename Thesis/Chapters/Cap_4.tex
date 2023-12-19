@@ -1,10 +1,11 @@
 \chapter{Programmazione del servizio online parte 2}\label{cap:Programmazione del servizio online parte 2}
 
 \section{Creazione del sito internet}\label{sez:Creazione sito internet}
-
+\raggedright
 La realizzazione del sito internet è definibile a partire dalla creazione delle singole pagine che lo compongono.\\%si può suddividere nella creazione delle singole pagine che lo compongo.
 
 \subsection{Creazione pagina di registrazione e di accesso}
+\raggedright
 L'intera produzione del sito internet è stata fatta cercando di dare più importanza ai lavori "più grossi", in modo che il progetto si sviluppi a partire da un nucleo principale per poi espandersi. In contrapposizione al  modo comune di  condurre questo genere di progetti, ovvero quello di partire dalle specifiche più "esterne" per  avere più velocemente una idea del progetto finito, convergendo in seguito verso il "nucleo".\\
 Secondo la specifica del progetto, il sito doveva essere accessibile solo agli utenti registrati (verificando inoltre che la mail di registrazione fosse reale) garantendo la sicurezza dei dati personali, tramite l'implementazione delle principali difese contro gli attacchi e in caso di penetrazione i dati degli utenti presenti all'interno del "database" sarebbero dovuti essere cifrati per prevenirne l'uso illecito.\\
 La prime pagine create sono state quelle di accesso e di registrazione, dato che queste due pagine verificavano vicendevolmente il corretto funzionamento reciproco.\\
@@ -12,10 +13,10 @@ La prime pagine create sono state quelle di accesso e di registrazione, dato che
 Dopo aver studiato velocemente i linguaggi: "html", "php" e "javascript". Si da il via allo sviluppo, scrivendo la parte di codice in "php", utilizzando come paradigma quello ad oggetti, siccome mi è molto famigliare.\\
 Come prima cosa viene creata una classe "utilities" nella quale poter ospitare i vari metodi utili nelle restanti parti future.\bigskip\\
 
-\raggedright
 Si esplicita in questa sede che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
 
 \paragraph{Classe utilities}\leavevmode\\
+\raggedright
 La classe "utilities" (quindi il relativo file) è stata implementata in questo modo:\\
 Si è deciso di dividere in file separati i metodi e le rispettive password di accesso ai servizi (come quelle per costruire le "query" del database) in modo da aumentare la sicurezza e l'ordine del codice.\\
 Il primo metodo scritto è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Siccome quest'oggetto è per sua stessa statico, durante la sua l'implementazione è stato usato il "singleton pattern" per evitare che in memoria ci fossero degli oggetti duplicati.\\
@@ -206,7 +207,7 @@ public function getBody($linkToUse){
  In particolare (come mostrato dal codice riportato inferiormente) per favorire questo processo, la pagina posizionata a livello di "root" non è quella di accesso, ma bensì una pagina che a seconda se "nell'url" con il quale si fa l'acceso al sito è presente un argomento o meno effettua un "redirect" alla giusta pagina.}\\
   
  \paragraph{\textcolor{black}{File index.php}}\leavevmode\\
-  
+  \raggedright
  \begin{lstlisting}[language=php]
  <?php
  require 'Quiz-Patente-Nautica/Pagina_Web/ValidationMail/mailUtilities.php';
@@ -292,17 +293,15 @@ public function getBody($linkToUse){
  }
  \end{lstlisting}
  
- \raggedright
  \textcolor{black}{Il funzionamento è il seguente,  prima di tutto viene verificato che l'operazione di verifica non sia stata fatta in passato, successivamente si aspetta che l'utente prema il pulsante di verifica per aggiornare il database.} \bigskip\\
 
-\raggedright
  \textcolor{black}{A questo punto della spiegazione è possibile introdurre il codice della pagina di registrazione (pagina raggiungibile solo attraverso quella di accesso tramite la pressione dell'apposito pulsante).\\
  Per prima cosa verrà incluso il codice in "php" in modo da poter capire il suo funzionamento e poi successivamente verrà introdotto il codice "html" per mostrare come è strutturata la pagina.}\\
  
  %% Insert verification mail page here %%
  
  \paragraph{\textcolor{black}{registration.php}}\leavevmode\\
- 
+ \raggedright
  \begin{lstlisting}[language=php]
  <?php
  //require 'Utilities/keys.php';
@@ -390,7 +389,7 @@ public function getBody($linkToUse){
  
  ?>
  \end{lstlisting}
- \raggedright
+
  \textcolor{black}{Osservando le classi incluse si può notare che è presente quella che gestisce l'invio della mail, in modo da poter (subito dopo aver completato la prima fase di registrazione) inviare una mail per la verifica dell'utente.\\
  Si avvia la sessione per non perdere lo stato della memoria (di conseguenza quello dell'utente) nello spostamento tra le varie pagine.\\
  Siccome questa pagina fa uso del database, si controlla che la connessione a quest'ultimo.\\
@@ -462,7 +461,6 @@ public function getBody($linkToUse){
  	\end{center}
  \end{figure}
   
-  \raggedright
   \textcolor{black}{Vista ora la pagina di registrazione, si può procedere con l'analisi della pagina di accesso.}\\
   
   \paragraph{\textcolor{black}{main.php}}\leavevmode\\
@@ -593,10 +591,11 @@ public function getBody($linkToUse){
 \end{figure}
 
 \subsection{Pagina di manutenzione}
+\raggedright
 \textcolor{black}{Finora è stata mostrata la registrazione e l'autenticazione dell'utente, ma nel sito è anche disponibile una pagina (della quale si riporta inferiormente il codice in "php") che permette la manutenzione dell'account ("on-fly").}\\
 
 \paragraph{\textcolor{black}{maintenance.php}}\leavevmode\\
-
+\raggedright
 \begin{lstlisting}[language=php]
 	/*function to verify if credentials are okay*/
 	function verifyAccount(){
@@ -701,7 +700,6 @@ A questo punto si desidera presentare come la scelta progettuale fatta risulti p
 \end{figure}
 
 \begin{minipage}{\textwidth}
-	\raggedright
 	\textcolor{black}{Supponendo che non vi siano problemi e che l'autenticazione avvenga senza difficoltà, si accede quindi alle pagine che erogano il servizio per cui è stato sviluppato il sito .\\
 	La pagina di selezione delle varie esercitazioni disponibili non presenta molte cose da commentare, tranne il fatto che questa pagina amministra la sessione, controllando e impostando le variabili utilizzate dalle pagine delle esercitazioni.}
 \end{minipage}
