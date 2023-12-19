@@ -642,15 +642,19 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	$_SESSION['numbers'] = $indexNumbers;
 	
 	$totalQuestions = count($questions);
-\end{lstlisting}
+\end{lstlisting}\leavevmode\newline
+
+%\newgeometry{bottom=0cm}
 
 \begin{minipage}{\textwidth}
-	
-	\vspace*{-12cm}
+	\vspace*{-9cm}
 	
 	\textcolor{black}{In generale l'estrazione delle domande non avviene in modi differenti rispetto a quanto presentato in passato. Si può osservare che per ogni tipo di domande è stato fatto un ciclo "while" con la stessa logica del precedente. In questo caso la scelta di un doppio ciclo (uno per ogni insieme di domande) potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come diviso in due parti. Però si è comunque cercato di rendere il codice efficiente usando un solo "array" (al posto di due come si sarebbe portati a pensare) per memorizzare tutte le domande estratte, in modo da risparmiare spazio in memoria. Il campo "is42d" permette di distinguere tra i due tipi di domande.\\
-		Il resto del codice della pagina non presenta ulteriori diversità.}\\
-\end{minipage}
+	Il resto del codice della pagina non presenta ulteriori diversità.
+	}\\
+\end{minipage}%\leavevmode\newpage
+
+%\restoregeometry
 
 \begin{minipage}{\textwidth}
 	\begin{figure}[H]
@@ -784,13 +788,14 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 \end{lstlisting}
 
 \begin{minipage}{\textwidth}
-	\vspace*{-19cm}
-	\raggedright
+	\vspace*{-4cm}
+	
 	\textcolor{black}{Nel codice riportato si può vedere come il menu a tendina definito nella parte "html" e gestito con il "javascript" permetta all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione "dell'url" fatto con l'ultima funzione definita in "javascript".\\
 	La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a casi precedenti.}\\
-\end{minipage}
+\end{minipage}%\leavevmode\newpage
 
 \begin{minipage}{\textwidth}
+	%\vspace*{-}
 	\begin{center}
 		\textbf{Esempio delle pagine del carteggio sulla carta 5d.}
 	\end{center}
@@ -801,16 +806,16 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 			\caption{Pagina di carteggio sulla carta 5d.}
 		\end{center}
 	\end{figure}
+	\end{minipage}
 	
+	\begin{minipage}{\textwidth}
 	\begin{figure}[H]
 		\begin{center}
 			\includegraphics[scale=0.25]{Sites-images/21-Carteggio_5d_Selezione.png}
 			\caption{Pagina di carteggio sulla carta 5d con selezione.}
 		\end{center}
 	\end{figure}
-\end{minipage}
 
-\begin{minipage}{\textwidth}
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/22-Carteggio_5d_Domanda.png}
@@ -1176,10 +1181,12 @@ La correzione del codice è delegata alla parte in "javascript", qui riportato i
 		
 	}
 \end{lstlisting}\leavevmode\\
+\begin{minipage}{\textwidth}
+	\textcolor{black}{Nella fase di preparazione dell'operazione di correzione è stato necessario passare delle informazione dal "back-end" (quindi della parte in "php") al "front-end" (ovvero la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni tramite il sistema "JSON" al posto di "AJAX" che si presuppone non aver  funzionato a causa del fallimento delle chiamate a sistema, siccome durante le prove, il terminale non riportava alcun errore, anzi, se si attivavano le stampe per il "debug" venivano visualizzati dei messaggi che comunicavano esito positivo, anche se alla fine ciò non risultava.\\
+	Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata scritta la funzione per la correzione delle risposte, in questo caso una funzionalità importante è quella di mostrare la risposta data e quella corretta. La correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettera V oppure F a seconda se la riposta adiacente sia vera oppure falsa, la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta, in verde nel caso in cui l'utente abbia scelto la risposta giusta e in rosso nel caso contrario. Ogni risposta errata farà aumentare il contatore degli errori con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il superamento della prova viene fatta comparire alla fine della correzione.}
+\end{minipage}
 
-\textcolor{black}{Nella fase di preparazione dell'operazione di correzione è stato necessario passare delle informazione dal "back-end" (quindi della parte in "php") al "front-end" (ovvero la parte in "javascript"). Purtroppo questa cosa è stata fatta "in chiaro" (quindi in modo poco elegante) serializzando le informazioni tramite il sistema "JSON" al posto di "AJAX" che si presuppone non aver  funzionato a causa del fallimento delle chiamate a sistema, siccome durante le prove, il terminale non riportava alcun errore, anzi, se si attivavano le stampe per il "debug" venivano visualizzati dei messaggi che comunicavano esito positivo, anche se alla fine ciò non risultava.\\
-Finita la fase di preparazione, si oscurano tutte le risposte e il messaggio che dice se la prova è stata più o meno superata. Successivamente è stata scritta la funzione per la correzione delle risposte, in questo caso una funzionalità importante è quella di mostrare la risposta data e quella corretta. La correzione viene fatta sostituendo tutti i pulsanti "radio" con la lettera V oppure F a seconda se la riposta adiacente sia vera oppure falsa, la risposta data dall'utente viene evidenziata cambiando il colore del testo della risposta, in verde nel caso in cui l'utente abbia scelto la risposta giusta e in rosso nel caso contrario. Ogni risposta errata farà aumentare il contatore degli errori con il quale si determina poi se l'utente ha superato o meno la simulazione. La scritta che comunica o meno il
-superamento della prova viene fatta comparire alla fine della correzione.}\\
+\leavevmode\newpage
 
 \begin{minipage}{\textwidth}
 \begin{figure}[H]
@@ -1322,13 +1329,16 @@ Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri
 		var parameters2 = new URLSearchParams(data2);
 		window.history.pushState(null, document.title, (URL+"&"+parameters1+"&"+parameters2));
 	}
-\end{lstlisting}
+\end{lstlisting}\leavevmode
+
+%\newgeometry{bottom=1cm}
+
 \begin{minipage}{\textwidth}
-	\vspace*{-11cm}
+%\vspace*{-2cm}
 	\textcolor{black}{Purtroppo anche in questa situazione non potendo utilizzare "AJAX" si sono dovuti trovare dei "workaround" per permettere comunque l'implementazione di queste funzionalità ritenute importanti.\\
 	Nel caso in cui nella pagina venga caricata una domanda alla quale si è già risposto, viene eseguita in automatico la correzione, prendendo come valore per la risposta data in precedenza.\\
 	Altra cosa qui mostrata è come sono stati salvati tutti i paramatri "nell'url" in modo da poter essere poi ripresi dalla parte in "php".}\\
-\end{minipage}
+\end{minipage}\leavevmode\newpage
 
 \begin{minipage}{\textwidth}
 \begin{figure}[H]
@@ -1337,6 +1347,7 @@ Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri
 		\caption{Pagina dei quiz base.}
 	\end{center}
 \end{figure}
+
 
 \begin{figure}[H]
 	\begin{center}
@@ -1351,11 +1362,9 @@ Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri
 		\caption{Pagina dei quiz base con domanda.}
 	\end{center}
 \end{figure}
-
 \end{minipage}
 
 \begin{minipage}{\textwidth}
-
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.25]{Sites-images/41-Quiz_Base_Soluzione.png}
