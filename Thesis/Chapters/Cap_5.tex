@@ -1,7 +1,11 @@
 
 \subsection{Pagina di selezione dei corsi}
 
+%\vspace*{-4cm}
+
 \paragraph{Estratto di Entry.php}\leavevmode\\
+
+%\vspace*{-3cm}
 
 \raggedright
 \begin{lstlisting}[language=php]
@@ -37,6 +41,8 @@
 		exit;
 	}
 \end{lstlisting}
+
+\vspace*{-2.5cm}
 
 \textcolor{black}{Dal codice incluso si può notare come vengono controllate le variabili di sessione in modo che l'accesso ai vari corsi sia reso disponibile ai soli utenti registrati. Questa operazione può risultare contraddittoria rispetto alla gestione dell'utente prima presentata (dove si affermava che fosse pericoloso tenere in sessione i dati sensibili), ma si desidera far notare che i dati non sono in "chiaro" (condizione comune nel caso contrapposto, basti pensare al passaggio in chiaro dell'indice utente all'interno del database per evitare di gestire le credenziali), e che inoltre lo "spoofing" non rappresenterebbe un problema, in quanto nel caso peggiore qualcuno potrebbe accedere alle esercitazioni con le  credenziali di un'altra persona, ma ciò senza la possibilità di interagire con le credenziali dell'utente.}\\
 
@@ -644,10 +650,8 @@ Lampante a questo punto sarà la semplicità con la quale le informazioni sono s
 	$totalQuestions = count($questions);
 \end{lstlisting}\leavevmode\newline
 
-%\newgeometry{bottom=0cm}
-
 \begin{minipage}{\textwidth}
-	\vspace*{-9cm}
+	\vspace*{-32cm}
 	
 	\textcolor{black}{In generale l'estrazione delle domande non avviene in modi differenti rispetto a quanto presentato in passato. Si può osservare che per ogni tipo di domande è stato fatto un ciclo "while" con la stessa logica del precedente. In questo caso la scelta di un doppio ciclo (uno per ogni insieme di domande) potrebbe non risultare tra le più efficienti in assoluto, ma aumenta la semplicità del codice, permettendo di vedere il problema del reperimento delle informazioni come diviso in due parti. Però si è comunque cercato di rendere il codice efficiente usando un solo "array" (al posto di due come si sarebbe portati a pensare) per memorizzare tutte le domande estratte, in modo da risparmiare spazio in memoria. Il campo "is42d" permette di distinguere tra i due tipi di domande.\\
 	Il resto del codice della pagina non presenta ulteriori diversità.
@@ -719,6 +723,8 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 }
 \end{lstlisting}
 
+\vspace*{1.5cm}
+
 \textcolor{black}{\textbf{Parte di codice html}. \\Per mostrare com'è fatto il menu a tendina poi utilizzato con il "javascrpit".}\\
 
 \begin{lstlisting}[language=html]
@@ -788,14 +794,14 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 \end{lstlisting}
 
 \begin{minipage}{\textwidth}
-	\vspace*{-4cm}
+%	\vspace*{-25cm}
 	
 	\textcolor{black}{Nel codice riportato si può vedere come il menu a tendina definito nella parte "html" e gestito con il "javascript" permetta all'utente di selezionare l'argomento. Quest'ultimo poi viene passato alla parte in "php" tramite impostazione "dell'url" fatto con l'ultima funzione definita in "javascript".\\
 	La gestione delle domande caricate in base all'argomento è deducibile in quanto molto simile a casi precedenti.}\\
 \end{minipage}%\leavevmode\newpage
 
+%\vspace*{-15cm}
 \begin{minipage}{\textwidth}
-	%\vspace*{-}
 	\begin{center}
 		\textbf{Esempio delle pagine del carteggio sulla carta 5d.}
 	\end{center}
@@ -807,6 +813,7 @@ if($_SESSION['questions'] !== null && $_SESSION['numbers'] !== null){
 		\end{center}
 	\end{figure}
 	\end{minipage}
+	\newpage
 	
 	\begin{minipage}{\textwidth}
 	\begin{figure}[H]
@@ -1259,6 +1266,8 @@ if($Array['topic'] !== null && $Array['topic'] !== $_SESSION['topic']){
 
 \textcolor{black}{Nel codice appena mostrato vi è una funzionalità (implementata a livello di "php" con il "catch" dell'ultima risposta data, trasmessa dal "javascript") che permette di tenere in sessione le risposte date in precedenza in modo da poterle ricontrollare anche in un secondo momento. Il resto del codice in "php" non presenta differenze sostanziali rispetto a quanto è già stato mostrato  e anche il codice "html" è intuibile tenendo a mente quello scritto nel caso della simulazione.\\
 Nel caso del "javascript" una cosa da evidenziare è l'inserimento dei parametri "nell'url" e anche come vengono gestire le riposte date in precedenza.}\\
+
+\vspace*{1cm}
 
 \begin{lstlisting}[language=java]
 	
