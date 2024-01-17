@@ -1,0 +1,124 @@
+\documentclass[hidelinks,aspectratio=169]{beamer}
+\usepackage[italian]{babel} 
+\usepackage[utf8]{inputenc} 
+\usepackage{fourier} 
+
+%Slide colors
+\usetheme{Madrid}
+%\usecolortheme{beaver}
+
+% Images
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{float}
+\graphicspath{{../Images}}
+
+% Stop hyphenation
+\usepackage[none]{hyphenat}
+
+% Coloring links
+\usepackage{xcolor}
+
+% Enumerate abc
+\usepackage{enumerate}
+
+% Redefines caption setup in way to remove "Figure:"
+\usepackage{caption}
+\captionsetup[figure]{labelformat=empty}
+
+% License
+\usepackage[
+type={CC},
+modifier={by-nc-sa},
+version={4.0},
+]{doclicense}
+
+%------------------- Commands zone --------------------
+
+%Command to zoom in
+\usepackage{mwe}
+\makeatletter
+\newsavebox\zb@x
+\newcounter{z@@m}
+\usepackage{calc}
+\newdimen\B@r\newdimen\P@r
+\newdimen\@zw\newdimen\@zh\newdimen\@zd
+
+\newcommand{\zoombox}[2][0]{%
+	\leavevmode%
+	\sbox\zb@x{#2}%
+	\setlength\B@r{1pt*\ratio{\wd\zb@x}{\ht\zb@x+\dp\zb@x}}%
+	\setlength\P@r{1pt*\ratio{\paperwidth}{\paperheight}}%
+	\ifdim\B@r>\P@r\relax%
+	\setlength\@zw{\wd\zb@x}\setlength\@zh{\@zw*\ratio{\paperheight}{\paperwidth}}%
+	\setlength\@zd{(\@zh-\ht\zb@x-\dp\zb@x)*\real{0.5}+\dp\zb@x}%
+	\setlength\@zh{\@zh-\@zd}%
+	\else%
+	\setlength\@zh{\ht\zb@x+\dp\zb@x}%
+	\setlength\@zw{\@zh*\ratio{\paperwidth}{\paperheight}}%
+	\setlength\@zh{\ht\zb@x}\setlength\@zd{\dp\zb@x}%
+	\fi%
+	\makebox[0pt][l]{\makebox[\wd\zb@x][c]{\makebox[\@zw][l]{%
+				\pdfdest name {zbfs\thez@@m} fitr
+				width  \@zw\space
+				height \@zh\space
+				depth  \@zd\space
+	}}}%
+	\pdfdest name {zb\thez@@m} fitr
+	width  \wd\zb@x\space
+	height \ht\zb@x\space
+	depth  \dp\zb@x\space
+	\immediate\pdfannot 
+	width  \wd\zb@x\space
+	height \ht\zb@x\space
+	depth  \dp\zb@x\space
+	{%
+		/Subtype/Link/H/N
+		/Border [0 0 #1 [1 2]]
+		/A <<
+		/S/JavaScript
+		/JS (
+		if(typeof(zoomed)=='undefined'||!zoomed){
+			var lastView=this.viewState;
+			if(app.fs.isFullScreen) this.gotoNamedDest('zbfs\thez@@m');
+			else this.gotoNamedDest('zb\thez@@m');
+			zoomed=true;
+		}else{
+			this.viewState=lastView;
+			zoomed=false;
+		}
+		)
+		>>
+	}%
+	\usebox{\zb@x}%
+	\stepcounter{z@@m}%
+} 
+\makeatother
+
+%------------------- Header --------------------
+\title[Creazione di una piattaforma web]{\textbf{Creazione di una piattaforma web per l'esercitazione del nuovo esame della patente nautica secondo l'emendamento "DD 131 del 31 maggio 2022}}
+\author{Francesco Rombaldoni}
+\date{8 Febbraio 2023/2024}
+
+\begin{document}
+	
+	\begin{frame}
+		\maketitle
+		
+		\vspace*{\fill}
+		\centering
+		\fboxrule=2pt
+		\fbox
+		{
+			\begin{minipage}{0.9\linewidth}
+				\small{Il seguente documento è ottimizzato per la visualizzazione digitale con \href{https://get.adobe.com/it/reader/}{\textcolor{blue}{Adobe~Acrobat~Reader}}.}  
+			\end{minipage}
+		}
+	\end{frame}
+	
+	\begin{frame}
+		\tableofcontents
+	\end{frame}
+	
+\end{document}
