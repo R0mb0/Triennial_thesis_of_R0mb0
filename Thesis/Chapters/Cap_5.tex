@@ -6,20 +6,20 @@ La realizzazione del sito internet è definibile a partire dalla creazione delle
 
 \subsection{Creazione pagina di registrazione e di accesso}
 \raggedright
-L'intera produzione del sito internet è stata fatta cercando di dare più importanza ai lavori "più grossi", in modo che il progetto si sviluppi a partire da un nucleo principale per poi espandersi. In contrapposizione al  modo comune di  condurre questo genere di progetti, ovvero quello di partire dalle specifiche più "esterne" per  avere più velocemente una idea del progetto finito, convergendo in seguito verso il "nucleo".\\
+L'intera produzione del sito internet è stata fatta cercando di dare più importanza ai lavori "più grossi", in modo che il progetto si sviluppasse a partire da un nucleo principale per poi espandersi, in contrapposizione al  modo comune di  condurre questo genere di progetti, ovvero quello di partire dalle specifiche più "esterne" per  avere più velocemente una idea del progetto finito e convergendo in seguito verso il "nucleo".\\
 Secondo la specifica del progetto, il sito doveva essere accessibile solo agli utenti registrati (verificando inoltre che la mail di registrazione fosse reale) garantendo la sicurezza dei dati personali, tramite l'implementazione delle principali difese contro gli attacchi e in caso di penetrazione i dati degli utenti presenti all'interno del "database" sarebbero dovuti essere cifrati per prevenirne l'uso illecito.\\
 La prime pagine create sono state quelle di accesso e di registrazione, dato che queste due pagine verificavano vicendevolmente il corretto funzionamento reciproco.\\
 \bigskip
-Dopo aver studiato velocemente i linguaggi: "html", "php" e "javascript". Si da il via allo sviluppo, scrivendo la parte di codice in "php", utilizzando come paradigma quello ad oggetti, siccome mi è molto famigliare.\\
-Come prima cosa viene creata una classe "utilities" nella quale poter ospitare i vari metodi utili nelle restanti parti future.\bigskip\\
+Dopo aver studiato velocemente i linguaggi: "html", "php" e "javascript" si è passati allo sviluppo scrivendo la parte di codice in "php" e utilizzando come paradigma quello ad oggetti,  a me più familiare.\\
+Come prima cosa è stata creata una classe "utilities" nella quale ospitare i vari metodi utili nelle restanti parti future.\bigskip\\
 
-Si esplicita in questa sede che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
+In questa sede si esplicita che le varie classi che saranno presentate sono state divise ed ordinate in cartelle sulla base delle loro funzionalità.\\
 
 \paragraph{Classe utilities}\leavevmode\\
 \raggedright
 La classe "utilities" (quindi il relativo file) è stata implementata in questo modo:\\
-Si è deciso di dividere in file separati i metodi e le rispettive password di accesso ai servizi (come quelle per costruire le "query" del database) in modo da aumentare la sicurezza e l'ordine del codice.\\
-Il primo metodo scritto è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Siccome quest'oggetto è per sua stessa statico, durante la sua l'implementazione è stato usato il "singleton pattern" per evitare che in memoria ci fossero degli oggetti duplicati.\\
+Si è diviso in file separati i metodi e le rispettive password di accesso ai servizi (come quelle per costruire le "query" del database) in modo da aumentare la sicurezza e l'ordine del codice.\\
+Il primo metodo scritto è quello che permette di creare l'oggetto "mysqli" che serve per poter interagire con il database (da notare come nella porzione di codice inferiore non vi siano riportati direttamente i dati di accesso). Siccome quest'oggetto è per sua stessa natura statico, durante la sua l'implementazione è stato usato il "singleton pattern" per evitare che in memoria ci fossero degli oggetti duplicati.\\
 
 \begin{lstlisting}[language=php]
 	/*using singleton pattern*/
@@ -186,7 +186,7 @@ public function getBody($linkToUse){
  \end{lstlisting}
  
  \raggedright
- \textcolor{black}{Per spiegare più facilmente il funzionamento del processo appena presentato,  viene riportato inferiormente una parte di codice della pagina di registrazione che sfrutta i metodi presentati sopra per mandare la mail di verifica dopo la registrazione.}\\ 
+ \textcolor{black}{Per spiegare più facilmente il funzionamento del processo appena presentato, viene riportato inferiormente una parte di codice della pagina di registrazione che sfrutta i metodi presentati sopra per mandare la mail di verifica dopo la registrazione.}\\ 
  
  \begin{lstlisting}[language=php]
  $mailUtil = new MailUtilities();
