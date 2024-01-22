@@ -14,8 +14,15 @@ jobs:
         with:
           working_directory: Thesis
           root_file: Thesis.tex
+      - name: Compile slides
+        uses: xu-cheng/latex-action@v3
+        with: # insert here files to compile
+          working_directory: Slides
+          root_file: Slides.tex
       - name: Upload compiled file
         uses: actions/upload-artifact@v4
         with: 
           name: Thesis_of_R0mb0
-          path: Thesis/Thesis.pdf
+          path: |
+            Thesis/Thesis.pdf
+            Slides/Slides/pdf
