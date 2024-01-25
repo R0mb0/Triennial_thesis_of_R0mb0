@@ -100,13 +100,13 @@ version={4.0},
 \makeatother
 
 %------------------- Header --------------------
-\title[Creazione di una piattaforma web]{\textbf{Creazione di una piattaforma web per l'esercitazione del nuovo esame della patente nautica secondo l'emendamento "DD 131 del 31 maggio 2022}}
+\title[Creazione di una piattaforma web]{\textbf{Creazione di una piattaforma web per l'esercitazione del nuovo esame della patente nautica secondo l'emendamento "DD 131 del 31 maggio 2022"}}
 \author{Francesco Rombaldoni}
 \date{8 Febbraio 2022/2023}
 
 \begin{document}
 	
-	\begin{frame}
+	\begin{frame}"
 		\maketitle
 		
 		\vspace*{\fill}
@@ -330,9 +330,141 @@ version={4.0},
 		\end{tabularx}
 	\end{frame}
 	
-	\section{La scelta del sistema operativo}
-	\begin{frame}{La scelta del sistema operativo}
-		contenuto...
+	\section{Programmazione del Raspberry-Pi 3}
+	\begin{frame}{Programmazione del Raspberry-Pi 3}
+		\vspace*{-1.6cm}
+		\begin{center}
+			{\Large \textbf{Sistemi operativi disponibili}}
+		\end{center}
+		\vspace*{13mm}
+		\begin{tabularx}{\linewidth}{XXXX}
+			{
+				\begin{minipage}{\linewidth}
+					\centering
+					\zoombox{\includegraphics[scale=0.1]{OS/raspberry-pi-os.png}}
+					\captionof{figure}{\href{https://www.raspberrypi.com/software/operating-systems/}{\textcolor{blue}{Raspberry Pi OS.}}}
+				\end{minipage}
+			}&{
+				\begin{minipage}{\linewidth}
+					\centering
+				\zoombox{\includegraphics[scale=0.3]{OS/Ubuntu.png}}
+				\captionof{figure}{\href{https://ubuntu.com/download/raspberry-pi}{\textcolor{blue}{Ubuntu.}}}
+				\end{minipage}
+			}&{
+				\begin{minipage}{\linewidth}
+					\centering
+					\zoombox{\includegraphics[scale=0.073]{OS/Manjaroarm.png}}
+					\captionof{figure}{\href{https://manjaro.org/download/}{\textcolor{blue}{Manjaro ARM.}}}
+				\end{minipage}
+			}&{
+				\begin{minipage}{\linewidth}
+					\centering
+					\zoombox{\includegraphics[scale=0.14]{OS/DietPi.png}}
+					\captionof{figure}{\href{https://dietpi.com/}{\textcolor{blue}{DietPi.}}}
+				\end{minipage}
+			}
+		\end{tabularx}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del Raspberry-Pi 3}
+		\vspace*{-3mm}
+		\begin{center}
+			{\Large \textbf{Le alternative}}
+		\end{center}
+		\vspace*{6mm}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.18]{OS/raspberry-pi-os2.png}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del Raspberry-Pi 3}
+		\begin{center}
+			{\Large \textbf{XFCE vs LXDE}}
+		\end{center}
+		\vspace*{2.5mm}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{DE/DE1.png}}
+			\captionof{figure}{\href{https://www.maketecheasier.com/lxde-vs-xfce/}{\textcolor{blue}{Articolo di maketecheasier.}}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del Raspberry-Pi 3}
+	%	\vspace*{-2.2cm}
+		\begin{center}
+			{\Large \textbf{Il problema con XRDP}}
+		\end{center}
+		\vspace*{3mm}
+		\begin{tabularx}{\linewidth}{XX}
+			{
+				\centering
+				\hspace*{3cm}
+				\zoombox{\includegraphics[scale=0.9]{DE/Xrdp_logo.png}}
+			}&{
+				\centering
+				\hspace*{2mm}
+				\zoombox{\includegraphics[scale=0.2]{DE/X.Org_Logo.png}}
+			}
+		\end{tabularx}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.12]{DE/XRDP2.png}}
+			\captionof{figure}{\href{https://www.raspberryhome.it/2020/04/23/raspberry-pi-remote-desktop-rdp/}{\textcolor{blue}{Articolo di Raspberry Home.}}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del Raspberry-Pi 3}
+		\begin{center}
+			{\Large \textbf{Installazione di LAMP}}
+		\end{center}
+		\vspace*{3mm}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{Apps/LAMP.png}}
+			\captionof{figure}{\href{https://randomnerdtutorials.com/raspberry-pi-apache-mysql-php-lamp-server/}{\textcolor{blue}{Articolo di Random Nerd Tutorials.}}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del servizio online}
+		\begin{center}
+			{\Large \textbf{Creazione del database}}
+		\end{center}
+		%\vspace*{1.5mm}
+		\begin{center}
+				\zoombox{\includegraphics[scale=0.04]{Database/PhpMyAdmin_logo.png}}\\
+				\vspace*{2mm}
+				\zoombox{\includegraphics[scale=0.3]{Database/01-Home.png}}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del servizio online}
+		\vspace*{-2mm}
+			\begin{center}
+			{\Large \textbf{Programmazione del sito web}}
+		\end{center}
+		\vspace*{2mm}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{SitoWeb/01-Home_sito.png}}
+			\captionof{figure}{Home del sito.}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del servizio online}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{SitoWeb/02-Pagina_di_manutenzione.png}}
+			\captionof{figure}{Pagina di manutenzione.}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del servizio online}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{SitoWeb/03-Pagina_di_registrazione.png}}
+			\captionof{figure}{Pagina di registrazione.}
+		\end{center}
+	\end{frame}
+	
+	\begin{frame}{Programmazione del servizio online}
+		\begin{center}
+			\zoombox{\includegraphics[scale=0.2]{SitoWeb/07-Home_accesso_alle_prove.png}}
+			\captionof{figure}{Pagina di accesso alle prove.}
+		\end{center}
 	\end{frame}
 	
 \end{document}
