@@ -11,19 +11,6 @@
 > [!WARNING]  
 > Per la presentazione del codice per la tesi è stato raggiunto il limite del pacchetto, per cui ci saranno delle impostazioni sovrapposte riguardo alla colorazione della sintassi.
 
-
-<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
-<foreignObject width="100" height="100">
-    <div xmlns="http://www.w3.org/1999/xhtml">
-        <ul>
-            <li>text</li>
-        </ul>
-        <!-- Other embed HTML element/text into SVG -->
-    </div>
-</foreignObject>
-</svg> 
-
-
 # License
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
 
