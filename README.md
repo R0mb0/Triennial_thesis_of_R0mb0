@@ -90,6 +90,37 @@
 
 </details>
 
+<details>
+  <summary> 
+
+  ## 👉 Clicca qui per vedere le slide 👈
+  
+  </summary>
+
+![1.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/1.png)
+![2.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/2.png)
+![3.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/3.png)
+![4.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/4.png)
+![5.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/5.png)
+![6.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/6.png)
+![7.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/7.png)
+![8.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/8.png)
+![9.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/9.png)
+![10.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/10.png)
+![11.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/11.png)
+![12.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/12.png)
+![13.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/13.png)
+![14.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/14.png)
+![15.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/15.png)
+![16.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/16.png)
+![17.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/17.png)
+![18.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/18.png)
+![19.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/19.png)
+![20.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/20.png)
+![21.png](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/blob/main/Slides_images/21.png)
+
+</details>
+
 
 # License
 Shield: [![CC BY-NC-SA 4.0][cc-by-nc-sa-shield]][cc-by-nc-sa]
