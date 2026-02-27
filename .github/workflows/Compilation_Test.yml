@@ -20,7 +20,7 @@ jobs:
           working_directory: Slides
           root_file: Slides.tex
       - name: Upload compiled file
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with: 
           name: Thesis_of_R0mb0
           path: |
