@@ -3,6 +3,7 @@
 [![made-with-latex](https://img.shields.io/badge/Made%20with-LaTeX-1f425f.svg)](https://www.latex-project.org/)
 [![Compilation_Test](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/actions/workflows/Compilation_Test.yml/badge.svg)](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/actions/workflows/Compilation_Test.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/29972b424eb94c83b7a72a5720cead72)](https://app.codacy.com/gh/R0mb0/Triennial_thesis_of_R0mb0/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![pages-build-deployment](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/R0mb0/Triennial_thesis_of_R0mb0/actions/workflows/pages/pages-build-deployment)
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/R0mb0/Triennial_thesis_of_R0mb0)
 [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/R0mb0/Triennial_thesis_of_R0mb0)
